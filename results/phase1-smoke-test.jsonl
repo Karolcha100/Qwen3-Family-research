@@ -1,0 +1,5 @@
+{"test": "environment", "torch": "2.15.0+cu134", "cuda": "13.4", "device": "NVIDIA GeForce RTX 4070 SUPER"}
+{"test": "bf16_matmul", "matrix_size": 4096, "tflops": 67.62081964040618}
+{"test": "generation", "model": "Qwen/Qwen3-0.6B", "question": "Explain in two sentences what a neural network is.", "answer": "A neural network is a type of artificial intelligence model inspired by the human brain, designed to learn patterns and make decisions by processing data through layers of interconnected nodes.", "new_tokens": 33, "tokens_per_second": 96.22809628031816}
+{"test": "wikitext2_perplexity", "model": "Qwen/Qwen3-0.6B-Base", "context_length": 2048, "perplexity": 12.670252178057096, "windows": 146, "tokens": 299078, "seconds": 10.60301923299994, "peak_vram_gib": 4.233322620391846}
+{"test": "wikitext2_perplexity", "model": "Qwen/Qwen3-0.6B", "context_length": 2048, "perplexity": 20.96719868464897, "windows": 146, "tokens": 299078, "seconds": 10.584472258997266, "peak_vram_gib": 4.233322620391846}

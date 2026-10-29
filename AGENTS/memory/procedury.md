@@ -101,14 +101,14 @@ for issue in board.issues():
     phase = issue.path.split("/")[1]
     title = re.sub(r"^K\d+\.\s*", "", issue.title)
     decision = issue.extra["decision"].replace("\n", " ").replace("|", "/") or "— (czeka)"
-    rows.append((int(re.search(r"\d+", issue.extra["id"]).group()), f"| @{phase}:{issue.extra['id']} | {title} | {decision} |"))
+    rows.append(((phase != "phase-0", phase, int(re.search(r"\d+", issue.extra["id"]).group())), f"| @{phase}:{issue.extra['id']} | {title} | {decision} |"))
 path = pathlib.Path("AGENTS/memory/decyzje.md")
 head = path.read_text().split("| Pytanie |")[0]
 path.write_text(head + "| Pytanie | Tytuł | Decyzja |\n|---|---|---|\n" + "\n".join(row for _, row in sorted(rows)) + "\n")
 EOF
 ```
 
-Potem ręcznie poprawiam datę w linii „Wygenerowano”. Przy kilku fazach z tymi samymi numerami K sortowanie trzeba będzie rozszerzyć o fazę.
+Potem ręcznie poprawiam datę w linii „Wygenerowano”. Sortowanie: najpierw `phase-0`, potem pozostałe fazy alfabetycznie, w każdej według numeru K.
 
 ## 7. Praca w toku (`AGENTS/memory/w-toku.md`)
 

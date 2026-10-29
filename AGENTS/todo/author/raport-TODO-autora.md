@@ -350,3 +350,31 @@ uv 0.12.24 (x86_64-unknown-linux-gnu)
 > 🤖 **ODPOWIEDŹ LLM — koniec**
 
 ---
+
+### [A8] Zainstaluj pakiety do budowy llama.cpp i uv
+
+uruchom
+
+*2026-10-29 20:26 — Autor*
+
+---
+
+> 🤖 **ODPOWIEDŹ LLM — początek** (Claude Opus 5.5)
+>
+> ### [A8] Re: Zainstaluj pakiety do budowy llama.cpp i uv
+>
+> **Co masz zrobić:** nic. Testy zrobione, **Phase 1 skończona**. Raport środowiska: `AGENTS/phases/phase-1/srodowisko.md`.
+>
+> Wyniki w skrócie:
+> - mnożenie BF16 na GPU: 67,6 TFLOPS;
+> - Qwen3-0.6B (instrukcyjny) generuje sensowną odpowiedź;
+> - perplexity WikiText-2 (okna 2048): **Base 12,67**, instrukcyjny 20,97 (tak jak przewidywał raport A2);
+> - llama.cpp: BF16 306 tok/s, Q4_K_M 566 tok/s; perplexity 11,20 → 12,17 (+8,6% po kwantyzacji do 4 bitów).
+>
+> Przygoda: Twoja przerwa w Wi-Fi zawiesiła pierwsze pobieranie. Zatrzymałem je i uruchomiłem ponownie z limitem czasu.
+>
+> *przeczytane i odpowiedziane: 2026-10-29 20:48 — Claude Opus 5.5*
+>
+> 🤖 **ODPOWIEDŹ LLM — koniec**
+
+---

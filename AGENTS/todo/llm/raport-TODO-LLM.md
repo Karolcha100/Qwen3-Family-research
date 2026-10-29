@@ -49,3 +49,22 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 *2026-10-29 20:22 — Claude Opus 5.5*
 
 ---
+
+### [L4] Testy dymne na GPU (Phase 1 kroki 7–8)
+
+- „uruchom” od autora: raport pod @A8, 2026-10-29 20:26;
+- PyTorch: `scripts/smoke_test_torch.py` → `results/phase1-smoke-test.jsonl`: matmul BF16 67,6 TFLOPS; generacja (Qwen3-0.6B, bez myślenia) poprawna, 96 tok/s; perplexity WikiText-2 (okna 2048 bez nakładania): Base **12,67**, instrukcyjny **20,97**, 10,6 s na 299 tys. tokenów (~28 tys. tok/s), szczyt VRAM 4,2 GiB; kod przechodzi `ruff` i `pyright`;
+- llama.cpp: Base → GGUF BF16 (`--with sentencepiece`) i Q4_K_M w `~/qwen3-checkpoints/gguf/` → `results/phase1-smoke-test-llamacpp.jsonl`: generacja 306 / 566 tok/s, perplexity 11,20 / 12,17 (llama-perplexity liczy drugą połowę okna, więc liczby nieporównywalne z PyTorchem);
+- problem: przerwa w Wi-Fi autora zawiesiła pierwsze pobieranie (wiszące połączenie, niepełne wagi modelu Base, GGUF bez tensorów). Proces zatrzymany i ponowiony z `HF_HUB_DOWNLOAD_TIMEOUT=60`. Pułapka 14.
+
+*2026-10-29 20:48 — Claude Opus 5.5*
+
+---
+
+### [L5] Raport środowiska (Phase 1 krok 9)
+
+- `AGENTS/phases/phase-1/srodowisko.md`: warunki końca fazy (wszystkie spełnione), wersje, wyniki testów, gdzie co leży, jak odtworzyć.
+
+*2026-10-29 20:48 — Claude Opus 5.5*
+
+---

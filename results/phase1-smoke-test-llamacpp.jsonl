@@ -1,0 +1,4 @@
+{"test": "llamacpp_bench", "commit": "eb4e244be", "model": "qwen3-0.6b-base-bf16.gguf", "size_mib": 1136.3, "pp512_tokens_per_second": 32690.36, "tg128_tokens_per_second": 305.92}
+{"test": "llamacpp_bench", "commit": "eb4e244be", "model": "qwen3-0.6b-base-q4_k_m.gguf", "size_mib": 372.65, "pp512_tokens_per_second": 38194.75, "tg128_tokens_per_second": 566.41}
+{"test": "llamacpp_perplexity", "commit": "eb4e244be", "model": "qwen3-0.6b-base-bf16.gguf", "dataset": "wikitext-2-raw-v1 test", "context_length": 2048, "chunks": 146, "perplexity": 11.2041, "plus_minus": 0.07878, "note": "llama-perplexity scores only the second half of each window"}
+{"test": "llamacpp_perplexity", "commit": "eb4e244be", "model": "qwen3-0.6b-base-q4_k_m.gguf", "dataset": "wikitext-2-raw-v1 test", "context_length": 2048, "chunks": 146, "perplexity": 12.1699, "plus_minus": 0.08608, "note": "llama-perplexity scores only the second half of each window"}
