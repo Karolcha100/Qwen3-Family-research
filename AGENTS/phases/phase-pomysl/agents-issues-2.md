@@ -15,7 +15,7 @@ Szczegóły potrzebne do planu `AGENTS/phases/phase-pomysl/plan-phase-2.md` (eta
   - **A** — etapy 1–4 to **Phase 2**, etapy 5–6 to Phase 3;
   - **B** — inna nazwa (wpisz).
 - **Rekomendacja:** A.
-- **Decyzja:**
+- **Decyzja:** A, wcześniej się pomyliłem z numerami sorry xD
 
 ### K11. 🟡 Tekst, na którym mierzymy zaburzenia
 
@@ -25,7 +25,7 @@ Szczegóły potrzebne do planu `AGENTS/phases/phase-pomysl/plan-phase-2.md` (eta
   - **B** — 50% + 50%;
   - **C** — sam C4.
 - **Rekomendacja:** A. Większość użycia to zwykły tekst, ale z 25% kodu wyłapiemy też neurony „od kodu”. Wielkość zbioru (np. 4096 lub 16 384 tokenów) ustali pilot.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K12. 🟢 Które warstwy w pilocie (etap 1)
 
@@ -35,7 +35,7 @@ Szczegóły potrzebne do planu `AGENTS/phases/phase-pomysl/plan-phase-2.md` (eta
   - **B** — wybór po statystykach aktywacji (np. warstwa z największymi „masywnymi” aktywacjami + dwie typowe);
   - **C** — inne (wpisz).
 - **Rekomendacja:** A. Warstwy w różnych miejscach modelu zachowują się różnie, a statystyki i tak zbierzemy przy okazji.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K13. 🟢 Ile tokenów zapisać do treningu warstwy (etap 4)
 
@@ -45,7 +45,7 @@ Szczegóły potrzebne do planu `AGENTS/phases/phase-pomysl/plan-phase-2.md` (eta
   - **B** — 250 tys. (~1 GB);
   - **C** — 4 mln (~16 GB).
 - **Rekomendacja:** A. Warstwa ma ~9,4 mln parametrów, więc 1 mln tokenów × 1024 wymiary celu daje ~100 razy więcej liczb niż parametrów. Jeśli okaże się, że to za mało, dorzucimy.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K14. 🟡 Jak mocno zmniejszamy warstwę w etapie 4
 
@@ -55,7 +55,7 @@ Szczegóły potrzebne do planu `AGENTS/phases/phase-pomysl/plan-phase-2.md` (eta
   - **B** — krzywa: −10%, −20%, −30%, −50% (4 przebiegi treningu jednej warstwy);
   - **C** — inne (wpisz).
 - **Rekomendacja:** B. Krzywa pokaże, gdzie warstwa zaczyna „pękać”, a to wprost wskazówka do etapu 5. Koszt to kilka razy po kilkanaście minut.
-- **Decyzja:**
+- **Decyzja:** B aczkolwiek proponuje -5%, -10%, -20%, -40%
 
 ### K15. 🟢 Układ kodu
 
@@ -65,4 +65,4 @@ Szczegóły potrzebne do planu `AGENTS/phases/phase-pomysl/plan-phase-2.md` (eta
   - **B** — same skrypty w `scripts/`, bez pakietu;
   - **C** — inna nazwa pakietu (wpisz).
 - **Rekomendacja:** A. Etapy korzystają ze wspólnych części, więc bez pakietu kod szybko by się powtarzał.
-- **Decyzja:**
+- **Decyzja:** A

@@ -38,7 +38,7 @@ Decyzje potrzebne, żeby z Twojego pomysłu (@T009) zrobić plan. Opis matematyc
   - **B** — tylko zmiana perplexity;
   - **C** — generacja i model nagrody dla każdego zaburzenia (najwierniej, ale miesiące liczenia).
 - **Rekomendacja:** A. KL jest najczulsza i liczy się jednym przebiegiem. Generację zostawiamy dla ciekawych przypadków.
-- **Decyzja:** ⏳ w toku → @A11 (wstępnie: Rozwiń czym jest KL, poza tym także składaniam się do A - Przy czym, czy nie możemy po prostu użyć szybszego klasyfikatora?)
+- **Decyzja:** ✅ Okej, to odpowiedź A, ale generalnie zamiast 100 neuronów o największym wpływie, widziałbym jakieś 250. (po @A11)
 
 ### K4. 🟡 Jak liczyć część A: wszystko czy z przesiewem
 

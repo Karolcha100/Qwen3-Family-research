@@ -2,7 +2,7 @@
 
 Wszystkie pytania z `AGENTS/phases/*/agents-issues-*.md` w jednej tabeli: tytuł i decyzja dosłownie z pola **Decyzja**. Plik jest **generowany** poleceniem z `AGENTS/memory/procedury.md` (sekcja „Indeks decyzji”), więc nie edytuje się go ręcznie. Odświeżany na końcu każdej sesji. Gdy indeks i plik źródłowy się różnią, wygrywa plik źródłowy.
 
-*Wygenerowano: 2026-10-29 21:14 — Claude Opus 5.5*
+*Wygenerowano: 2026-10-29 21:34 — Claude Opus 5.5*
 
 ---
 
@@ -53,16 +53,16 @@ Wszystkie pytania z `AGENTS/phases/*/agents-issues-*.md` w jednej tabeli: tytuł
 | @phase-0:K43 | 🟢 Polecenia agenta: notatki czy mały skrypt | C |
 | @phase-pomysl:K1 | 🔴 Co nazywamy neuronem | A |
 | @phase-pomysl:K2 | 🟡 Jak zaburzamy neuron (wartości −1, −0,5, 0,5, 1) | A |
-| @phase-pomysl:K3 | 🟡 Jak mierzymy „sensowność” w części A | ⏳ w toku → @A11 (wstępnie: Rozwiń czym jest KL, poza tym także składaniam się do A - Przy czym, czy nie możemy po prostu użyć szybszego klasyfikatora?) |
+| @phase-pomysl:K3 | 🟡 Jak mierzymy „sensowność” w części A | ✅ Okej, to odpowiedź A, ale generalnie zamiast 100 neuronów o największym wpływie, widziałbym jakieś 250. (po @A11) |
 | @phase-pomysl:K4 | 🟡 Jak liczyć część A: wszystko czy z przesiewem | C |
 | @phase-pomysl:K5 | 🟡 Cel treningu zmniejszonej warstwy (C2–C3) | wolę B |
 | @phase-pomysl:K6 | 🟢 Dane do treningu warstwy: zapis na dysk czy w locie | Zapis na dysk, ewentualnie zmniejszymy liczbę N_{tokens} |
 | @phase-pomysl:K7 | 🟢 Start zmniejszonej warstwy | A |
 | @phase-pomysl:K8 | 🟡 Dotrenowanie całego modelu (C4) | D |
 | @phase-pomysl:K9 | 🟡 Plan faz z pomysłu | Podane przez ciebie propozycje etapów Phase 1 są dobre, aczkolwiek chciałbym w phase 1 realizować tylko etapy 1, 2, 3, 4. |
-| @phase-pomysl:K10 | 🟢 Numer fazy | — (czeka) |
-| @phase-pomysl:K11 | 🟡 Tekst, na którym mierzymy zaburzenia | — (czeka) |
-| @phase-pomysl:K12 | 🟢 Które warstwy w pilocie (etap 1) | — (czeka) |
-| @phase-pomysl:K13 | 🟢 Ile tokenów zapisać do treningu warstwy (etap 4) | — (czeka) |
-| @phase-pomysl:K14 | 🟡 Jak mocno zmniejszamy warstwę w etapie 4 | — (czeka) |
-| @phase-pomysl:K15 | 🟢 Układ kodu | — (czeka) |
+| @phase-pomysl:K10 | 🟢 Numer fazy | A, wcześniej się pomyliłem z numerami sorry xD |
+| @phase-pomysl:K11 | 🟡 Tekst, na którym mierzymy zaburzenia | A |
+| @phase-pomysl:K12 | 🟢 Które warstwy w pilocie (etap 1) | A |
+| @phase-pomysl:K13 | 🟢 Ile tokenów zapisać do treningu warstwy (etap 4) | A |
+| @phase-pomysl:K14 | 🟡 Jak mocno zmniejszamy warstwę w etapie 4 | B aczkolwiek proponuje -5%, -10%, -20%, -40% |
+| @phase-pomysl:K15 | 🟢 Układ kodu | A |

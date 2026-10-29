@@ -6,7 +6,7 @@
 
 ## Co masz zrobić
 
-Przeczytaj plan i zatwierdź (✅ Zatwierdzam plan) albo napisz w dyskusji, co zmienić. Plan obejmuje etapy 1–4 z `AGENTS/phases/phase-pomysl/raport-2-opinia.md` (@phase-pomysl:K9). Jest napisany pod Twoje decyzje K1–K9 i moje rekomendacje w otwartych pytaniach K10–K15 (`AGENTS/phases/phase-pomysl/agents-issues-2.md`). Jeśli odpowiesz tam inaczej, poprawię plan. **Każdy etap na GPU uruchamiam dopiero po Twoim „uruchom”** (@phase-0:K10).
+Przeczytaj plan i zatwierdź (✅ Zatwierdzam plan) albo napisz w dyskusji, co zmienić. Plan obejmuje etapy 1–4 z `AGENTS/phases/phase-pomysl/raport-2-opinia.md` (@phase-pomysl:K9). Uwzględnia wszystkie Twoje decyzje K1–K15 (`AGENTS/phases/phase-pomysl/agents-issues-1.md`, `agents-issues-2.md`). **Każdy etap na GPU uruchamiam dopiero po Twoim „uruchom”** (@phase-0:K10).
 
 ## Cel
 
@@ -18,7 +18,7 @@ Zmierzyć, jak ważny jest każdy neuron MLP Qwen3-0.6B, opisać rodzaje neuron�
 |---|---|
 | neuron | jedna z 3072 ścieżek MLP w każdej z 28 warstw, razem 86 016 (@phase-pomysl:K1 = A) |
 | zaburzenie | $a \to (1+\delta)\,a$, $\delta \in \{-1, -0{,}5, 0{,}5, 1\}$ (K2 = A) |
-| miara skutku | średnia KL względem oryginału + zmiana straty; generacja i klasyfikator tylko dla ~100 najważniejszych neuronów (K3, @A11) |
+| miara skutku | średnia KL względem oryginału + zmiana straty; generacja i klasyfikator tylko dla ~250 najważniejszych neuronów (K3 = A) |
 | sposób liczenia A | pilot, potem decyzja (K4 = C) |
 | model | Qwen3-0.6B-Base, BF16 (pomiary na zwykłym tekście, @phase-0:K7 = A) |
 | trening warstwy | „przez następną warstwę”: wejście $h^{(\ell-1)}$, cel $h^{(\ell+1)}$, warstwa $\ell+1$ zamrożona (K5 = B); dane zapisane na dysk (K6); start: zachowane neurony + $W_{\text{down}}$ z najmniejszych kwadratów (K7 = A) |
@@ -28,7 +28,7 @@ Zmierzyć, jak ważny jest każdy neuron MLP Qwen3-0.6B, opisać rodzaje neuron�
 
 ### Etap 1 — pilot części A (3 warstwy)
 
-1. Zbiór pomiarowy: mieszanka C4 + kod (K11), stałe ziarno, 16 384 tokenów (zapas; pilot sprawdzi, czy wystarczy mniej).
+1. Zbiór pomiarowy: 75% C4 + 25% kod z GitHuba (K11 = A), stałe ziarno, 16 384 tokenów (zapas; pilot sprawdzi, czy wystarczy mniej).
 2. Statystyki aktywacji wszystkich 86 016 neuronów (jeden przebieg): średnia, odchylenie, maksimum, odsetek aktywności. Przydadzą się w B.
 3. **Dokładnie:** wszystkie neurony warstw 2, 13, 25 (K12) × 4 zaburzenia = 36 864 przebiegi, każdy od zaburzanej warstwy w górę.
 4. **Przesiew gradientem** dla tych samych neuronów (raport 1, część A).
@@ -45,15 +45,15 @@ Sposób według pilota: albo wszystko dokładnie (do ~28 h, w kilku sesjach, gdy
 
 1. Etykiety (raport 1, część B): martwy, krytyczny, zbędny, asymetryczny, „masywny”, selektywny. Progi z rozkładów z etapu 2, z uwzględnieniem szumu z pilota.
 2. Wykresy (PNG w folderze fazy, widoczne w GUI): liczba neuronów każdego rodzaju w każdej warstwie, rozkład KL w warstwach, mapa ciepła warstwa × rodzaj.
-3. Dla ~100 neuronów o największym KL: generacja odpowiedzi z wyłączonym neuronem i ocena (K3).
+3. Dla ~250 neuronów o największym KL: generacja odpowiedzi z wyłączonym neuronem i ocena (K3).
 
-**Wynik:** raport `etap-3-rodzaje-neuronow.md` z wykresami. Czas GPU: minuty, plus generacja dla ~100 neuronów.
+**Wynik:** raport `etap-3-rodzaje-neuronow.md` z wykresami. Czas GPU: minuty, plus generacja dla ~250 neuronów.
 
 ### Etap 4 — część C na jednej warstwie
 
 1. Wybór warstwy: najmniej wrażliwa według etapów 2–3 (do Twojej akceptacji w raporcie etapu 3).
 2. Zapis par $(h^{(\ell-1)}, h^{(\ell+1)})$ dla 1 mln tokenów (K13, ~4 GB).
-3. Dla każdego stopnia zmniejszenia (K14: −10%, −20%, −30%, −50%):
+3. Dla każdego stopnia zmniejszenia (K14: −5%, −10%, −20%, −40%):
    - zostawiamy najważniejsze neurony (według $\Delta_{\ell,j,-1}$);
    - liczymy $\widetilde W_{\text{down}}$ metodą najmniejszych kwadratów;
    - trenujemy zmniejszony MLP „przez zamrożoną warstwę $\ell+1$”;
@@ -68,7 +68,7 @@ Zmniejszania wielu warstw naraz, dotrenowania całego modelu i pełnej ewaluacji
 
 ## Kod
 
-Według K15 (rekomendacja: pakiet `src/qwen_compression/` + skrypty w `scripts/` + testy w `tests/`). Python 3.14 z typami, bez komentarzy, pełne nazwy. Każdy skrypt zapisuje wyniki z ziarnem i wersjami bibliotek.
+Pakiet `src/qwen_compression/` (`activations.py`, `perturbation.py`, `metrics.py`, `importance.py`, `reconstruction.py`) + skrypty w `scripts/` (po jednym na etap) + testy w `tests/` (K15 = A). Python 3.14 z typami, bez komentarzy, pełne nazwy. Każdy skrypt zapisuje wyniki z ziarnem i wersjami bibliotek.
 
 ## Koniec fazy, gdy
 
@@ -82,3 +82,17 @@ Według K15 (rekomendacja: pakiet `src/qwen_compression/` + skrypty w `scripts/`
 ---
 ---
 ---
+
+Zmiany po Twoich decyzjach z 21:34:
+- K3 = A, ale **~250** (nie ~100) neuronów o największym wpływie dostaje generację i ocenę klasyfikatorem (etap 3);
+- K14: stopnie zmniejszenia w etapie 4 to **−5%, −10%, −20%, −40%** (Twoja propozycja);
+- K10–K13, K15 = A: Phase 2, tekst 75% C4 + 25% kod, warstwy pilota 2/13/25, 1 mln tokenów na dysk, pakiet `src/qwen_compression/`.
+
+Plan czeka na zatwierdzenie (✅ Zatwierdzam plan). Po zatwierdzeniu piszę kod (bez GPU), a etap 1 uruchamiam po Twoim „uruchom”.
+
+*2026-10-29 21:34 — Claude Opus 5.5*
+
+---
+---
+---
+

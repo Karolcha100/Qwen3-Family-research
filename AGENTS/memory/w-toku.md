@@ -14,7 +14,7 @@ Brak zadania w toku. Phase 1 skończona (@L2–@L5).
 
 | Czekam na | Odblokuje |
 |---|---|
-| zatwierdzenie `AGENTS/phases/phase-pomysl/plan-phase-2.md` (+ K10–K15) | @L13: kod pakietu (bez GPU) |
+| zatwierdzenie `AGENTS/phases/phase-pomysl/plan-phase-2.md` (K10–K15 już rozstrzygnięte) | @L13: kod pakietu (bez GPU) |
 | „uruchom” autora (osobno dla każdego etapu na GPU) | @L13: etapy 1–4 Phase 2 |
 | opinia o `AGENTS/phases/phase-0/plan-metryki-oceny.md` | @L7 zestaw pytań (dopiero Phase 3) |
 
@@ -24,4 +24,4 @@ Brak zadania w toku. Phase 1 skończona (@L2–@L5).
 
 ## Ostatnia sesja
 
-2026-10-29 21:13: wyjaśnienie KL i odpowiedź „czemu nie klasyfikator” pod @A11; plan Phase 2 (etapy 1–4) + pytania K10–K15; @L12 zrobione, @L13 czeka.
+2026-10-29 21:34: K3 (~250 neuronów), K10–K15 rozstrzygnięte i wpisane do planu Phase 2; @A11 zamknięte. Czekam na zatwierdzenie planu.
