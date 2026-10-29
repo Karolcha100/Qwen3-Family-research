@@ -195,3 +195,49 @@ A co sądzisz o użyciu czegoś w rodzaju ELO Score? Poza tym podoba mi się two
 > 🤖 **ODPOWIEDŹ LLM — koniec**
 
 ---
+
+### [A6] Usuń CUDA 12.8 i 12.9
+
+❯ rpm -qa | grep -i -E 'cuda|-12-[89]-' | sort
+ls -d /usr/local/cuda* /var/cuda-repo* 2>/dev/null
+nvidia-smi --query-gpu=name,driver_version --format=csv
+texlive-barracuda-svn63708-3.fc44.noarch
+xorg-x11-drv-nvidia-cuda-615.78.08-1.fc44.x86_64
+xorg-x11-drv-nvidia-cuda-libs-615.78.08-1.fc44.i686
+xorg-x11-drv-nvidia-cuda-libs-615.78.08-1.fc44.x86_64
+zsh: no matches found: /usr/local/cuda*
+name, driver_version
+NVIDIA GeForce RTX 4070 SUPER, 615.78.08
+
+~ via 🐍 v3.14.8
+
+*2026-10-29 20:04 — Autor*
+
+---
+
+> 🤖 **ODPOWIEDŹ LLM — początek** (Claude Opus 5.5)
+>
+> ### [A6] Re: Usuń CUDA 12.8 i 12.9
+>
+> **Co masz zrobić:** wszystko się zgadza, **CUDA 12 jest usunięta czysto**. Następny krok to @A7 (CUDA 13.4), polecenia są w `AGENTS/phases/phase-1/A7-instalacja-cuda-13-4.md`. Jeśli wolisz zacząć od czegoś krótszego, zrób @A8 (jedno polecenie): po nim od razu stawiam środowisko Pythona.
+>
+> Twój wynik jest dokładnie taki, jak oczekiwany. Sprawdziłem też sam rzeczy, których to polecenie nie pokazało:
+>
+> | Co | Stan |
+> |---|---|
+> | pakiety CUDA 12 (w tym nsight i `lib*-12-[89]`) | brak; zostały tylko sterownik `xorg-x11-drv-nvidia-cuda*` i niezwiązany `texlive-barracuda` |
+> | `/usr/local/cuda*` i `/var/cuda-repo*` | brak |
+> | repozytoria `cuda-fedora41-*` w `/etc/yum.repos.d` | brak |
+> | wpisy CUDA w `/etc/ld.so.conf.d` i `/etc/alternatives` | brak |
+> | `~/.bashrc` | bez linii CUDA 12 (kopia w `~/.bashrc.bak`) |
+> | Java | `java-25-openjdk-headless` zostało, graficzna część usunięta |
+> | sterownik | RTX 4070 SUPER, 615.78.08, działa |
+> | wolne miejsce na `/home` | 208 GB (było 184 GB) |
+>
+> Drobiazg: w Twoim wyniku `ls` nie sprawdziło `/var/cuda-repo*`, bo zsh przerywa całe polecenie, gdy wzorzec z `*` niczego nie znajduje („no matches found”). Sprawdziłem osobno i tam też jest pusto. Zadanie oznaczyłem jako `[x]`.
+>
+> *przeczytane i odpowiedziane: 2026-10-29 20:05 — Claude Opus 5.5*
+>
+> 🤖 **ODPOWIEDŹ LLM — koniec**
+
+---

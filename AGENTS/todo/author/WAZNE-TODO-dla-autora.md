@@ -19,7 +19,8 @@ Rzeczy, które blokują dalszą pracę agentów. Zasady (numeracja `A…`, statu
 - [x] **A4. K9: 🟡 Protokół perplexity** — z pytania @phase-0:K9 (`phases/phase-0/agents-issues-1.md`). *(dodane 2026-10-29 14:54)*
   Raport agenta: `AGENTS/phases/phase-0/A4-perplexity.md` — wybór napisz w raporcie pod @A4. *(agent, 2026-10-29 15:03)*
   *(zamknięte przez agenta: 2026-10-29 19:33 — decyzja końcowa autora: K9 = A)*
-- [ ] **A6. Usuń CUDA 12.8 i 12.9** (decyzja @phase-0:K3 = A, plan Phase 1 krok 1). Polecenia i co sprawdzić: `AGENTS/phases/phase-1/A6-usuniecie-cuda-12.md`. Wynik kroku 4 wklej w raporcie. *(dodane 2026-10-29 15:00)*
+- [x] **A6. Usuń CUDA 12.8 i 12.9** (decyzja @phase-0:K3 = A, plan Phase 1 krok 1). Polecenia i co sprawdzić: `AGENTS/phases/phase-1/A6-usuniecie-cuda-12.md`. Wynik kroku 4 wklej w raporcie. *(dodane 2026-10-29 15:00)*
+  *(zrobione: 2026-10-29 20:04 według raportu autora; sprawdzone przez agenta: brak pakietów, katalogów, repozytoriów i wpisów CUDA 12)*
 - [ ] **A7. Zainstaluj CUDA 13.4 (sam toolkit)** — po @A6 (plan Phase 1 krok 2). Polecenia: `AGENTS/phases/phase-1/A7-instalacja-cuda-13-4.md`. Wynik `nvcc --version` wklej w raporcie. *(dodane 2026-10-29 15:00)*
 - [ ] **A8. Zainstaluj pakiety do budowy llama.cpp i uv** (plan Phase 1 krok 3; @phase-0:K4 = A). Polecenia: `AGENTS/phases/phase-1/A8-pakiety-do-budowy-i-uv.md`. *(dodane 2026-10-29 15:00)*
 - [x] **A9. K14: 🟢 Narzędzia jakości kodu** — z pytania @phase-0:K14 (`phases/phase-0/agents-issues-1.md`). *(dodane 2026-10-29 15:38)*

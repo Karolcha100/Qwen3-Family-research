@@ -15,7 +15,7 @@ Brak zadania w toku. @L3 częściowo zrobione: llama.cpp sklonowane do `~/llama.
 | Czekam na | Odblokuje |
 |---|---|
 | @A8 (uv) — plan Phase 1 zatwierdzony 19:39 | @L2 środowisko Pythona |
-| @A6 (w toku, @T008) → @A7 (CUDA 13.4) + @A8 | @L3 budowa llama.cpp (kod już sklonowany) |
+| @A7 (CUDA 13.4; @A6 zrobione 20:04) + @A8 | @L3 budowa llama.cpp (kod już sklonowany) |
 | „uruchom” autora | @L4 testy dymne na GPU |
 | opinia o `AGENTS/phases/phase-0/plan-metryki-oceny.md` + środowisko | @L7 zestaw 200 pytań |
 | **opis głównego pomysłu autora** (nowy wątek) + wybór metod | @L9 weryfikacja bibliotek, @L10 notatki do nauki, plan Phase 2 |
@@ -26,4 +26,4 @@ Brak zadania w toku. @L3 częściowo zrobione: llama.cpp sklonowane do `~/llama.
 
 ## Ostatnia sesja
 
-2026-10-29 19:49: plan Phase 1 zatwierdzony (19:39); odpowiedź w @T008 (123 pakiety przy @A6 to w porządku: +6 nieużywanych zależności, m.in. graficzna Java); llama.cpp sklonowane; raport `AGENTS/phases/phase-0/raport-asvd-svd-llm.md` (prośba z dyskusji katalogu metod). Autor pyta o metody niskiego rzędu, co może być wskazówką do jego głównego pomysłu, ale **nie zakładać** tego.
+2026-10-29 20:05: @A6 zrobione i sprawdzone (CUDA 12 usunięta czysto, 208 GB wolnego). Następne: @A7, @A8.
