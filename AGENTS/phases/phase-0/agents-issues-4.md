@@ -16,7 +16,7 @@ Cztery nowe decyzje po Twoich odpowiedziach z 14:58. K33 doprecyzowuje @phase-0:
   - **B** — 3 ziarna dla każdego wariantu, wynik jako średnia ± odchylenie (3× dłużej);
   - **C** — na początku (Qwen3-0.6B) raz mierzymy szum na 3–5 ziarnach dla kilku metod, a potem 1 ziarno. Różnice mniejsze niż zmierzony szum oznaczamy jako „nierozstrzygnięte”.
 - **Rekomendacja:** C. Raz poznajemy wielkość szumu i nie płacimy za nią przy każdym wariancie.
-- **Decyzja:**
+- **Decyzja:** Już chyba na to odpowiedziałem że B w innym pytaniu, ale ponów je jeśli nie.
 
 ### K32. 🟢 Format kalibracji dla modelu instrukcyjnego
 

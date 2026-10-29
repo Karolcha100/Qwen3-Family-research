@@ -97,3 +97,32 @@ Nie wiem co to perplexity, nie wiem co zmieniają odpowiedzi, proszę o raport
 > 🤖 **ODPOWIEDŹ LLM — koniec**
 
 ---
+
+### [A9] K14: 🟢 Narzędzia jakości kodu
+
+Czy to potrzebne jeżeli będziemy stosować tamte benchmarki? - Jeżeli benchmarki tego nie uwzględniają to A
+
+*2026-10-29 15:38 — Autor*
+
+---
+
+> 🤖 **ODPOWIEDŹ LLM — początek** (Claude Opus 5.5)
+>
+> ### [A9] Re: K14: 🟢 Narzędzia jakości kodu
+>
+> **Co masz zrobić:** jeśli zgadzasz się z wyjaśnieniem, wpisz w @phase-0:K14 odpowiedź końcową „A”. Wystarczy: „A”.
+>
+> To nieporozumienie z mojej strony, bo za mało wyjaśniłem pytanie. **Benchmarki i narzędzia jakości sprawdzają dwie zupełnie różne rzeczy:**
+> - **benchmarki** (lm-eval, evalplus) sprawdzają **model Qwen3**: czy dobrze odpowiada;
+> - **`ruff`, `pyright`, `pytest`** sprawdzają **nasz kod w Pythonie**, czyli skrypty, które kompresują i mierzą:
+>   - `ruff`: styl i proste błędy (np. nieużywana zmienna, literówka w nazwie);
+>   - `pyright`: zgodność typów (chciałeś kod z typami; pyright pilnuje, żeby się zgadzały);
+>   - `pytest`: małe testy, np. że funkcja liczenia perplexity daje 4 na przykładzie z `AGENTS/phases/phase-0/A4-perplexity.md`.
+>
+> Benchmarki tego nie uwzględniają, więc według Twojej reguły wychodzi **A**. Koszt jest pomijalny: trzy narzędzia w środowisku uv, uruchamiane w kilka sekund. Kiedy kod ma błąd, dowiadujemy się o nim od razu, a nie po godzinie liczenia z błędnym wynikiem.
+>
+> *przeczytane i odpowiedziane: 2026-10-29 15:45 — Claude Opus 5.5*
+>
+> 🤖 **ODPOWIEDŹ LLM — koniec**
+
+---

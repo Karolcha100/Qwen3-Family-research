@@ -123,7 +123,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — MLflow lokalnie (UI w przeglądarce, ale więcej narzędzi);
   - **C** — Weights & Biases (chmura).
 - **Rekomendacja:** A. Prosto, wersjonowane w gicie, a skrypt łatwo z tego robi tabele i wykresy dla GUI.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K12. 🟢 Struktura kodu
 
@@ -133,7 +133,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — płaskie skrypty w `experiments/`, jeden plik na eksperyment;
   - **C** — notebooki Jupyter.
 - **Rekomendacja:** A. Metody korzystają ze wspólnych części (ładowanie modelu, kalibracja, pomiar), więc płaskie skrypty szybko by się powtarzały. Jeśli wolisz inną nazwę pakietu, wpisz ją w decyzji.
-- **Decyzja:**
+- **Decyzja:** Dobra, ale chwilka, ja jeszcze nie napisałem tobie jakie rzeczy będziemy robić. Generalnie pomysł A jest spoko, ale zauważ że jeszcze nie wiesz jakie metody będziemy robić.
 
 ### K13. 🟡 Model-sędzia do oceny odpowiedzi Qwen3 (z @T002)
 
@@ -154,7 +154,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — A, ale `mypy` zamiast `pyright`;
   - **C** — bez narzędzi.
 - **Rekomendacja:** A. Pyright lepiej rozumie najnowszą składnię typów.
-- **Decyzja:**
+- **Decyzja:** ⏳ w toku → @A9 (wstępnie: Czy to potrzebne jeżeli będziemy stosować tamte benchmarki? - Jeżeli benchmarki tego nie uwzględniają to A)
 
 ### K15. 🟢 Notatki do nauki
 
@@ -164,7 +164,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — tylko raporty z wynikami;
   - **C** — notatki tylko na Twoją prośbę.
 - **Rekomendacja:** A.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K16. 🟢 Folder na pytania startowe
 
@@ -173,4 +173,4 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **A** — zostaje `phase-0` na pytania ogólne/organizacyjne;
   - **B** — przenieś do `phase-1` (środowisko).
 - **Rekomendacja:** A.
-- **Decyzja:**
+- **Decyzja:** A

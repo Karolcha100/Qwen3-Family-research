@@ -1,0 +1,73 @@
+# Plan: metryki oceny odpowiedzi Qwen3 (poziom 3 — klasyfikatory)
+
+*2026-10-29 15:45 — Claude Opus 5.5*
+
+**Status planu:** do opiniowania
+
+## Co masz zrobić
+
+To lista metryk, którymi będziemy oceniać odpowiedzi skompresowanego Qwen3 na nasze 200 pytań (@phase-0:K27 = C). Napisz w dyskusji, co usunąć, dodać albo zmienić, np. „bez rozwlekłości, dodaj X”. Plan nie dotyczy metod kompresji (wybierzesz je Ty) ani poziomów 1–2 (perplexity, KL, benchmarki); ich podział jest w @T002.
+
+Kilka miejsc zależy od otwartych pytań. Zaznaczyłem je, więc odpowiedzi na K36–K40 (`AGENTS/phases/phase-0/agents-issues-5.md`) mogą zmienić szczegóły.
+
+---
+
+## Skąd metryki
+
+Według Twoich decyzji: **reguły w Pythonie** (@phase-0:K28 = A) + **wieloatrybutowy model nagrody** (@phase-0:K29 = B), bez sędziów generatywnych (@phase-0:K19). Sam model nagrody wybierzemy później (@phase-0:K18). Najbardziej znany kandydat to **ArmoRM** (8B, na Llamie 3). Według jego karty daje 19 ocen z kilku zbiorów danych (np. HelpSteer, UltraFeedback) plus wynik ogólny. Przed wyborem sprawdzę dokładną listę i nowsze modele.
+
+## Proponowane metryki (16)
+
+**A. Reguły w Pythonie — 0/1, bez GPU** (sprawdzają też część `<think>`, jeśli @phase-0:K38 = A)
+
+| # | Metryka | Kiedy 1 |
+|---|---|---|
+| 1 | kompletna | odpowiedź niepusta i niezakończona limitem tokenów (limit: @phase-0:K37) |
+| 2 | bez pętli | brak powtórzonych fragmentów ponad próg |
+| 3 | właściwy język | odpowiedź po angielsku (@phase-0:K21 = A) |
+| 4 | czysty tekst | bez tokenów specjalnych, śmieciowych znaków, niezamkniętego `<think>` |
+| 5 | wynik zgodny z wzorcem | tylko pytania z jednoznaczną odpowiedzią — jeśli @phase-0:K40 = A |
+
+**B. Atrybuty z modelu nagrody — 0–100** (percentyl względem odpowiedzi BF16, jeśli @phase-0:K36 = B)
+
+| # | Atrybut | Co mierzy |
+|---|---|---|
+| 6 | pomocność | czy odpowiedź rozwiązuje problem pytającego |
+| 7 | poprawność | czy fakty i rozumowanie są prawdziwe |
+| 8 | spójność | czy tekst jest logiczny i dobrze zbudowany |
+| 9 | złożoność | jak zaawansowana jest odpowiedź (informacyjnie, nie „im więcej, tym lepiej”) |
+| 10 | rozwlekłość | ile tekstu względem potrzeby (informacyjnie) |
+| 11 | wykonanie polecenia | czy trzyma się tego, o co pytano |
+| 12 | prawdomówność | brak zmyśleń |
+| 13 | uczciwość | czy przyznaje się do niepewności |
+| 14 | bezpieczeństwo | czy nie ma szkodliwych treści (zwykle 1; kompresja może to zepsuć) |
+
+**C. Wyniki zbiorcze — 0–100**
+
+| # | Metryka | Jak liczona |
+|---|---|---|
+| 15 | wynik ogólny | skalar modelu nagrody, percentyl względem BF16 |
+| 16 | porównanie z BF16 | $100 \cdot \sigma(r_{\text{po kompresji}} - r_{\text{BF16}})$ dla tego samego pytania; 50 = tak samo dobra (@phase-0:K20 = C, K36 = A) |
+
+Metryki 9 i 10 są **informacyjne**: po kompresji ich zmiana w dowolną stronę jest ciekawa, ale nie znaczy „lepiej” ani „gorzej”.
+
+## Jak liczymy wynik wariantu
+
+- każde z 200 pytań dostaje 3 odpowiedzi (@phase-0:K24 = B); metryki uśredniamy najpierw po odpowiedziach, potem po pytaniach;
+- reguły → **% odpowiedzi, które przeszły**;
+- atrybuty i wyniki zbiorcze → **średnia** 0–100;
+- odpowiedzi z regułą 1–4 = 0 (zepsute) zostają w średnich, ale raport pokazuje też wynik bez nich, żeby nie mieszać „model się zepsuł” z „model odpowiada gorzej”.
+
+## Sprawdzenie klasyfikatora
+
+Zanim zaufamy liczbom: oceniasz ręcznie ~50 odpowiedzi w lokalnej stronie HTML (@phase-0:K26 = A), w kilku kluczowych metrykach (np. 6, 7, 16). Liczymy zgodność z modelem nagrody: korelację rang Spearmana
+
+$$\rho = 1 - \frac{6 \sum_i d_i^2}{n(n^2 - 1)}$$
+
+gdzie $d_i$ to różnica pozycji odpowiedzi $i$ w rankingu Twoim i modelu, a $n$ to liczba odpowiedzi. Słownie: $\rho = 1$ znaczy, że model nagrody układa odpowiedzi w tej samej kolejności co Ty, a $\rho \approx 0$, że jego kolejność nie ma związku z Twoją.
+
+## Dyskusja
+
+---
+---
+---

@@ -27,7 +27,7 @@ Nowe decyzje po Twoich odpowiedziach z 13:28: K17 dotyczy GitHuba (@phase-0:K1),
   - **C** — hybryda: reguły w Pythonie (metryki 0/1, które da się sprawdzić bez modelu) + model nagrody (ogólna jakość) + sędzia generatywny z rubryką (pozostałe metryki 0–100 i 0/1 wymagające rozumienia);
   - **D** — tylko sędzia generatywny z rubryką, osobno dla każdej metryki.
 - **Rekomendacja:** C. Każda metryka idzie do najtańszego narzędzia, które ją dobrze mierzy. Reguły są darmowe i nieomylne, a model nagrody jest szybki. Sędzia generatywny jest wolny (~50 pytań × kilka metryk × każdy wariant modelu), więc zostawiamy mu tylko to, czego reszta nie umie.
-- **Decyzja:**
+- **Decyzja:** Opcja B jest spoko, ale tutaj należy to jeszcze rozważyć.
 
 ### K19. 🟡 Skala metryk 0–100
 
@@ -38,7 +38,7 @@ Nowe decyzje po Twoich odpowiedziach z 13:28: K17 dotyczy GitHuba (@phase-0:K1),
   - **C** — B plus średnia ważona prawdopodobieństwami tokenów oceny (metoda G-Eval): ciągła wartość, stabilniejsza niż jedna wylosowana liczba;
   - **D** — skala 1–5 (jak w Prometheus 2).
 - **Rekomendacja:** C. Dostajesz 0–100, które naprawdę coś znaczy, a llama.cpp zwraca logprob tokenów.
-- **Decyzja:**
+- **Decyzja:** Nie będziemy stosować sędziów, tylko klasyfikatory (modele nagrody), tak więc zadaj to pytanie jeszcze raz, biorąc pod uwagę ten kontekst.
 
 ### K20. 🟡 Ocena bezwzględna czy względem BF16
 
@@ -48,7 +48,7 @@ Nowe decyzje po Twoich odpowiedziach z 13:28: K17 dotyczy GitHuba (@phase-0:K1),
   - **B** — tylko parami: „czy odpowiedź po kompresji jest gorsza od odpowiedzi BF16 na to samo pytanie?” (win/tie/loss);
   - **C** — obie: bezwzględne metryki dla każdego wariantu + porównanie parami z BF16 jako główna liczba w porównaniu metod.
 - **Rekomendacja:** C. Porównanie parami jest czulsze i mniej podatne na bias sędziego. Przy porównaniu parami oceniamy obie kolejności (A/B i B/A), bo sędziowie faworyzują pierwszą odpowiedź.
-- **Decyzja:**
+- **Decyzja:** C
 
 ### K21. 🟡 Język pytań
 
@@ -58,7 +58,7 @@ Nowe decyzje po Twoich odpowiedziach z 13:28: K17 dotyczy GitHuba (@phase-0:K1),
   - **B** — tylko polski;
   - **C** — angielski jako główny zestaw + ~10 pytań po polsku (te same co część angielskich), żeby mierzyć, czy kompresja psuje polski szybciej.
 - **Rekomendacja:** C.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K22. 🟡 Skąd wziąć 50 pytań
 
@@ -68,7 +68,7 @@ Nowe decyzje po Twoich odpowiedziach z 13:28: K17 dotyczy GitHuba (@phase-0:K1),
   - **B** — z gotowych zestawów: MT-Bench (8 kategorii: pisanie, rozumowanie, matematyka, kod, ekstrakcja, STEM, humanistyka, odgrywanie ról), IFEval (instrukcje sprawdzalne regułą, np. „dokładnie 3 punkty”, „odpowiedz w JSON”), Arena-Hard;
   - **C** — mieszanka: ~20 w stylu IFEval (metryki 0/1 sprawdzane regułą), ~20 z kategorii MT-Bench, ~10 własnych z tego, co Cię ciekawi.
 - **Rekomendacja:** C. Pytania IFEval dają metryki 0/1 bez sędziego, a MT-Bench ma odpowiedzi wzorcowe do matematyki i rozumowania.
-- **Decyzja:**
+- **Decyzja:** C
 
 ### K23. 🟢 Liczba pytań
 
@@ -78,7 +78,7 @@ Nowe decyzje po Twoich odpowiedziach z 13:28: K17 dotyczy GitHuba (@phase-0:K1),
   - **B** — 50 na start (do ręcznej kalibracji sędziego z Tobą), potem ~150–200 do właściwych porównań;
   - **C** — od razu 200.
 - **Rekomendacja:** B. 50 pytań wystarczy, żeby wybrać i sprawdzić sędziego, a 150–200, żeby wiarygodnie porównywać metody kompresji.
-- **Decyzja:**
+- **Decyzja:** C
 
 ### K24. 🟡 Jak generować odpowiedzi do oceny
 
@@ -88,7 +88,7 @@ Nowe decyzje po Twoich odpowiedziach z 13:28: K17 dotyczy GitHuba (@phase-0:K1),
   - **B** — sampling z ustawieniami zalecanymi przez Qwen, 3 odpowiedzi na pytanie, wyniki uśredniane: realistyczne, ale 3× drożej;
   - **C** — greedy do porównań między metodami + B tylko dla wariantów końcowych.
 - **Rekomendacja:** C.
-- **Decyzja:**
+- **Decyzja:** B
 
 ### K25. 🟡 Tryb myślenia Qwen3 przy ocenie
 
@@ -98,7 +98,7 @@ Nowe decyzje po Twoich odpowiedziach z 13:28: K17 dotyczy GitHuba (@phase-0:K1),
   - **B** — myślenie włączone;
   - **C** — A jako standard, a B jako osobny eksperyment („czy kompresja psuje rozumowanie bardziej niż odpowiedź?”).
 - **Rekomendacja:** C.
-- **Decyzja:**
+- **Decyzja:** B
 
 ### K26. 🟢 Ręczna kalibracja sędziego
 
@@ -108,7 +108,7 @@ Nowe decyzje po Twoich odpowiedziach z 13:28: K17 dotyczy GitHuba (@phase-0:K1),
   - **B** — to samo w arkuszu CSV;
   - **C** — bez ręcznej kalibracji, wierzymy sędziemu.
 - **Rekomendacja:** A, bo zajmie ~30–45 minut. Potem liczymy zgodność (korelacja Spearmana, Cohen κ dla 0/1) i wybieramy sędziego, który najlepiej zgadza się z Tobą.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K27. 🟡 Lista 16 metryk
 
@@ -118,4 +118,4 @@ Nowe decyzje po Twoich odpowiedziach z 13:28: K17 dotyczy GitHuba (@phase-0:K1),
   - **B** — szkic ze zmianami (napisz w decyzji: usuń / dodaj / zamień);
   - **C** — rozpisz szkic jako osobny plan do opiniowania z dyskusją i dopracujemy go tam.
 - **Rekomendacja:** C, bo lista metryk to temat na kilka wymian zdań, a plan ma dyskusję widoczną w GUI.
-- **Decyzja:**
+- **Decyzja:** C

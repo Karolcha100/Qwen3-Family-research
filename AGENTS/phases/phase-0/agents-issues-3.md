@@ -16,7 +16,7 @@ Trzy nowe decyzje po Twoich wpisach z 14:07–14:08: K28 i K29 wynikają z @T002
   - **B** — zostaje wszystkie 6 (dublowanie, ale wszystko w jednym raporcie z naszych 50 pytań);
   - **C** — żadnych reguł, polegamy na benchmarkach i sędzim.
 - **Rekomendacja:** A. Te 4 są tanie, a przy okazji odfiltrowują zepsute odpowiedzi, zanim oceni je model nagrody.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K29. 🟡 Czy jeden model nagrody da kilka metryk
 
@@ -27,7 +27,7 @@ Trzy nowe decyzje po Twoich wpisach z 14:07–14:08: K28 i K29 wynikają z @T002
   - **C** — od razu sędzia generatywny z rubryką dla każdej metryki 0–100;
   - **D** — od razu Twój pomysł, bez sprawdzania.
 - **Rekomendacja:** A. To ~10 minut GPU i uczy czegoś o samych modelach nagrody. Kiedy: po Phase 1, bo potrzebne jest środowisko.
-- **Decyzja:**
+- **Decyzja:** B
 
 ### K30. 🟢 Czy zapisujemy skompresowane modele
 
@@ -37,4 +37,4 @@ Trzy nowe decyzje po Twoich wpisach z 14:07–14:08: K28 i K29 wynikają z @T002
   - **B** — zapisujemy tylko wybrane warianty (najlepsze w swojej klasie albo te, które chcesz przetestować ręcznie w czacie), w folderze poza repo (np. `~/qwen3-checkpoints/`), z listą w repo;
   - **C** — zapisujemy wszystko.
 - **Rekomendacja:** B. Większość wariantów jest potrzebna tylko na czas pomiaru, a najlepsze warto mieć pod ręką do porównań w llama.cpp i do sędziego.
-- **Decyzja:**
+- **Decyzja:** B, aczkolwiek zauważ znowu że jeszcze nie wiesz co będziemy tak naprawdę robić!!!

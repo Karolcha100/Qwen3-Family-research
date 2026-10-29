@@ -166,3 +166,74 @@ Są trzy sposoby, żeby to zadziałało:
 ---
 ---
 ---
+
+Uporządkuj proszę twoją odpowiedź bo jest trochę chaotyczna - to znaczy, nie rozumiem punktów 1 oraz 2 a także w jakim kontekście one padają.
+
+*2026-10-29 15:11 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Nic nowego w tym wątku. To uporządkowane podsumowanie zamiast mojej chaotycznej odpowiedzi z 14:09; przepraszam za nią. Nowe decyzje są w `AGENTS/phases/phase-0/agents-issues-5.md` (K35–K39), a lista metryk jako plan do opiniowania w `AGENTS/phases/phase-0/plan-metryki-oceny.md` (@phase-0:K27 = C).
+
+---
+
+**Kontekst.** Chcemy wiedzieć, *o ile gorszy* jest Qwen3 po kompresji od oryginału (BF16). Pytałeś w tym wątku o dwie rzeczy:
+- **(1)** czy robimy klasyfikator **oraz** KL, lm-eval i evalplus;
+- **(2)** czy metryki „0/1 sprawdzalne regułą” są potrzebne, skoro są benchmarki.
+
+Moje „punkty 1 i 2” z 14:09 to były odpowiedzi właśnie na te dwa pytania. Niżej piszę je jeszcze raz, porządnie.
+
+### (1) Tak, robimy wszystko. Każde narzędzie odpowiada na inne pytanie
+
+| Poziom | Narzędzie | Na jakie pytanie odpowiada | Koszt |
+|---|---|---|---|
+| 1 | perplexity, KL względem BF16 | Czy model nadal dobrze **przewiduje zwykły tekst**? | minuty |
+| 2 | benchmarki: lm-eval (w tym IFEval), evalplus | Czy nadal **rozwiązuje zadania z gotową poprawną odpowiedzią** (test wyboru, kod z testami, polecenia sprawdzalne automatycznie)? | dziesiątki minut |
+| 3 | **klasyfikatory (modele nagrody)** na naszych 200 pytaniach | Czy jego **swobodne odpowiedzi** (bez jednej poprawnej odpowiedzi) są nadal dobre? | godziny |
+
+Kolejność od najtańszego: wariant, który jest wyraźnie zepsuty już na poziomie 1, nie musi przechodzić przez poziom 3.
+
+### (2) Metryki regułowe: 4 zostają, bo benchmarki ich nie mierzą
+
+Różnica jest taka:
+- **benchmarki** mają *własne* zestawy pytań i dają *jedną liczbę* (np. „62% poprawnych”);
+- **metryki regułowe** to proste sprawdzenia w Pythonie (bez modelu, bez GPU), które puszczamy na **odpowiedziach na nasze 200 pytań**, zanim zobaczy je klasyfikator.
+
+Dwie z sześciu dublowały benchmarki (format → IFEval, kod → evalplus), więc je usunęliśmy (@phase-0:K28 = A). Zostają cztery. Każda wyłapuje typową **awarię** modelu po kompresji:
+
+| Metryka (0/1) | Przykład zepsutej odpowiedzi |
+|---|---|
+| kompletna | urwana w pół zdania, bo model nie przestaje pisać do limitu tokenów |
+| bez pętli | „The answer is 5. The answer is 5. The answer is 5…” |
+| właściwy język | pytanie po angielsku, odpowiedź nagle po chińsku |
+| czysty tekst | śmieciowe znaki, tokeny specjalne, niezamknięte `<think>` |
+
+Po co, skoro klasyfikator i tak oceni odpowiedź? Bo modele nagrody potrafią dać zapętlonej albo urwanej odpowiedzi zaskakująco wysoki wynik. Reguły odfiltrowują takie przypadki i mówią, *jak często* model się psuje, czego żaden benchmark nie raportuje.
+
+### (3) Twój pomysł: kilka metryk z modelu nagrody
+
+Zdecydowałeś (@phase-0:K29 = B): **model nagrody wieloatrybutowy**, który w jednym przebiegu daje kilkanaście osobnych ocen (np. pomocność, poprawność, spójność, rozwlekłość). Bez sędziów generatywnych.
+
+### Stan decyzji o ocenie
+
+| | Decyzja |
+|---|---|
+| @phase-0:K13, K18, K29 | modele nagrody (wieloatrybutowy) + reguły; K18 do dalszego rozważenia |
+| @phase-0:K19 | do ponowienia pod kątem modeli nagrody → @phase-0:K36 |
+| @phase-0:K20 | ocena bezwzględna + porównanie parami z BF16 |
+| @phase-0:K21 | pytania po angielsku |
+| @phase-0:K22, K23 | mieszanka IFEval / MT-Bench / własne; od razu 200 pytań |
+| @phase-0:K24, K25 | sampling, 3 odpowiedzi na pytanie; tryb myślenia włączony → nowe pytania @phase-0:K37 (limit długości) i @phase-0:K38 (czy klasyfikator widzi myślenie) |
+| @phase-0:K26 | ręczna kalibracja na ~50 odpowiedziach w lokalnej stronie HTML |
+| @phase-0:K27 | lista metryk jako plan do opiniowania → `AGENTS/phases/phase-0/plan-metryki-oceny.md` |
+| @phase-0:K28 | 4 metryki regułowe |
+
+*2026-10-29 15:45 — Claude Opus 5.5*
+
+---
+---
+---

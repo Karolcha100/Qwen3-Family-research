@@ -96,3 +96,24 @@ Wchodzi to w zadania z K3, razem z CUDA.
 ---
 ---
 ---
+
+Dobra, czyli mogę zamykać ten wątek czy jest coś jeszcze co uważasz za warte do przedyskutowania w nim?
+
+*2026-10-29 15:12 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Możesz zamknąć ten wątek 🔒. Nie mam nic więcej do dyskusji. Wszystko, co z niego wynikło, ma już swoje miejsce:
+- instalacje: zadania @A6 (usunięcie CUDA 12), @A7 (CUDA 13.4), @A8 (pakiety + uv);
+- uv i Python 3.14: decyzje @phase-0:K4 i @phase-0:K5, wpisane w plan Phase 1 (`AGENTS/phases/phase-1/plan.md`);
+- checkpointy na dysku: @phase-0:K30 = B.
+
+*2026-10-29 15:45 — Claude Opus 5.5*
+
+---
+---
+---

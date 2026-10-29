@@ -38,6 +38,8 @@ Reszta treści trafia do plików w `AGENTS/`.
 - **Wzory w TeX z opisem słownym** przy sprawach technicznych i matematycznych (uwaga 2 w `AGENTS/talk/od-autora-dla-llmow.md`).
 - **Decyzje zawsze jako pytania w `AGENTS/phases/<faza>/agents-issues-N.md`, każda osobno** (`### K1. …` z opcjami, rekomendacją i polem Decyzja), a nie jako lista pytań w wątku. Autor **chce dużo pytań**, także o drobne decyzje, które teraz nie mają znaczenia, ale mogą mieć 200 decyzji dalej. Lepiej zapytać niż przyjąć coś po cichu. Wątek służy do rozmowy i opinii (źródło: @T001, 2026-10-29). Pytania organizacyjne, niezwiązane z jedną fazą, trafiają do `AGENTS/phases/phase-0/`.
 - **Polecenia dla autora zawsze w blokach kodu** (` ```bash … ``` `, każde w osobnej linii), nigdy w tekście w pojedynczych backtickach (uwaga 1 w `AGENTS/talk/od-autora-dla-llmow.md`).
+- **Nie zakładaj z góry, co będziemy robić.** Metody i dalsze fazy wybiera i rozpisuje autor (@phase-0:K2, K6). Przy K12 i K30 autor zwrócił uwagę: „jeszcze nie wiesz, jakie metody będziemy robić”. Nie projektuj struktury kodu, katalogów ani przepływu pod metody, których autor nie wybrał. Pytania zależne od metod oznaczaj jako warunkowe albo odłóż do czasu, aż autor opisze fazy.
+- **Odpowiedzi w wątkach mają być uporządkowane:** najpierw kontekst (na jakie pytanie autora odpowiadam), potem nagłówki, które go powtarzają. Żadnych „punktów 1, 2” bez powiązania z pytaniem (uwaga autora w @T002, 15:11).
 - **„Co ty na to?”, „co sądzisz?”, „jak widzisz?”** to pytanie o opinię: plusy, minusy, rekomendacja — **nic nie uruchamiasz**. Działasz dopiero po „zgoda”, „robimy”, „start”.
 - **Każdy plik dla autora zaczyna się od „## Co masz zrobić”:** problem prostymi słowami i pytanie z gotowymi opcjami (np. „wystarczy: zgoda, B”).
 - **Jeden plik na zadanie** (plan, raport, propozycja), podlinkowany w zadaniu. Plik zbiorczy tylko jako spis.
@@ -56,3 +58,4 @@ Reszta treści trafia do plików w `AGENTS/`.
 
 *Zmiana: 2026-10-29 — reguła: decyzje jako osobne pytania w agents-issues, pytamy dużo (@T001) — Claude Opus 5.5*
 *Zmiana: 2026-10-29 — polecenia dla autora w blokach kodu (uwaga 1) — Claude Opus 5.5*
+*Zmiana: 2026-10-29 15:45 — nie zakładać metod z góry; porządek odpowiedzi w wątkach — Claude Opus 5.5*
