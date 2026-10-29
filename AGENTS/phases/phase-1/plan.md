@@ -2,8 +2,7 @@
 
 *2026-10-29 13:30 — Claude Opus 5.5*
 
-**Status planu:** do zatwierdzenia
-
+**Status planu:** zatwierdzony (2026-10-29 19:39, Autor)
 ## Co masz zrobić
 
 Phase 1 ma dać działające środowisko: Qwen3-0.6B działa na GPU w PyTorchu i w llama.cpp, a my znamy wersje wszystkich narzędzi. Przeczytaj plan i zatwierdź (✅ Zatwierdzam plan) albo napisz w dyskusji, co zmienić. Szczegóły zależą od otwartych pytań @phase-0:K3 (zadania A na instalację), @phase-0:K4 (uv czy conda), @phase-0:K5 (Python), @phase-0:K10 (kto uruchamia GPU), @phase-0:K12 (struktura kodu) i @phase-0:K14 (narzędzia jakości). Plan działa przy każdej odpowiedzi, a w krokach zaznaczyłem, co się wtedy zmienia.
@@ -56,6 +55,14 @@ Zmiany w planie po Twoich decyzjach z 14:58:
 Plan nadal czeka na zatwierdzenie (✅ Zatwierdzam plan) albo uwagi.
 
 *2026-10-29 15:03 — Claude Opus 5.5*
+
+---
+---
+---
+
+✅ Plan zatwierdzony. Zgoda
+
+*2026-10-29 19:39 — Autor*
 
 ---
 ---

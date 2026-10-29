@@ -91,3 +91,27 @@ Na później, jeśli Cię wciągnie: rotacje (QuaRot/SpinQuant), kwantyzacja wek
 ---
 ---
 ---
+
+Zrób mi proszę raport o tym jak działa ASVD oraz SVD-LLM
+
+*2026-10-29 19:42 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Przeczytaj raport `AGENTS/phases/phase-0/raport-asvd-svd-llm.md`. Pytania albo „rozwiń X” napisz tutaj.
+
+**Krótko:**
+- **ASVD:** przed rozkładem SVD mnoży kolumny $W$ przez skalę z wielkości aktywacji, więc SVD zachowuje to, co dla danych ważne. To prosta heurystyka, a do tego ASVD dobiera rząd dla każdej warstwy i potrafi zmniejszyć KV cache;
+- **SVD-LLM:** zamiast heurystyki „wybiela” dane rozkładem Cholesky'ego $XX^\top = SS^\top$. Wtedy odcięcie najmniejszych wartości osobliwych daje **dowodnie najmniejszy** błąd wyjścia warstwy, a każda $\sigma_i$ mówi dokładnie, ile kosztuje jej usunięcie. Opcjonalnie dostraja wynik przez LoRA.
+
+Przykład z raportu (dwa wejścia, jedno z aktywacjami ~100) i tożsamość SVD-LLM sprawdziłem numerycznie: przy rzędzie 1 zwykłe SVD daje błąd wyjścia ~98, a SVD-LLM ~2. Tożsamość $\lVert WX - W'X \rVert_F = \sqrt{\sum_{i>k}\sigma_i^2}$ zgadza się co do 14 cyfr.
+
+*2026-10-29 19:49 — Claude Opus 5.5*
+
+---
+---
+---
