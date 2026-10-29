@@ -18,12 +18,12 @@ Krótko: co już jest, co teraz robimy, co dalej i jakie decyzje czekają. Agent
 
 ## Następny krok
 
-1. Autor: zatwierdzenie planu Phase 1, @A6–@A8, wybory w @A2–@A4, @A9, @A10, opis dalszych faz i wybór metod (katalog), K43, opinie o planie metryk i katalogu.
+1. Autor: zatwierdzenie planu Phase 1, @A6–@A8, wybory w @A2–@A4, @A9, @A10, opis dalszych faz i wybór metod (katalog), opinie o planie metryk i katalogu.
 2. Agent: zadania L2–L11 w `AGENTS/todo/llm/TODO-dla-LLM.md` (co czeka na co: `AGENTS/memory/w-toku.md`). Bez blokad: L8 (przegląd modeli nagrody).
 
 ## Otwarte decyzje autora
 
-- @phase-0:K43 (`agents-issues-7.md`, narzędzia agenta); @A2–@A4, @A9, @A10.
+- @A2–@A4, @A9, @A10 (K43 = C: zostają notatki w `procedury.md`, skrypt dopiero przy błędach).
 - Plany: `AGENTS/phases/phase-1/plan.md` (zatwierdzenie), `AGENTS/phases/phase-0/plan-metryki-oceny.md` i `AGENTS/phases/phase-0/katalog-metod.md` (opinia).
 
 *Zmiana: 2026-10-29 15:03 — decyzje K3–K17, zadania A5–A8, raporty A2–A4 — Claude Opus 5.5*

@@ -16,4 +16,4 @@ Jedna decyzja wynikająca z @T006. Nie blokuje niczego. Wystarczy „rek” albo
   - **B** — mały skrypt `agents_board/agent_tools.py` (np. `python3 -m agents_board.agent_tools reply-thread T006 wpis.md`) z testami w `tests/`, korzystający z kodu GUI (`agents_board/model.py`). Nie zmienia formatów plików ani działania GUI;
   - **C** — A teraz, B dopiero wtedy, gdy któraś notatka zawiedzie albo zacznie się powtarzać błąd.
 - **Rekomendacja:** C. Dziś notatki wystarczą, a skrypt to nowy kod do utrzymania. Jeśli pojawi się błąd przy dopisywaniu, przejdę na B.
-- **Decyzja:**
+- **Decyzja:** C

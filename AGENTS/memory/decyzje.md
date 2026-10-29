@@ -2,7 +2,7 @@
 
 Wszystkie pytania z `AGENTS/phases/*/agents-issues-*.md` w jednej tabeli: tytuł i decyzja dosłownie z pola **Decyzja**. Plik jest **generowany** poleceniem z `AGENTS/memory/procedury.md` (sekcja „Indeks decyzji”), więc nie edytuje się go ręcznie. Odświeżany na końcu każdej sesji. Gdy indeks i plik źródłowy się różnią, wygrywa plik źródłowy.
 
-*Wygenerowano: 2026-10-29 16:56 — Claude Opus 5.5*
+*Wygenerowano: 2026-10-29 17:42 — Claude Opus 5.5*
 
 ---
 
@@ -50,4 +50,4 @@ Wszystkie pytania z `AGENTS/phases/*/agents-issues-*.md` w jednej tabeli: tytuł
 | @phase-0:K40 | 🟢 Zgodność z odpowiedzią wzorcową | A |
 | @phase-0:K41 | 🟡 Skąd wziąć 200 pytań | C |
 | @phase-0:K42 | 🟢 Druga tura pytań MT-Bench | B |
-| @phase-0:K43 | 🟢 Polecenia agenta: notatki czy mały skrypt | — (czeka) |
+| @phase-0:K43 | 🟢 Polecenia agenta: notatki czy mały skrypt | C |

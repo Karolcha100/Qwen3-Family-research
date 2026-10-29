@@ -23,4 +23,4 @@ Brak zadania w toku. Wszystkie moje zadania L czekają na autora (`AGENTS/todo/l
 
 ## Ostatnia sesja
 
-2026-10-29 16:54: odpowiedź w @T006 (notatniki agenta), utworzenie tego pliku, `procedury.md`, `decyzje.md`, zadań L2–L11.
+2026-10-29 17:42: odpowiedź w @T007 (lista „co masz zrobić” dla autora), K43 = C (zostają notatki w `procedury.md`). Sprawdzone: uv i nvcc niezainstalowane, CUDA 12 nadal jest (115 pakietów `*-12-[89]`), plan Phase 1 niezatwierdzony.
