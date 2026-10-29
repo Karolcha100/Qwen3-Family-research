@@ -1,0 +1,1029 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AGENTS board</title>
+<!-- math ($…$, $$…$$): KaTeX from a CDN; offline the TeX source stays visible -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+img.figure { max-width: 100%; height: auto; display: block; margin: .6em 0; background: #fff; }
+.math { font-family: "Latin Modern Math", "STIX Two Math", serif; }
+.math.display { display: block; text-align: center; margin: .6em 0; overflow-x: auto; }
+:root {
+  --bg: #f6f7f9; --panel: #fff; --text: #1d2330; --muted: #6b7385; --line: #e2e5eb;
+  --accent: #2f6fdb; --accent-soft: #e8f0fd; --warn: #b8590b; --warn-soft: #fdf0e3;
+  --ok: #1f8a4c; --ok-soft: #e5f5ec; --danger: #c0392b; --code: #f1f3f6; --ref: #d62828;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #15181e; --panel: #1d2129; --text: #e4e7ed; --muted: #949cad; --line: #2e3440;
+          --accent: #6ea0f5; --accent-soft: #23314a; --warn: #f0a35e; --warn-soft: #3a2c1e;
+          --ok: #5cc98b; --ok-soft: #1d3428; --danger: #ff7b6b; --code: #262b35; --ref: #ff5c5c; }
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; margin: 0; }
+body { font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--text);
+       display: grid; grid-template-rows: auto 1fr; }
+header { display: flex; gap: 12px; align-items: center; padding: 8px 16px; border-bottom: 1px solid var(--line);
+         background: var(--panel); flex-wrap: wrap; }
+header h1 { font-size: 15px; margin: 0; }
+header .meta { color: var(--muted); font-size: 12px; }
+header .spacer { flex: 1; }
+button, select, input, textarea { font: inherit; color: inherit; }
+button { background: var(--accent); color: #fff; border: 0; border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+button.secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+button:disabled { opacity: .5; cursor: default; }
+select, input, textarea { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; }
+main { display: grid; grid-template-columns: var(--nav-w, 30%) 6px minmax(0, 1fr); min-height: 0; }
+.splitter { cursor: col-resize; background: var(--line); }
+.hsplitter { cursor: row-resize; height: 6px; background: var(--line); }
+.splitter:hover, .hsplitter:hover, .splitter.drag, .hsplitter.drag { background: var(--accent); }
+#detail.with-pin { grid-template-columns: minmax(0, 1fr) 6px var(--pin-w, 40%); }
+#main-pane { display: grid; grid-template-rows: auto 1fr auto auto; min-height: 0; min-width: 0; }
+#pinned { display: grid; grid-template-rows: auto 1fr; min-height: 0; min-width: 0; background: var(--bg); }
+#pinned-head { padding: 8px 12px; border-bottom: 1px solid var(--line); background: var(--panel); display: grid; gap: 6px; justify-items: center; text-align: center; }
+#pinned-head h3 { margin: 0; font-size: 14px; }
+#pinned-head .pin-actions { display: flex; gap: 8px; }
+#pinned-head .pin-actions button { padding: 3px 12px; font-size: 13px; }
+#pin-open { background: var(--ok); }
+#pin-close { background: var(--danger); }
+#pinned-body { overflow: auto; padding: 8px 14px; min-height: 0; }
+.ancestor { opacity: .8; border-left: 3px dashed var(--line); padding-left: 10px; margin-bottom: 14px; }
+.ancestor > h3 { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin: 6px 0; }
+#tree { overflow: auto; border-right: 1px solid var(--line); padding: 8px 8px 24px; background: var(--panel); }
+#tree details { margin-left: 10px; }
+#tree > details { margin-left: 0; }
+#tree summary { cursor: pointer; padding: 3px 4px; border-radius: 4px; font-weight: 600; }
+#tree summary .count { color: var(--muted); font-weight: 400; }
+.leaf { display: flex; gap: 6px; align-items: baseline; padding: 3px 6px 3px 22px; border-radius: 4px; cursor: pointer; }
+.leaf:hover { background: var(--accent-soft); }
+.leaf.active { background: var(--accent); color: #fff; }
+.leaf .badge { font-size: 11px; }
+.leaf .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.empty { color: var(--muted); padding: 2px 22px; font-size: 12px; }
+#detail { display: grid; grid-template-columns: minmax(0, 1fr); min-height: 0; min-width: 0; }
+#detail-head { padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
+#detail-head h2 { font-size: 16px; margin: 0 0 2px; }
+#detail-head .where { color: var(--muted); font-size: 12px; }
+#detail-head a { color: var(--accent); }
+#context { overflow: auto; padding: 12px 20px; min-height: 0; }
+#context .md { max-width: 980px; }
+#form { border-top: 2px solid var(--accent); background: var(--panel); padding: 10px 16px; display: grid; gap: 8px; }
+#form[hidden] { display: none; }
+#form .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+#form label { font-weight: 600; }
+#form textarea { width: 100%; min-height: 60px; height: var(--form-h, 24vh); resize: none; }
+#form input[type=text] { flex: 1; min-width: 200px; }
+.hint { color: var(--muted); font-size: 12px; }
+.msg { font-size: 13px; }
+.msg.err { color: var(--danger); }
+.msg.ok { color: var(--ok); }
+.pill { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 10px; background: var(--code); color: var(--muted); }
+.pill.open { background: var(--warn-soft); color: var(--warn); }
+.pill.done { background: var(--ok-soft); color: var(--ok); }
+.md h1, .md h2, .md h3, .md h4 { margin: 14px 0 6px; line-height: 1.3; }
+.md h1 { font-size: 19px; } .md h2 { font-size: 17px; } .md h3 { font-size: 15px; } .md h4 { font-size: 14px; }
+.md p { margin: 6px 0; }
+.md ul, .md ol { margin: 4px 0; padding-left: 22px; }
+.md code { background: var(--code); padding: 0 4px; border-radius: 3px; font-size: 13px; }
+.md pre { background: var(--code); padding: 8px 10px; border-radius: 6px; overflow: auto; }
+.md pre code { background: none; padding: 0; }
+.md blockquote { margin: 6px 0; padding: 2px 12px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 6px 6px 0; }
+.md table { border-collapse: collapse; margin: 8px 0; display: block; overflow: auto; }
+.md td, .md th { border: 1px solid var(--line); padding: 4px 8px; text-align: left; vertical-align: top; }
+.md hr { border: 0; border-top: 1px solid var(--line); margin: 12px 0; }
+.related { margin-top: 18px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.embedded { margin: 8px 0; border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; }
+.embedded > summary { cursor: pointer; font-weight: 600; }
+.related h3 { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.decision { margin-top: 10px; padding: 8px 12px; border-radius: 6px; background: var(--ok-soft); }
+body.graph-mode main { grid-template-columns: var(--nav-w-graph, 58%) 6px minmax(0, 1fr); }
+svg.graph { display: block; font-size: 12px; }
+svg.graph text { fill: var(--text); }
+svg.graph .g-title { font-weight: 600; }
+svg.graph .tree-edge { fill: none; stroke: var(--line); stroke-width: 1.5; }
+svg.graph .ref-edge { fill: none; stroke: var(--ref); stroke-width: 1.5; opacity: .55; }
+svg.graph .ref-edge:hover { opacity: 1; stroke-width: 3; }
+svg.graph .ref-hook { stroke: var(--ref); stroke-width: 1; stroke-dasharray: 2 3; opacity: .35; }
+svg.graph .g-group circle { fill: var(--panel); stroke: var(--accent); stroke-width: 2; cursor: pointer; }
+svg.graph .g-group circle.collapsed { fill: var(--accent); }
+svg.graph .g-group, svg.graph .g-leaf { cursor: pointer; }
+svg.graph .g-leaf.active text { fill: var(--accent); font-weight: 700; }
+.graph-bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; position: sticky; left: 0; }
+.entry { border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; margin: 10px 0; background: var(--panel); max-width: 980px; }
+.entry.llm { border-left: 4px solid var(--accent); }
+.entry.author { border-left: 4px solid var(--ok); }
+.entry.focus { box-shadow: 0 0 0 2px var(--accent); }
+.entry-head { display: flex; gap: 8px; align-items: baseline; font-weight: 600; font-size: 13px; }
+.entry-head a { margin-left: auto; font-weight: 400; color: var(--accent); }
+a.file-link { color: var(--accent); cursor: pointer; text-decoration: underline dotted; }
+.leaf.answered .t { text-decoration: line-through; opacity: .65; }
+#koniec-btn { background: var(--ok); }
+a.mention { color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 0 3px; cursor: pointer; text-decoration: none; }
+#mention-box { position: fixed; z-index: 10; max-height: 240px; overflow: auto; min-width: 320px; max-width: 560px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 6px 24px rgba(0,0,0,.18); }
+#mention-box div { padding: 4px 10px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#mention-box div.on { background: var(--accent); color: #fff; }
+#mention-box b { font-family: monospace; }
+.briefing-list a { color: var(--accent); cursor: pointer; margin-right: 10px; }
+#toast { position: fixed; right: 16px; bottom: 16px; padding: 10px 14px; border-radius: 8px; background: var(--ok); color: #fff; display: none; }
+@media (max-width: 760px) { main, body.graph-mode main { grid-template-columns: 1fr; grid-template-rows: 40vh 1fr; }
+  #tree { border-right: 0; border-bottom: 1px solid var(--line); } .splitter { display: none; } #detail.with-pin { grid-template-columns: 1fr; } #pinned { display: none; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>AGENTS board</h1>
+  <label>Drzewo:
+    <select id="view">
+      <option value="waiting">Co czeka na mnie</option>
+      <option value="threads">Wymiana zdań (wątki)</option>
+      <option value="plans">Plany</option>
+      <option value="type">Według rodzaju</option>
+      <option value="graph">Graf</option>
+      <option value="files">Według plików</option>
+    </select>
+  </label>
+  <button class="secondary" id="back-btn" title="Wstecz (Alt+←, boczny przycisk myszy)">◀</button>
+  <button class="secondary" id="fwd-btn" title="Dalej (Alt+→, boczny przycisk myszy)">▶</button>
+  <span class="meta" id="meta"></span>
+  <span class="spacer"></span>
+  <span class="pill" id="mode"></span>
+  <button class="secondary" id="plan-btn" title="Plan faz (AGENTS/plan/phases-plans.md)">🗺️ Plan</button>
+  <button class="secondary" id="briefing-btn" title="Podsumowanie ostatniej sesji agenta">📋 Briefing</button>
+  <button class="secondary" id="help-btn" title="Jak korzystać z AGENTS board">❓ Instrukcja</button>
+  <button class="secondary" id="reload" title="Wczytaj pliki ponownie">Odśwież</button>
+  <button id="koniec-btn" title="Skończyłem odpowiadać: zapisz podsumowanie i skopiuj prompt dla agenta">✅ Koniec</button>
+</header>
+<main>
+  <nav id="tree"></nav>
+  <div class="splitter" id="nav-split" title="Przeciągnij, by zmienić szerokość menu"></div>
+  <section id="detail">
+    <div id="main-pane">
+      <div id="detail-head"><h2>Wybierz pozycję z drzewa</h2><div class="where">Po lewej: co czeka na Ciebie, zadania, pytania, rozmowy. ❓ Instrukcja — u góry.</div></div>
+      <div id="context"></div>
+      <div class="hsplitter" id="form-split" title="Przeciągnij, by zmienić wysokość pola odpowiedzi" hidden></div>
+      <div id="form" hidden></div>
+    </div>
+    <div class="splitter" id="pin-split" title="Przeciągnij, by zmienić szerokość okna przypiętego" hidden></div>
+    <aside id="pinned" hidden><div id="pinned-head"></div><div id="pinned-body"></div></aside>
+  </section>
+</main>
+<div id="toast"></div>
+<div id="mention-box" hidden></div>
+<script>
+// typeset .math elements whenever new content appears (KaTeX loads deferred; without it the TeX stays as text)
+function typesetMath(root) {
+  if (!window.katex) return;
+  root.querySelectorAll(".math:not([data-typeset])").forEach(el => {
+    el.dataset.typeset = "1";
+    try { katex.render(el.textContent, el, {displayMode: el.classList.contains("display"), throwOnError: false}); } catch (e) { /* keep the source */ }
+  });
+}
+new MutationObserver(() => typesetMath(document.body)).observe(document.documentElement, {childList: true, subtree: true});
+window.addEventListener("load", () => typesetMath(document.body));
+const CONFIG = /*__CONFIG__*/null;
+const STATUS_ICON = {" ": "🟠", "~": "🔵", "x": "✅", "?": "⏸️", ">": "➡️", "-": "❌"};
+let STATE = null, SELECTED = null, INDEX = {}, MENTIONS = [], MENTION_KEYS = {};
+// @T002 (thread), @A12 / @L3 (task), @phase-2:R1 (question in a phase)
+const MENTION_RE = /(?<![\w@])@(T\d{3}|[AL]\d{1,3}|phase-[\w.]+:[A-Z]{1,2}\d{1,3})\b/g;
+
+// ---------- markdown (small subset: headings, lists, quotes, tables, code, bold, italics) ----------
+function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+// `AGENTS/…/x.md` opens inside the board; other repository files (`src/…`, `data/…`) open in VS Code
+const PATH_RE = /^(?:\.\/)?[\w.\-]+(?:\/[\w.\-<>…]+)*\.(md|csv|py|toml|json|html|ipynb|txt)$/;
+function fileLink(text) {
+  if (typeof STATE === "undefined" || !STATE || !PATH_RE.test(text) || /[<>…]/.test(text)) return "";
+  const rel = text.replace(/^\.\//, "").replace(/^AGENTS\//, "");
+  let f = STATE.files.find(x => x.path === rel);
+  if (!f && !text.includes("/")) {                       // bare file name: only when it is unique
+    const hits = STATE.files.filter(x => x.path.endsWith("/" + rel) || x.path === rel);
+    if (hits.length === 1) f = hits[0];
+  }
+  if (f) return `<a class="file-link" data-key="file:${esc(f.path)}" title="Otwórz w AGENTS board"><code>${esc(text)}</code></a>`;
+  if (!text.includes("/")) return "";
+  const repo = STATE.root.replace(/\/AGENTS\/?$/, "");
+  const abs = text.startsWith("AGENTS/") ? STATE.root + "/" + rel : repo + "/" + text;
+  return `<a class="file-link" href="vscode://file/${encodeURI(abs)}" title="Otwórz w VS Code"><code>${esc(text)}</code></a>`;
+}
+function inline(s) {
+  // code spans first (as placeholders), so **bold `code` text** still works
+  const codes = [];
+  s = s.replace(/`([^`]+)`/g, (_, c) => { codes.push(fileLink(c) || "<code>" + esc(c) + "</code>"); return "\u0000" + (codes.length - 1) + "\u0000"; });
+  // pictures ![text](AGENTS/…/file.svg) — embedded by the server (L61)
+  s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) => {
+    const rel = src.replace(/^AGENTS\//, ""), uri = (STATE.images || {})[rel];
+    codes.push(uri ? `<img class="figure" src="${uri}" alt="${esc(alt)}" title="${esc(alt)}">`
+                   : `<span class="hint">[obrazek: ${esc(src)} — nie ma takiego pliku w AGENTS/]</span>`);
+    return "\u0000" + (codes.length - 1) + "\u0000"; });
+  // inline math $…$ (pandoc rule: no space after the opening $ or before the closing one, no digit after it,
+  // so prices like "0,5 $ / 1 $" stay text)
+  s = s.replace(/(^|[^\\$\w])\$(?!\s)([^$\n]*?[^\s$\\])\$(?!\d)/g, (_, pre, tex) => {
+    codes.push(`<span class="math">${esc(tex)}</span>`); return pre + "\u0000" + (codes.length - 1) + "\u0000"; });
+  s = s.replace(/^\[(.)\]\s/, (_, st) => (STATUS_ICON[st] || "[" + st + "]") + " ");
+  const mentions = [];
+  s = s.replace(MENTION_RE, (m, tok) => { mentions.push(tok); return "\u0001" + (mentions.length - 1) + "\u0001"; });
+  s = esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+            .replace(/(^|[\s(])\*(?!\s)(.+?)\*(?=[\s).,:;]|$)/g, "$1<em>$2</em>")
+            .replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  s = s.replace(/\u0001(\d+)\u0001/g, (_, n) => `<a class="mention" data-mention="${esc(mentions[+n])}">@${esc(mentions[+n])}</a>`);
+  return s.replace(/\u0000(\d+)\u0000/g, (_, n) => codes[+n]);
+}
+function md(text) {
+  const lines = text.replace(/\r/g, "").split("\n"), out = [];
+  let i = 0;
+  const listStack = [];
+  const closeLists = (depth = 0) => { while (listStack.length > depth) out.push("</" + listStack.pop().tag + ">"); };
+  while (i < lines.length) {
+    let line = lines[i];
+    if (/^\s*\$\$/.test(line)) {   // display math: $$ … $$ (one line or several)
+      closeLists();
+      let tex = line.replace(/^\s*\$\$/, "");
+      if (/\$\$\s*$/.test(tex)) tex = tex.replace(/\$\$\s*$/, "");
+      else { i++; while (i < lines.length && !/\$\$\s*$/.test(lines[i])) tex += "\n" + lines[i++]; if (i < lines.length) tex += "\n" + lines[i].replace(/\$\$\s*$/, ""); }
+      out.push(`<div class="math display">${esc(tex.trim())}</div>`); i++; continue;
+    }
+    if (/^\s*```/.test(line)) {
+      const indent = line.match(/^\s*/)[0].length;   // fences inside list items are indented; keep the list open
+      if (!indent) closeLists();
+      const buf = []; i++;
+      while (i < lines.length && !/^\s*```/.test(lines[i])) buf.push(lines[i++].slice(Math.min(indent, lines[i - 1].match(/^\s*/)[0].length)));
+      out.push("<pre><code>" + esc(buf.join("\n")) + "</code></pre>"); i++; continue;
+    }
+    if (/^\s*\|.*\|\s*$/.test(line)) {
+      closeLists(); const rows = [];
+      while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) rows.push(lines[i++]);
+      const cells = r => r.trim().replace(/^\||\|$/g, "").split("|").map(c => c.trim());
+      let html = "<table>";
+      rows.forEach((r, k) => {
+        if (/^\s*\|[\s:|-]+\|\s*$/.test(r)) return;
+        const tag = k === 0 ? "th" : "td";
+        html += "<tr>" + cells(r).map(c => `<${tag}>${inline(c)}</${tag}>`).join("") + "</tr>";
+      });
+      out.push(html + "</table>"); continue;
+    }
+    let m;
+    if ((m = line.match(/^(#{1,4})\s+(.*)$/))) { closeLists(); out.push(`<h${m[1].length}>${inline(m[2])}</h${m[1].length}>`); i++; continue; }
+    if (/^\s*(---|\*\*\*)\s*$/.test(line)) { closeLists(); out.push("<hr>"); i++; continue; }
+    if (/^>/.test(line)) {
+      closeLists(); const buf = [];
+      while (i < lines.length && /^>/.test(lines[i])) buf.push(lines[i++].replace(/^>\s?/, ""));
+      out.push("<blockquote>" + md(buf.join("\n")) + "</blockquote>"); continue;
+    }
+    if ((m = line.match(/^(\s*)([-*]|\d+\.)\s+(.*)$/))) {
+      const depth = Math.floor(m[1].length / 2) + 1, tag = /\d/.test(m[2]) ? "ol" : "ul";
+      while (listStack.length < depth) {   // keep the number written in the text (lists interrupted by sub-items)
+        out.push(tag === "ol" && listStack.length === depth - 1 ? `<ol start="${parseInt(m[2], 10)}">` : "<" + tag + ">");
+        listStack.push({tag});
+      }
+      closeLists(depth);
+      let content = m[3]; i++;
+      while (i < lines.length && /^\s{2,}\S/.test(lines[i]) && !/^\s*([-*]|\d+\.)\s+/.test(lines[i]) && !/^\s*```/.test(lines[i])) content += " " + lines[i++].trim();
+      out.push("<li>" + inline(content) + "</li>"); continue;
+    }
+    if (!line.trim()) { closeLists(); i++; continue; }
+    closeLists(); const buf = [line]; i++;
+    while (i < lines.length && lines[i].trim() && !/^(#{1,4}\s|>|\s*([-*]|\d+\.)\s|\s*```|\s*\|)/.test(lines[i])) buf.push(lines[i++]);
+    out.push("<p>" + buf.map(inline).join("<br>") + "</p>");
+  }
+  closeLists();
+  return out.join("\n");
+}
+
+// ---------- data ----------
+const NEW_THREAD = { key: "new-thread", kind: "new-thread", title: "Nowy wątek", path: "talk/threads/", line: 1, text: "", extra: {} };
+async function load() {
+  if (CONFIG.state) { STATE = CONFIG.state; }
+  else {
+    const r = await fetch("/api/state");
+    STATE = await r.json();
+    if (!r.ok) { alert(STATE.error || "Błąd"); return; }
+  }
+  INDEX = { [NEW_THREAD.key]: NEW_THREAD };
+  for (const k of ["todos", "issues", "threads", "plans", "files"]) for (const it of STATE[k] || []) INDEX[it.key] = it;
+  MENTIONS = [
+    ...STATE.threads.filter(t => !t.extra.archive).map(t => ({ token: t.extra.id, label: t.title, key: t.key, open: !t.extra.closed, kind: "wątek" })),
+    ...STATE.todos.map(t => ({ token: t.extra.id, label: t.title.replace(/`/g, ""), key: t.key, open: [" ", "~", "?"].includes(t.status), kind: t.owner === "author" ? "zadanie autora" : "zadanie agenta" })),
+    ...STATE.issues.map(i => ({ token: i.group + ":" + i.extra.id, label: i.title, key: i.key, open: ["open", "proposal"].includes(i.status), kind: ISSUE_STATE[i.status] || "pytanie" })),
+  ];
+  MENTIONS.sort((a, b) => (b.open - a.open));
+  MENTION_KEYS = {};
+  for (const m of MENTIONS) if (!(m.token in MENTION_KEYS)) MENTION_KEYS[m.token] = m.key;
+  document.getElementById("meta").textContent = "stan plików: " + STATE.generated;
+  renderTree();
+  if (SELECTED && getItem(SELECTED)) select(SELECTED); else if (SELECTED) clearDetail();
+  renderPinned();
+}
+
+function getItem(key) {
+  const base = key.split("#")[0];
+  if (base.startsWith("new-thread")) {
+    const parent = base.split(":")[1] || "";
+    return { ...NEW_THREAD, key: base, title: parent ? "Nowy wątek od " + parent : "Nowy wątek", extra: { parent } };
+  }
+  if (base === "koniec") return { key: "koniec", kind: "koniec", title: "Koniec sesji", path: "talk/koniec/", line: 1, text: "", extra: {} };
+  if (base === "help") return { key: "help", kind: "help", title: "Instrukcja AGENTS board", path: "agents_board/HELP.md", line: 1, text: STATE.help || "", extra: {} };
+  if (base === "briefing" || base.startsWith("briefing:")) {
+    const list = STATE.briefings || [], name = base.split(":")[1];
+    const b = name ? list.find(x => x.name === name) : list[0];
+    return { key: base, kind: "briefing", title: b ? "Briefing " + b.name : "Briefing", path: b ? b.path : "talk/briefings/",
+             line: 1, text: b ? b.text : "Brak briefingów.", extra: { name: b && b.name } };
+  }
+  return INDEX[base];
+}
+const ISSUE_STATE = { open: "czeka na decyzję", "in-progress": "w toku (zadanie / raport)", proposal: "propozycja agenta do oceny", answered: "rozstrzygnięte" };
+const ISSUE_BADGE = { open: "❓", "in-progress": "🔄", proposal: "🤖", answered: "✅" };
+function badgeOf(it) {
+  if (it.kind === "todo") return STATUS_ICON[it.status] || it.status;
+  if (it.kind === "issue") return ISSUE_BADGE[it.status] || "·";
+  if (it.kind === "thread") return it.extra.archive ? "🗄️" : it.extra.closed ? "🔒" : (it.owner === "llm" ? "🤖" : "💬");
+  if (it.kind === "plan") return it.status !== "open" ? "✅" : (it.owner === "llm" ? "📐" : "💬");
+  if (it.kind === "new-thread") return "➕";
+  if (it.kind === "entry") return it.owner === "llm" ? "🤖" : "🧑";
+  return "📄";
+}
+function leaf(it, label) {
+  const div = document.createElement("div");
+  div.className = "leaf" + (it.key === SELECTED ? " active" : "");
+  div.dataset.key = it.key;
+  const text = (label || it.title).replace(/`/g, "");
+  div.innerHTML = `<span class="badge">${badgeOf(it)}</span><span class="t">${esc(text)}</span>`;
+  div.title = text;
+  div.onclick = () => select(it.key);
+  return div;
+}
+function group(title, children, open = false) {
+  const d = document.createElement("details");
+  if (open) d.open = true;
+  const n = children.filter(c => c.classList && c.classList.contains("leaf")).length;
+  d.innerHTML = `<summary>${esc(title)} ${n ? `<span class="count">(${n})</span>` : ""}</summary>`;
+  if (!children.length) { const e = document.createElement("div"); e.className = "empty"; e.textContent = "nic"; d.appendChild(e); }
+  children.forEach(c => d.appendChild(c));
+  return d;
+}
+function by(list, f) { const m = new Map(); for (const x of list) { const k = f(x); if (!m.has(k)) m.set(k, []); m.get(k).push(x); } return m; }
+const PRIO = ["Ważne", "Średnie", "Małe"];
+const todoLabel = t => t.extra.id + ". " + t.title;
+const threadLabel = t => (t.extra.archive ? "" : t.extra.id + " · ") + t.title + (t.extra.parent ? " ↳ od " + t.extra.parent : "");
+const planLabel = p => p.title + " — " + p.path + (p.status === "open" && p.owner === "author" ? " (czeka na agenta)" : "");
+const liveThreads = () => STATE.threads.filter(t => !t.extra.archive);
+
+// one structure used by the "type" tree and by the graph: {title, children[] | item}
+function typeHierarchy() {
+  const node = (title, children) => ({ title, children });
+  return node("AGENTS", [
+    node("Pytania i decyzje", [...by(STATE.issues, i => i.group)].map(([ph, l]) =>
+      node(ph, [...by(l, i => i.extra.file)].map(([f, ll]) => node(f, ll.map(i => ({ item: i }))))))),
+    node("Zadania autora", PRIO.map(p => node(p, STATE.todos.filter(t => t.owner === "author" && t.group === p).map(t => ({ item: t, label: todoLabel(t) }))))),
+    node("Zadania agentów", STATE.todos.filter(t => t.owner === "llm").map(t => ({ item: t, label: todoLabel(t) }))),
+    node("Wątki", STATE.threads.map(t => ({ item: t, label: threadLabel(t) }))),
+    node("Plany", (STATE.plans || []).map(p => ({ item: p }))),
+  ]);
+}
+function hierarchyToDom(n, depth = 0) {
+  if (n.item) return leaf(n.item, n.label);
+  return group(n.title, n.children.map(c => hierarchyToDom(c, depth + 1)), depth < 1);
+}
+
+// SESSION = what the author did in the GUI since the last [Koniec] (decisions, statuses, replies…).
+// The server adds what he wrote in the files ("— Autor" signatures after the last Koniec, also from VS Code):
+// STATE.activity. Changes made by agents never count as the author's answers.
+function loadSession() { try { const s = JSON.parse(localStorage.getItem("session2") || "null"); return s && s.done ? s : { done: {} }; } catch { return { done: {} }; } }
+function saveSession(v) { try { v ? localStorage.setItem("session2", JSON.stringify(v)) : localStorage.removeItem("session2"); } catch {} }
+function labelOf(it) { return it.kind === "todo" ? todoLabel(it) : it.kind === "thread" ? threadLabel(it) : it.title; }
+function recordDone(key, what) {
+  const it = INDEX[key.split("#")[0]]; if (!it) return;
+  const ses = loadSession(); ses.done[it.key] = labelOf(it) + (what ? " — " + what : ""); saveSession(ses);
+}
+function answeredKeys() { return Object.keys(loadSession().done); }
+function answeredList() {   // same rule as merge_answered() in model.py: one line per id (A35, T018, K1…)
+  const seen = new Set(), out = [];
+  for (const x of [...Object.values(loadSession().done), ...(STATE.activity || [])]) {
+    const m = x.match(/^([A-Z][A-Za-z-]*\d+)\b/), k = m ? m[1] : x;
+    if (!seen.has(k)) { seen.add(k); out.push(x); }
+  }
+  return out;
+}
+function renderTree() {
+  const tree = document.getElementById("tree"), view = document.getElementById("view").value;
+  document.body.classList.toggle("graph-mode", view === "graph");
+  const openState = {};
+  tree.querySelectorAll("details").forEach(d => openState[d.querySelector("summary").textContent.replace(/\s*\(\d+\)$/, "")] = d.open);
+  tree.innerHTML = "";
+  const W = STATE.waiting, items = keys => keys.map(k => INDEX[k]).filter(Boolean);
+  if (view === "waiting") {
+    const done = new Set(answeredKeys());
+    const withDone = (list, kind) => [...list, ...[...done].map(k => INDEX[k]).filter(it => it && it.kind === kind && !list.includes(it))];
+    const mark = (el, it) => { if (done.has(it.key)) { el.classList.add("answered"); el.querySelector(".badge").textContent = "✔️"; } return el; };
+    const issueGroups = [...by(withDone(items(W.issues), "issue"), i => i.path)].map(([p, l]) => group(p, l.map(i => mark(leaf(i), i)), true));
+    // questions moved to a task (🔄): listed separately; "zadanie zamknięte" = ready for the final answer (T025)
+    const taskDone = i => STATE.todos.some(t => t.extra.id === i.extra.task && t.status === "x");
+    const moved = STATE.issues.filter(i => i.status === "in-progress");
+    const movedGroups = [...by(moved, i => i.path)].map(([p, l]) => group(p, l.map(i => leaf(i, i.title + (taskDone(i) ? " — zadanie zamknięte, zapisz odpowiedź końcową" : ""))), l.some(taskDone)));
+    const todoGroups = PRIO.map(p => group(p, withDone(items(W.todos), "todo").filter(t => t.group === p).map(t => mark(leaf(t, todoLabel(t)), t)), p === "Ważne"));
+    tree.append(
+      group("Pytania bez decyzji", issueGroups, true),
+      group("Pytania w toku (przeniesione do zadań)", movedGroups, moved.some(taskDone)),
+      group("Plany do zatwierdzenia i opinii", withDone(items(W.plans || []), "plan").map(p => mark(leaf(p, planLabel(p)), p)), true),
+      group("Twoje zadania (otwarte)", todoGroups, true),
+      group("Wątki — agent odpowiedział", [...withDone(items(W.threads), "thread").map(t => mark(leaf(t, threadLabel(t)), t)), leaf(NEW_THREAD, "Nowy wątek")], true),
+      group("Uwagi dla LLM", STATE.files.filter(f => f.path === "talk/od-autora-dla-llmow.md").map(f => leaf(f, "Dodaj uwagę dla agentów"))),
+    );
+  } else if (view === "threads") {
+    const live = liveThreads(), archive = STATE.threads.filter(t => t.extra.archive);
+    const ids = new Set(live.map(t => t.extra.id));
+    const kids = by(live.filter(t => ids.has(t.extra.parent)), t => t.extra.parent);
+    const threadGroup = t => group(threadLabel(t) + (t.extra.closed ? " 🔒" : t.owner === "llm" ? " 🤖" : ""), [
+      leaf(t, "Cała rozmowa"),
+      ...t.extra.entries.map((e, k) => leaf({ ...t, key: t.key + "#" + k, kind: "entry", owner: e.owner }, e.title)),
+      ...(kids.get(t.extra.id) || []).map(threadGroup)], !t.extra.closed && t.owner === "llm");
+    const roots = live.filter(t => !ids.has(t.extra.parent)).reverse();
+    tree.append(leaf(NEW_THREAD, "Nowy wątek"),
+      ...roots.filter(t => !t.extra.closed).map(threadGroup),
+      group("Zamknięte", roots.filter(t => t.extra.closed).map(threadGroup)),
+      group("Archiwum", archive.map(t => group(t.title, t.extra.entries.map((e, k) => leaf({ ...t, key: t.key + "#" + k, kind: "entry", owner: e.owner }, e.title))))));
+  } else if (view === "plans") {
+    const plans = STATE.plans || [];
+    tree.append(
+      group("Do zatwierdzenia i opinii", plans.filter(p => p.status === "open").map(p => leaf(p, planLabel(p))), true),
+      group("Zatwierdzone i zamknięte", plans.filter(p => p.status !== "open").map(p => leaf(p, planLabel(p)))));
+  } else if (view === "type") {
+    tree.append(...typeHierarchy().children.map(c => hierarchyToDom(c)));
+  } else if (view === "graph") {
+    renderGraph(tree);
+    return;
+  } else {
+    tree.append(...[...by(STATE.files, f => f.group)].map(([g, l]) => group(g + "/", l.map(f => leaf(f, f.path.split("/").pop())), true)));
+  }
+  tree.querySelectorAll("details").forEach(d => {
+    const t = d.querySelector("summary").textContent.replace(/\s*\(\d+\)$/, "");
+    if (t in openState) d.open = openState[t];
+  });
+}
+
+// ---------- graph: collapsible 2D tree + red reference edges ----------
+const COLLAPSED_SAVED = (() => { try { return localStorage.getItem("collapsed"); } catch { return null; } })();
+const COLLAPSED = new Set(JSON.parse(COLLAPSED_SAVED || "[]"));
+let COLLAPSE_DEFAULTS = COLLAPSED_SAVED === null;  // first visit: fold groups where nothing is open
+function saveCollapsed() { try { localStorage.setItem("collapsed", JSON.stringify([...COLLAPSED])); } catch {} }
+function isOpen(it) {
+  if (it.kind === "todo") return [" ", "~", "?"].includes(it.status);
+  if (it.kind === "issue") return ["open", "in-progress", "proposal"].includes(it.status);
+  if (it.kind === "thread") return !it.extra.archive;
+  return false;
+}
+function nodeColor(it) {
+  if (it.kind === "todo") return { " ": "#e8871e", "~": "#2f6fdb", "x": "#1f8a4c", "?": "#8a8f9c", ">": "#8a8f9c", "-": "#c0392b" }[it.status] || "#8a8f9c";
+  if (it.kind === "issue") return { open: "#e8871e", "in-progress": "#2f6fdb", proposal: "#8e44ad" }[it.status] || "#1f8a4c";
+  if (it.kind === "thread") return it.owner === "llm" && !it.extra.archive ? "#2f6fdb" : "#8a8f9c";
+  return "#8a8f9c";
+}
+// ids mentioned in texts -> reference edges. A…/L… are tasks; other letters are questions (per phase file).
+function referenceEdges(visible) {
+  const byId = new Map();
+  for (const n of visible) {
+    const it = n.item, id = it.extra && it.extra.id;
+    if (!id) continue;
+    if (!byId.has(id)) byId.set(id, []);
+    byId.get(id).push(n);
+  }
+  const edges = new Set(), out = [];
+  for (const n of visible) {
+    const it = n.item, own = it.extra && it.extra.id;
+    const text = it.kind === "thread" ? it.extra.entries.map(e => e.text).join("\n") : it.text;
+    for (const m of text.matchAll(/(?:(phase-[\w.]+):)?\b([A-Z]{1,2}\d{1,3}|T\d{3})\b/g)) {
+      const phase = m[1], ref = m[2];
+      if (ref === own || !byId.has(ref)) continue;
+      let targets = byId.get(ref);
+      if (phase) targets = targets.filter(t => t.item.kind === "issue" && t.item.group === phase);
+      else if (/^[AL]\d/.test(ref)) targets = targets.filter(t => t.item.kind === "todo");
+      else if (/^T\d/.test(ref)) targets = targets.filter(t => t.item.kind === "thread");
+      else targets = targets.filter(t => t.item.kind === "issue");
+      for (const t of targets) {
+        const k = [n.y, t.y].sort((a, b) => a - b).join("-");
+        if (t !== n && !edges.has(k)) { edges.add(k); out.push([n, t, ref]); }
+      }
+    }
+  }
+  return out;
+}
+function renderGraph(container) {
+  const ROW = 22, COL = 135, PAD = 16;
+  const rows = [], links = [], visibleLeaves = [];
+  let row = 0;
+  if (COLLAPSE_DEFAULTS) {
+    COLLAPSE_DEFAULTS = false;
+    (function fold(n, depth, path) {
+      if (n.item) return isOpen(n.item);
+      const id = path + "/" + n.title;
+      const open = n.children.map(c => fold(c, depth + 1, id)).some(Boolean);
+      if (!open && depth > 0) COLLAPSED.add(id);
+      return open;
+    })(typeHierarchy(), 0, "");
+    saveCollapsed();
+  }
+  (function layout(n, depth, path) {
+    const id = path + "/" + (n.title || n.item.key);
+    const box = { n, depth, id, children: [] };
+    if (n.item) { box.y = row++ * ROW + PAD; box.item = n.item; box.label = (n.label || n.item.title).replace(/`/g, ""); visibleLeaves.push(box); }
+    else if (COLLAPSED.has(id) && depth > 0) { box.y = row++ * ROW + PAD; box.collapsed = true; }
+    else {
+      box.children = n.children.map(c => layout(c, depth + 1, id));
+      box.y = box.children.length ? (box.children[0].y + box.children[box.children.length - 1].y) / 2 : row++ * ROW + PAD;
+      box.children.forEach(c => links.push([box, c]));
+    }
+    rows.push(box);
+    return box;
+  })(typeHierarchy(), 0, "");
+  const maxDepth = Math.max(...rows.map(r => r.depth));
+  const LABEL = 245;                                   // room for leaf labels before the reference rail
+  const width = PAD * 2 + maxDepth * COL + LABEL + 160, height = row * ROW + PAD * 2;
+  const x = d => PAD + d * COL;
+  const refs = referenceEdges(visibleLeaves);
+  let svg = `<svg class="graph" width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">`;
+  for (const [a, b] of links)
+    svg += `<path class="tree-edge" d="M${x(a.depth) + 5},${a.y} C${x(a.depth) + COL / 2},${a.y} ${x(b.depth) - COL / 2},${b.y} ${x(b.depth) - 5},${b.y}"/>`;
+  const rail = x(maxDepth) + LABEL;                    // references start right of every label
+  for (const r of visibleLeaves) if (refs.some(([a, b]) => a === r || b === r))
+    svg += `<line class="ref-hook" x1="${x(r.depth) + 12 + Math.min(r.label.length, 38) * 6.6}" y1="${r.y}" x2="${rail}" y2="${r.y}"/>`;
+  for (const [a, b, ref] of refs) {
+    const bend = rail + 20 + Math.min(130, Math.abs(a.y - b.y) / 3);
+    svg += `<path class="ref-edge" d="M${rail},${a.y} C${bend},${a.y} ${bend},${b.y} ${rail},${b.y}"><title>${esc(ref)}</title></path>`;
+  }
+  for (const r of rows) {
+    const cx = x(r.depth);
+    if (r.item) {
+      svg += `<g class="g-leaf${r.item.key === SELECTED ? " active" : ""}" data-key="${esc(r.item.key)}"><circle cx="${cx}" cy="${r.y}" r="5" fill="${nodeColor(r.item)}"/>` +
+             `<text x="${cx + 10}" y="${r.y + 4}">${esc(r.label.length > 38 ? r.label.slice(0, 37) + "…" : r.label)}<title>${esc(r.label)}</title></text></g>`;
+    } else {
+      svg += `<g class="g-group" data-id="${esc(r.id)}"><circle cx="${cx}" cy="${r.y}" r="6" class="${r.collapsed ? "collapsed" : ""}"/>` +
+             `<text x="${cx + 10}" y="${r.y - 6}" class="g-title">${r.collapsed ? "▸ " : "▾ "}${esc(r.n.title)}</text></g>`;
+    }
+  }
+  svg += "</svg>";
+  container.innerHTML = `<div class="graph-bar"><button class="secondary" id="g-collapse">Zwiń wszystko</button>
+    <button class="secondary" id="g-expand">Rozwiń wszystko</button>
+    <span class="hint">klik w grupę: zwiń/rozwiń · klik w węzeł: szczegóły · <span style="color:var(--ref)">━</span> odwołania (najedź, by zobaczyć numer)</span></div>` + svg;
+  container.querySelectorAll(".g-group").forEach(g => g.onclick = () => {
+    const id = g.dataset.id; COLLAPSED.has(id) ? COLLAPSED.delete(id) : COLLAPSED.add(id); saveCollapsed(); renderGraph(container);
+  });
+  container.querySelectorAll(".g-leaf").forEach(g => g.onclick = () => select(g.dataset.key));
+  document.getElementById("g-collapse").onclick = () => { rows.filter(r => !r.item && r.depth > 0).forEach(r => COLLAPSED.add(r.id)); saveCollapsed(); renderGraph(container); };
+  document.getElementById("g-expand").onclick = () => { COLLAPSED.clear(); saveCollapsed(); renderGraph(container); };
+}
+
+// ---------- detail + forms ----------
+function clearDetail() {
+  SELECTED = null;
+  document.getElementById("detail-head").innerHTML = "<h2>Pozycja zniknęła po odświeżeniu</h2>";
+  document.getElementById("context").innerHTML = ""; document.getElementById("form").hidden = true;
+}
+function fileText(path) { const f = STATE.files.find(f => f.path === path); return f ? f.text : ""; }
+function vscode(it, line) { return "vscode://file/" + encodeURI(STATE.root + "/" + it.path) + ":" + (line || it.line); }
+
+// Only the parts of the report about this task: author entries "### [A26] …" and, from LLM reply blocks
+// (which may answer several tasks at once), just the "> ### [A26] …" section.
+function reportSections(text, id) {
+  const tag = "[" + id + "]", out = [];
+  for (const part of text.split(/\n---\s*\n/)) {
+    if (!part.includes(tag)) continue;
+    if (!/^\s*>/m.test(part)) { out.push(part); continue; }          // author entry
+    const lines = part.split("\n"), keep = [];
+    let on = false;
+    for (const line of lines) {
+      const h = line.match(/^>\s*###\s*(\[[^\]]+\])/);      // [A26] and [phase-2.1:Y4] (questions moved to the report)
+      if (h) on = h[1] === tag;
+      else if (/ODPOWIEDŹ LLM — (koniec)/.test(line) || /^>\s*\*przeczytane/.test(line)) on = false;
+      if (on || /ODPOWIEDŹ LLM — (początek|koniec)/.test(line) || /^>\s*\*przeczytane/.test(line)) keep.push(line);
+    }
+    out.push(keep.join("\n"));
+  }
+  return out;
+}
+function relatedReport(id) {
+  const parts = reportSections(fileText("todo/author/raport-TODO-autora.md"), id);
+  return parts.length ? parts.map(md).join("<hr>") : "";
+}
+// documents a task points to (backticked AGENTS/… .md paths, question mentions @phase:K1), shown inside the task
+function linkedDocs(text) {
+  const out = [], seen = new Set();
+  for (const m of text.matchAll(/`(?:AGENTS\/)?([\w./-]+\.md)`/g)) {
+    const path = m[1];
+    if (seen.has(path) || /agents-issues-\d+\.md$/.test(path) || /^todo\//.test(path)) continue;
+    const t = fileText(path); if (!t) continue;
+    seen.add(path);
+    out.push(`<details class="embedded" open><summary>📄 ${esc(path)}</summary><div class="md">${md(t)}</div></details>`);
+  }
+  for (const m of text.matchAll(/@([\w.-]+:[A-Z]+\d+)/g)) {
+    const key = MENTION_KEYS[m[1]], it = key && INDEX[key];
+    if (!it || it.kind !== "issue" || seen.has(key)) continue;
+    seen.add(key);
+    out.push(`<details class="embedded" open><summary>❓ ${esc(m[1])} · ${esc(it.title)}</summary><div class="md">${md(it.text)}</div></details>`);
+  }
+  return out.join("");
+}
+function relatedLlmReport(id) {
+  const text = fileText("todo/llm/raport-TODO-LLM.md");
+  const parts = text.split(/\n---\s*\n/).filter(p => p.includes("[" + id + "]"));
+  return parts.length ? parts.map(md).join("<hr>") : "";
+}
+function entryCard(t, e, k, focus, prefix = "entry-") {
+  return `<article class="entry ${e.owner}${k === focus ? " focus" : ""}" id="${prefix}${k}">
+       <div class="entry-head">${e.owner === "llm" ? "🤖 Agent" : "🧑 Autor"} <span class="hint">${esc(e.signature)}</span>
+       <a href="${vscode(t, e.line)}">VS Code</a></div><div class="md">${md(e.text)}</div></article>`;
+}
+// a sub-thread first shows its parent's conversation up to (and including) the moment it branched off
+function ancestorHtml(t) {
+  const parent = t.extra.parent && STATE.threads.find(x => x.extra.id === t.extra.parent);
+  if (!parent) return "";
+  const branched = ((t.extra.entries[0] || {}).signature || "9999").slice(0, 16);
+  const upto = parent.extra.entries.filter(e => (e.signature || "").slice(0, 16) <= branched);
+  return ancestorHtml(parent) + `<div class="ancestor"><h3>Z wątku ${esc(parent.extra.id)} · ${esc(parent.title)} — do odgałęzienia</h3>` +
+         upto.map((e, k) => entryCard(parent, e, k, -1, "anc-" + parent.extra.id + "-")).join("") + `</div>`;
+}
+function threadHtml(t, focus) {
+  return ancestorHtml(t) + t.extra.entries.map((e, k) => entryCard(t, e, k, focus)).join("");
+}
+function pillOf(it) {
+  if (it.kind === "todo") return `<span class="pill ${["x"].includes(it.status) ? "done" : "open"}">${STATE.statuses[it.status] || it.status}</span>`;
+  if (it.kind === "issue") return `<span class="pill ${["open", "proposal"].includes(it.status) ? "open" : "done"}">${ISSUE_STATE[it.status] || "pytanie"}</span>`;
+  if (it.kind === "plan") return `<span class="pill ${it.status === "open" ? "open" : "done"}">plan: ${esc(it.extra.plan_status)}</span>`;
+  if (it.kind === "thread") return `<span class="pill ${it.extra.archive || it.extra.closed ? "" : (it.owner === "llm" ? "open" : "done")}">${it.extra.archive ? "archiwum (tylko odczyt)" : it.extra.closed ? "zamknięty" : (it.owner === "llm" ? "agent odpowiedział" : "czeka na agenta")}</span>`;
+  return "";
+}
+function contentHtml(it, entryIdx) {
+  let html;
+  if (it.kind === "thread") html = threadHtml(it, entryIdx);
+  else if (it.kind === "plan") html = `<div class="md">${md(it.text)}</div>` + (it.extra.entries.length
+      ? `<div class="related"><h3>Dyskusja</h3>` + it.extra.entries.map((e, k) => entryCard(it, e, k, -1, "plan-")).join("") + `</div>` : "");
+  else if (it.kind === "new-thread") html = `<div class="md"><p>Nowy temat rozmowy z agentami${it.extra.parent ? ` — odgałęzienie od ${inline("@" + it.extra.parent)}` : ""}. Powstanie plik <code>AGENTS/talk/threads/T…-tytul.md</code>; agent odpowie w tym samym wątku. Wpisz <code>@</code>, żeby wskazać wątek, zadanie albo pytanie.</p></div>`;
+  else if (it.kind === "koniec") {
+    const done = answeredList();
+    html = `<div class="md"><h3>Na co odpowiedziałeś w tej sesji (${done.length})</h3>` +
+      (done.length ? "<ul>" + done.map(d => `<li>${inline(d)}</li>`).join("") + "</ul>" : "<p>GUI nie wykrył zmian.</p>") +
+      `<p class="hint">Liczone od ostatniego Konca (${esc(STATE.since || "brak")}): Twoje działania w GUI oraz wpisy podpisane „— Autor” w wątkach i raporcie (także dopisane w VS Code).</p>` +
+      `<p>„Zakończ sesję” zapisze tę listę do <code>AGENTS/talk/koniec/</code>, skopiuje do schowka prompt dla agenta (wklej go w okno czatu w VS Code) i wyczyści odhaczone pozycje z „Co czeka na mnie”.</p></div>
+      <div id="koniec-result"></div>`;
+  }
+  else if (it.kind === "briefing") html = `<div class="briefing-list hint">Wcześniejsze: ${(STATE.briefings || []).map(b => `<a data-key="briefing:${esc(b.name)}">${esc(b.name)}</a>`).join("") || "brak"}</div><div class="md">${md(it.text)}</div>`;
+  else html = `<div class="md">${md(it.text)}</div>`;
+  if (it.kind === "todo") {
+    const docs = linkedDocs(it.text);
+    if (docs) html += `<div class="related"><h3>Treść, na którą odpowiadasz</h3>${docs}</div>`;
+    const rel = it.owner === "author" ? relatedReport(it.extra.id) : relatedLlmReport(it.extra.id);
+    if (rel) html += `<div class="related"><h3>Wpisy w raporcie dla ${esc(it.extra.id)}</h3><div class="md">${rel}</div></div>`;
+  }
+  if (it.kind === "issue" && it.status !== "open") {
+    const rel = [it.extra.task, it.group + ":" + it.extra.id].filter(Boolean).map(relatedReport).filter(Boolean).join("<hr>");
+    if (rel) html += `<div class="related"><h3>Rozmowa pod zadaniem${it.extra.task ? " " + esc(it.extra.task) : ""}</h3><div class="md">${rel}</div></div>`;
+  }
+  return html;
+}
+
+// Each opened item is a browser history entry, so ◀ ▶, Alt+←/→ and the side mouse buttons move
+// between documents. Re-rendering the same item (e.g. after a reload) does not add an entry.
+function select(key, fromHistory = false) {
+  const [baseKey, entryIdx] = key.includes("#") ? [key.split("#")[0], +key.split("#")[1]] : [key, -1];
+  SELECTED = key;
+  const hash = "#" + encodeURIComponent(key);
+  if (!fromHistory && location.hash !== hash) history.pushState(null, "", hash);
+  document.querySelectorAll(".leaf, .g-leaf").forEach(l => l.classList.toggle("active", l.dataset.key === key));
+  const it = getItem(key);
+  if (!it) return clearDetail();
+  const head = document.getElementById("detail-head");
+  const title = it.kind === "thread" ? threadLabel(it) : it.title;
+  const where = ["new-thread", "help", "koniec"].includes(it.kind) ? "" : ":" + it.line + ` · <a href="${vscode(it)}">otwórz w VS Code</a>`;
+  head.innerHTML = `<h2>${inline(title)} ${pillOf(it)}</h2><div class="where">${esc(it.path)}${where}
+    · <a href="#" id="pin-btn" title="Pokaż tę pozycję w oknie po prawej (pole odpowiedzi zostaje dla okna głównego)">📌 Przypnij obok</a></div>`;
+  document.getElementById("pin-btn").onclick = e => { e.preventDefault(); pin(key); };
+  const ctx = document.getElementById("context");
+  ctx.innerHTML = contentHtml(it, entryIdx);
+  ctx.querySelectorAll(".briefing-list a").forEach(a => a.onclick = () => select(a.dataset.key));
+  const focusEl = entryIdx >= 0 ? document.getElementById("entry-" + entryIdx) : null;
+  if (focusEl) focusEl.scrollIntoView({ block: "start" });
+  else ctx.scrollTop = it.kind === "thread" ? ctx.scrollHeight : 0;   // conversations open at the newest entry
+  renderForm(it);
+  document.getElementById("form-split").hidden = document.getElementById("form").hidden;
+}
+
+// ---------- pinned pane (read-only second window) ----------
+let PINNED = (() => { try { return localStorage.getItem("pinned"); } catch { return null; } })();
+function pin(key) { PINNED = key; try { key ? localStorage.setItem("pinned", key) : localStorage.removeItem("pinned"); } catch {} renderPinned(); }
+function renderPinned() {
+  const box = document.getElementById("pinned"), it = PINNED && STATE ? getItem(PINNED) : null;
+  const on = Boolean(it);
+  box.hidden = !on; document.getElementById("pin-split").hidden = !on;
+  document.getElementById("detail").classList.toggle("with-pin", on);
+  if (!on) return;
+  const title = it.kind === "thread" ? threadLabel(it) : it.title;
+  document.getElementById("pinned-head").innerHTML = `<h3>📌 ${inline(title)} ${pillOf(it)}</h3>
+    <div class="pin-actions"><button id="pin-open" title="Otwórz w oknie głównym">↙ Otwórz w głównym</button>
+    <button id="pin-close" title="Zamknij okno przypięte">✕ Zamknij</button></div>`;
+  const body = document.getElementById("pinned-body");
+  body.innerHTML = contentHtml(it, -1).replace(/id="entry-/g, 'id="pin-entry-');
+  body.querySelectorAll(".briefing-list a").forEach(a => a.onclick = () => pin(a.dataset.key));
+  if (it.kind === "thread") body.scrollTop = body.scrollHeight;
+  document.getElementById("pin-close").onclick = e => { e.preventDefault(); pin(null); };
+  document.getElementById("pin-open").onclick = e => { e.preventDefault(); select(PINNED); };
+}
+
+// ---------- draggable splitters (sizes remembered) ----------
+function dragSplitter(id, cssVar, compute) {
+  const el = document.getElementById(id);
+  const saved = (() => { try { return localStorage.getItem(cssVar); } catch { return null; } })();
+  if (saved) document.documentElement.style.setProperty(cssVar, saved);
+  el.addEventListener("mousedown", e => {
+    e.preventDefault(); el.classList.add("drag");
+    const move = ev => { const v = compute(ev); if (v) document.documentElement.style.setProperty(cssVar, v); };
+    const up = () => {
+      el.classList.remove("drag"); window.removeEventListener("mousemove", move); window.removeEventListener("mouseup", up);
+      try { localStorage.setItem(cssVar, document.documentElement.style.getPropertyValue(cssVar)); } catch {}
+    };
+    window.addEventListener("mousemove", move); window.addEventListener("mouseup", up);
+  });
+}
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+dragSplitter("nav-split", "--nav-w", ev => document.body.classList.contains("graph-mode") ? null : clamp(ev.clientX, 180, window.innerWidth - 360) + "px");
+dragSplitter("nav-split", "--nav-w-graph", ev => document.body.classList.contains("graph-mode") ? clamp(ev.clientX, 180, window.innerWidth - 360) + "px" : null);
+dragSplitter("pin-split", "--pin-w", ev => clamp(window.innerWidth - ev.clientX, 220, window.innerWidth - 500) + "px");
+dragSplitter("form-split", "--form-h", ev => {
+  const ta = document.getElementById("f-text"); if (!ta) return null;
+  const bottomUi = document.getElementById("form").getBoundingClientRect().bottom - ta.getBoundingClientRect().bottom;
+  return clamp(window.innerHeight - ev.clientY - bottomUi - 70, 60, window.innerHeight * 0.75) + "px";
+});
+
+// ---------- editor: Tab / Shift+Tab indent, Enter continues lists (like VS Code), Ctrl+Enter sends ----------
+const INDENT = "  ";
+function insertText(ta, text) {
+  ta.focus();
+  if (!document.execCommand || !document.execCommand("insertText", false, text)) {  // execCommand keeps Ctrl+Z
+    ta.setRangeText(text, ta.selectionStart, ta.selectionEnd, "end");
+  }
+  ta.dispatchEvent(new Event("input"));
+}
+function smartEditor(ta, onSubmit) {
+  ta.addEventListener("keydown", e => {
+    const v = ta.value, start = ta.selectionStart, end = ta.selectionEnd;
+    const lineStart = v.lastIndexOf("\n", start - 1) + 1;
+    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); onSubmit(); return; }
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const blockEnd = v.indexOf("\n", end) === -1 ? v.length : v.indexOf("\n", end);
+      const block = v.slice(lineStart, blockEnd);
+      const lines = block.split("\n");
+      const isItem = /^\s*([-*]|\d+\.)\s/.test(lines[0]);
+      if (!e.shiftKey && start === end && !isItem) { insertText(ta, INDENT); return; }
+      // list line or selection: indent/outdent whole lines; a newly nested ordered item restarts at 1.
+      const changed = e.shiftKey ? lines.map(l => l.startsWith(INDENT) ? l.slice(INDENT.length) : l.replace(/^ /, ""))
+                                 : lines.map(l => INDENT + (lines.length === 1 ? l.replace(/^(\s*)\d+\.(\s)/, "$11.$2") : l));
+      ta.setSelectionRange(lineStart, blockEnd);
+      insertText(ta, changed.join("\n"));
+      if (start === end) { const pos = lineStart + changed.join("\n").length; ta.setSelectionRange(pos, pos); }
+      else ta.setSelectionRange(lineStart, lineStart + changed.join("\n").length);
+      return;
+    }
+    if (e.key === "Enter" && !e.shiftKey && start === end) {
+      const line = v.slice(lineStart, start);
+      const m = line.match(/^(\s*)([-*]|(\d+)\.)(\s+)(.*)$/);
+      if (m) {
+        e.preventDefault();
+        if (!m[5].trim()) {                     // empty item: finish the list
+          ta.setSelectionRange(lineStart, start); insertText(ta, m[1] ? m[1].slice(INDENT.length) : ""); return;
+        }
+        const marker = m[3] ? (parseInt(m[3], 10) + 1) + "." : m[2];
+        insertText(ta, "\n" + m[1] + marker + " ");
+        return;
+      }
+      const ind = line.match(/^(\s+)\S/);
+      if (ind) { e.preventDefault(); insertText(ta, "\n" + ind[1]); }
+    }
+  });
+}
+
+const MBOX = () => document.getElementById("mention-box");
+let MSTATE = null;  // {ta, start, items, idx}
+function mentionEditor(ta) {
+  const close = () => { MBOX().hidden = true; MSTATE = null; };
+  const update = () => {
+    const before = ta.value.slice(0, ta.selectionStart), m = before.match(/(?:^|[\s(])@([\w.:-]*)$/);
+    if (!m) return close();
+    const q = m[1].toLowerCase();
+    const items = MENTIONS.filter(x => x.token.toLowerCase().includes(q) || x.label.toLowerCase().includes(q)).slice(0, 30);
+    if (!items.length) return close();
+    MSTATE = { ta, start: ta.selectionStart - m[1].length - 1, items, idx: 0 };
+    const box = MBOX(), r = ta.getBoundingClientRect();
+    box.innerHTML = items.map((x, i) => `<div data-i="${i}" class="${i ? "" : "on"}"><b>@${esc(x.token)}</b> ${x.open ? "🟠" : "·"} ${esc(x.label)} <span class="hint">${esc(x.kind)}</span></div>`).join("");
+    box.style.left = r.left + "px"; box.style.bottom = (window.innerHeight - r.top + 4) + "px"; box.hidden = false;
+    box.querySelectorAll("div").forEach(d => d.onmousedown = e => { e.preventDefault(); MSTATE.idx = +d.dataset.i; pick(); });
+  };
+  const pick = () => {
+    const x = MSTATE.items[MSTATE.idx];
+    ta.setSelectionRange(MSTATE.start, ta.selectionStart);
+    insertText(ta, "@" + x.token + " ");
+    close();
+  };
+  ta.addEventListener("keydown", e => {
+    if (!MSTATE || MSTATE.ta !== ta) return;
+    if (["ArrowDown", "ArrowUp"].includes(e.key)) {
+      e.preventDefault(); e.stopImmediatePropagation();
+      MSTATE.idx = (MSTATE.idx + (e.key === "ArrowDown" ? 1 : -1) + MSTATE.items.length) % MSTATE.items.length;
+      MBOX().querySelectorAll("div").forEach((d, i) => d.classList.toggle("on", i === MSTATE.idx));
+      MBOX().querySelectorAll("div")[MSTATE.idx].scrollIntoView({ block: "nearest" });
+    } else if ((e.key === "Enter" || e.key === "Tab") && !e.ctrlKey) { e.preventDefault(); e.stopImmediatePropagation(); pick(); }
+    else if (e.key === "Escape") { e.preventDefault(); close(); }
+  });
+  ta.addEventListener("input", update);
+  ta.addEventListener("click", update);
+  ta.addEventListener("blur", () => setTimeout(close, 150));
+}
+document.addEventListener("click", e => {
+  const fl = e.target.closest && e.target.closest("a.file-link[data-key]");
+  if (fl) { e.preventDefault(); select(fl.dataset.key); return; }
+  const a = e.target.closest && e.target.closest("a.mention");
+  if (!a) return;
+  const key = MENTION_KEYS[a.dataset.mention];
+  if (key) select(key); else toast("Nie znam @" + a.dataset.mention);
+});
+
+function draftKey(it, suffix = "") { return "draft:" + it.key + suffix; }
+function getDraft(k) { try { return localStorage.getItem(k) || ""; } catch { return ""; } }
+function setDraft(k, v) { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch {} }
+
+function renderForm(it) {
+  const form = document.getElementById("form");
+  form.innerHTML = ""; form.hidden = true;
+  if (CONFIG.readOnly) return;
+  let spec = null;
+  const ISSUE = { path: it.path, id: it.extra.id, version: it.version };
+  if (it.kind === "issue" && it.status === "open")
+    spec = { label: `Twoja decyzja dla ${it.extra.id}`, action: "decision", button: "Zapisz decyzję",
+             hint: "„Zapisz decyzję” → pole Decyzja. „↪ Przenieś” → zadanie i/lub raport; tekst z pola to wstępna odpowiedź (może być pusty).",
+             payload: text => ({ ...ISSUE, text }), move: true };
+  else if (it.kind === "issue" && it.status === "in-progress")
+    spec = { label: `Odpowiedź końcowa dla ${it.extra.id}`, action: "issue-final", button: "✍️ Zapisz odpowiedź końcową",
+             hint: "Gdy sprawa w zadaniu jest skończona: wpisz odpowiedź albo poproś agenta o propozycję końcową.",
+             payload: text => ({ ...ISSUE, text }),
+             extra: (it.extra.proposal || "").startsWith("(czeka") ? [] :
+               [{ label: "🤖 Poproś o propozycję końcową", action: "issue-request", what: "prośba o propozycję końcową", payload: () => ISSUE }] };
+  else if (it.kind === "issue" && it.status === "proposal")
+    spec = { label: `Propozycja końcowa agenta dla ${it.extra.id}`, action: "issue-proposal", button: "✅ Akceptuję propozycję",
+             hint: "„Nie” zapisze odrzucenie z komentarzem z pola; sprawa wraca do zadania.",
+             payload: text => ({ ...ISSUE, accept: true, text }),
+             extra: [{ label: "❌ Nie (komentarz z pola)", action: "issue-proposal", what: "propozycja odrzucona", payload: text => ({ ...ISSUE, accept: false, text }) }] };
+  else if (it.kind === "issue")
+    spec = { info: "Decyzja już jest. Zmianę dopisz ręcznie w pliku (link u góry) — wcześniejszych wpisów nie zmieniamy." };
+  else if (it.kind === "todo" && it.owner === "author")
+    spec = { label: `Wpis do raportu: [${it.extra.id}]`, action: "report", button: "Dodaj wpis do raportu",
+             title: it.title.replace(/`/g, ""), status: true,
+             hint: "Trafi na koniec todo/author/raport-TODO-autora.md z datą i podpisem.",
+             payload: (text, title) => ({ id: it.extra.id, title, text, version: STATE.versions.report }) };
+  else if (it.kind === "todo")
+    spec = { info: "Zadanie agentów — możesz skomentować je w wymianie zdań albo we własnym raporcie." };
+  else if (it.kind === "thread" && it.extra.archive)
+    spec = { info: "Archiwum — tylko do odczytu. Nowe rozmowy: wątki (drzewo „Wymiana zdań (wątki)”) albo „Nowy wątek”." };
+  else if (it.kind === "thread" && it.extra.closed)
+    spec = { info: "Wątek zamknięty. Nowy temat z niego: „Nowy wątek od tego”.", branch: true };
+  else if (it.kind === "thread")
+    spec = { label: `Odpowiedz w wątku ${it.extra.id}`, action: "thread", button: "Wyślij w wątku", branch: true, close: true,
+             hint: "Trafi na koniec " + it.path + ".",
+             payload: text => ({ path: it.path, text, version: it.version }) };
+  else if (it.kind === "plan")
+    spec = { label: `Wpis w dyskusji planu`, action: "plan-entry", button: "Wyślij w dyskusji",
+             hint: "Trafi na koniec sekcji „## Dyskusja” w " + it.path + "." + (it.status === "open" ? " „✅ Zatwierdzam plan” zmieni status (tekst z pola jako uwaga)." : " Plan jest już zamknięty — możesz dalej komentować."),
+             payload: text => ({ path: it.path, text, version: it.version }),
+             extra: it.status === "open" ? [{ label: "✅ Zatwierdzam plan", action: "plan-approve", what: "plan zatwierdzony", payload: text => ({ path: it.path, text, version: it.version }) }] : [] };
+  else if (it.kind === "new-thread")
+    spec = { label: it.extra.parent ? `Nowy wątek od ${it.extra.parent}` : "Nowy wątek", action: "new-thread", button: "Utwórz wątek", title: "",
+             hint: "Tytuł = temat wątku.",
+             payload: (text, title) => ({ title, text, parent: it.extra.parent || "" }) };
+  else if (it.kind === "koniec")
+    spec = { label: "Uwaga dla agenta (opcjonalnie)", action: "koniec", button: "✅ Zakończ sesję i skopiuj prompt",
+             hint: "Lista odpowiedzi jest wyżej.",
+             payload: text => ({ answered: Object.values(loadSession().done), note: text }) };
+  else if (it.kind === "file" && it.path === "talk/od-autora-dla-llmow.md")
+    spec = { label: "Nowa uwaga dla agentów", action: "note", button: "Dodaj uwagę",
+             hint: "Zostanie dopisana jako kolejny numer na liście „Uwagi”.",
+             payload: text => ({ text, version: STATE.versions.notes }) };
+  if (!spec) return;
+  form.hidden = false;
+  const branchBtn = spec.branch ? `<button class="secondary" id="f-branch">↳ Nowy wątek od tego</button>` : "";
+  if (spec.info) {
+    form.innerHTML = `<div class="row"><span class="hint">${esc(spec.info)}</span>${branchBtn}</div>`;
+    const bb = document.getElementById("f-branch"); if (bb) bb.onclick = () => select("new-thread:" + it.extra.id);
+    return;
+  }
+
+  const dk = draftKey(it), tk = draftKey(it, ":title");
+  form.innerHTML = `
+    <div class="row"><label>${esc(spec.label)}</label><span class="hint">${esc(spec.hint)} Podpis dodaje się sam, szkic też. Tab/Shift+Tab — wcięcie, Enter na liście — następny punkt, Ctrl+Enter — wyślij, @ — wskaż wątek/zadanie/pytanie.</span></div>
+    ${spec.title !== undefined ? `<div class="row"><span>Tytuł:</span><input type="text" id="f-title"></div>` : ""}
+    <textarea id="f-text" placeholder="Pisz tutaj — tekst, na który odpowiadasz, jest wyżej."></textarea>
+    <div class="row">
+      <button id="f-send">${esc(spec.button)}</button>
+      ${spec.status ? `<span>Status zadania:</span><select id="f-status">${Object.entries(STATE.statuses).map(([k, v]) =>
+          `<option value="${esc(k)}" ${k === it.status ? "selected" : ""}>[${esc(k)}] ${esc(v)}</option>`).join("")}</select>
+          <button class="secondary" id="f-status-only">Zmień tylko status</button>` : ""}
+      ${spec.move ? `<span>↪</span><select id="f-move-to"><option value="both">zadanie + raport</option><option value="task">tylko zadanie</option><option value="report">tylko raport</option></select>
+          <select id="f-move-prio">${PRIO.map(p => `<option>${p}</option>`).join("")}</select>
+          <button class="secondary" id="f-move">↪ Przenieś</button>` : ""}
+      ${(spec.extra || []).map((x, i) => `<button class="secondary" id="f-extra-${i}">${esc(x.label)}</button>`).join("")}
+      ${spec.close ? `<button class="secondary" id="f-close" title="Dopisuje 🔒 (tekst z pola jako uwaga)">🔒 Zamknij wątek</button>` : ""}
+      ${branchBtn}
+      <span class="msg" id="f-msg"></span>
+    </div>`;
+  const ta = document.getElementById("f-text"), ti = document.getElementById("f-title");
+  mentionEditor(ta);
+  smartEditor(ta, () => document.getElementById("f-send").click());
+  const bb = document.getElementById("f-branch"); if (bb) bb.onclick = () => select("new-thread:" + it.extra.id);
+  const cb = document.getElementById("f-close");
+  if (cb) cb.onclick = async () => {
+    if (await post("close-thread", { path: it.path, version: it.version, text: ta.value })) { recordDone(it.key, "zamknięty"); setDraft(dk, ""); toast("Wątek zamknięty"); await load(); }
+  };
+  ta.value = getDraft(dk);
+  ta.oninput = () => setDraft(dk, ta.value);
+  if (ti) { ti.value = getDraft(tk) || spec.title; ti.oninput = () => setDraft(tk, ti.value); }
+  document.getElementById("f-send").onclick = async () => {
+    const ok = await post(spec.action, spec.payload(ta.value, ti ? ti.value : ""));
+    if (!ok) return;
+    const WHAT = { decision: "decyzja", report: "wpis w raporcie", thread: "odpowiedź w wątku", note: "uwaga dla agentów",
+                   "issue-final": "odpowiedź końcowa", "issue-proposal": "propozycja zaakceptowana", "plan-entry": "wpis w dyskusji planu" };
+    if (WHAT[spec.action]) recordDone(it.key, WHAT[spec.action]);
+    if (spec.action === "new-thread" && ok.path) { await load(); recordDone("thread:" + ok.path, "nowy wątek"); }
+    if (spec.action === "new-thread" && ok.path) SELECTED = "thread:" + ok.path;
+    if (spec.action === "koniec") {
+      saveSession(null);
+      let copied = false;
+      try { await navigator.clipboard.writeText(ok.prompt); copied = true; } catch {}
+      setDraft(dk, ""); await load();
+      document.getElementById("context").innerHTML = `<div class="md"><h3>Sesja zakończona</h3>
+        <p>Zapisane: ${inline("`AGENTS/" + ok.path + "`")}</p>
+        <p>${copied ? "Prompt jest w schowku — wklej go w okno czatu z agentem:" : "Skopiuj ten prompt i wklej w okno czatu z agentem:"}</p>
+        <textarea readonly style="width:100%;height:5em">${esc(ok.prompt)}</textarea></div>`;
+      document.getElementById("form").hidden = true;
+      return;
+    }
+    const st = document.getElementById("f-status");
+    if (st && st.value !== it.status) {
+      await load();
+      const fresh = INDEX[it.key];
+      if (fresh && await post("status", { path: fresh.path, id: fresh.extra.id, status: st.value, version: fresh.version })) recordDone(it.key, "wpis w raporcie, status [" + st.value + "]");
+    }
+    setDraft(dk, ""); setDraft(tk, ""); toast("Zapisano"); await load();
+  };
+  (spec.extra || []).forEach((x, i) => document.getElementById("f-extra-" + i).onclick = async () => {
+    if (await post(x.action, x.payload(ta.value))) { recordDone(it.key, x.what); setDraft(dk, ""); toast("Zapisano"); await load(); }
+  });
+  const mv = document.getElementById("f-move");
+  if (mv) mv.onclick = async () => {
+    const to = document.getElementById("f-move-to").value;
+    const ok = await post("issue-move", { ...ISSUE, text: ta.value, task: to !== "report", report: to !== "task",
+                                          priority: document.getElementById("f-move-prio").value });
+    if (!ok) return;
+    recordDone(it.key, "przeniesione" + (ok.task ? " do @" + ok.task : " do raportu"));
+    setDraft(dk, ""); toast(ok.task ? "Utworzono zadanie " + ok.task : "Dodano wpis do raportu"); await load();
+  };
+  const so = document.getElementById("f-status-only");
+  if (so) so.onclick = async () => {
+    const nst = document.getElementById("f-status").value;
+    if (await post("status", { path: it.path, id: it.extra.id, status: nst, version: it.version })) {
+      recordDone(it.key, "status [" + nst + "]"); toast("Status zmieniony"); await load();
+    }
+  };
+}
+
+async function post(action, data) {
+  const msg = document.getElementById("f-msg");
+  if (msg) { msg.className = "msg"; msg.textContent = "Zapisuję…"; }
+  try {
+    const r = await fetch("/api/" + action, { method: "POST", headers: { "Content-Type": "application/json", "X-Board-Token": CONFIG.token }, body: JSON.stringify(data) });
+    const res = await r.json();
+    if (!r.ok) { if (msg) { msg.className = "msg err"; msg.textContent = res.error || "Błąd"; } return false; }
+    if (msg) msg.textContent = "";
+    return res;
+  } catch (e) { if (msg) { msg.className = "msg err"; msg.textContent = "Brak połączenia z serwerem: " + e; } return false; }
+}
+function toast(t) { const el = document.getElementById("toast"); el.textContent = t; el.style.display = "block"; setTimeout(() => el.style.display = "none", 2000); }
+
+document.getElementById("view").onchange = () => { try { localStorage.setItem("view", document.getElementById("view").value); } catch {} renderTree(); };
+document.getElementById("reload").onclick = () => CONFIG.state ? location.reload() : load();
+document.getElementById("briefing-btn").onclick = () => select("briefing");
+document.getElementById("help-btn").onclick = () => select("help");
+document.getElementById("plan-btn").onclick = () => select("file:plan/phases-plans.md");
+document.getElementById("koniec-btn").onclick = () => select("koniec");
+document.getElementById("mode").textContent = CONFIG.readOnly ? "tylko podgląd" : "podgląd + odpowiadanie";
+try { const v = localStorage.getItem("view"); if (v) document.getElementById("view").value = v; } catch {}
+if (CONFIG.state) document.getElementById("reload").hidden = true;
+if (location.hash.length > 1) SELECTED = decodeURIComponent(location.hash.slice(1));
+window.addEventListener("popstate", () => {
+  const key = decodeURIComponent(location.hash.slice(1));
+  if (key && key !== SELECTED && getItem(key)) select(key, true);
+});
+document.getElementById("back-btn").onclick = () => history.back();
+document.getElementById("fwd-btn").onclick = () => history.forward();
+// the side mouse buttons need no code: the browser maps them to history.back()/forward() itself
+load();
+</script>
+</body>
+</html>
