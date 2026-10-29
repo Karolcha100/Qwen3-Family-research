@@ -2,7 +2,7 @@
 
 Wszystkie pytania z `AGENTS/phases/*/agents-issues-*.md` w jednej tabeli: tytuł i decyzja dosłownie z pola **Decyzja**. Plik jest **generowany** poleceniem z `AGENTS/memory/procedury.md` (sekcja „Indeks decyzji”), więc nie edytuje się go ręcznie. Odświeżany na końcu każdej sesji. Gdy indeks i plik źródłowy się różnią, wygrywa plik źródłowy.
 
-*Wygenerowano: 2026-10-29 17:42 — Claude Opus 5.5*
+*Wygenerowano: 2026-10-29 19:33 — Claude Opus 5.5*
 
 ---
 
@@ -14,14 +14,14 @@ Wszystkie pytania z `AGENTS/phases/*/agents-issues-*.md` w jednej tabeli: tytuł
 | @phase-0:K4 | 🟡 Menedżer środowiska Pythona | A |
 | @phase-0:K5 | 🟡 Wersja Pythona | Opcja A |
 | @phase-0:K6 | 🔴 Własne implementacje czy gotowe biblioteki | Opcja B, aczkolwiek pragnę zaznaczyć ze sam wybiorę metody. |
-| @phase-0:K7 | 🟡 Qwen3 Base czy wersja instrukcyjna | ⏳ w toku → @A2 (wstępnie: Potrzebuję raportu o tym czym jest base, perplexity, jak to wpływa na rzeczy, czym jest wersja bez sufiksu etc.) |
-| @phase-0:K8 | 🟡 Dane kalibracyjne | ⏳ w toku → @A3 (wstępnie: W jaki sposób wybór wpływa na wyniki, o co tutaj chodzi, potrzebuję raportu) |
-| @phase-0:K9 | 🟡 Protokół perplexity | ⏳ w toku → @A4 (wstępnie: Nie wiem co to perplexity, nie wiem co zmieniają odpowiedzi, proszę o raport) |
+| @phase-0:K7 | 🟡 Qwen3 Base czy wersja instrukcyjna | ✅ Zgadzam się na opcje A (po @A2) |
+| @phase-0:K8 | 🟡 Dane kalibracyjne | ✅ Wybieram C, przy czym ja nie chcę kwantyzować modelu w klasyczny sposób (nie mówię że tego nie zrobimy, ale generalnie nie napisałem jeszcze tobie mojego głównego pomysłu) (po @A3) |
+| @phase-0:K9 | 🟡 Protokół perplexity | ✅ Niech będzie A (po @A4) |
 | @phase-0:K10 | 🟡 Kto i kiedy uruchamia obliczenia na GPU | Generalnie wolę B, z zastrzeżeniem że raczej ja powiem kiedy Agent ma uruchomić a nie że wpisuję sam komendy. |
 | @phase-0:K11 | 🟢 Zapis wyników | A |
 | @phase-0:K12 | 🟢 Struktura kodu | Dobra, ale chwilka, ja jeszcze nie napisałem tobie jakie rzeczy będziemy robić. Generalnie pomysł A jest spoko, ale zauważ że jeszcze nie wiesz jakie metody będziemy robić. |
 | @phase-0:K13 | 🟡 Model-sędzia do oceny odpowiedzi Qwen3 (z @T002) | Myślę że pójdziemy w opcję C, przy czym to trzeba jeszcze dopracować. |
-| @phase-0:K14 | 🟢 Narzędzia jakości kodu | ⏳ w toku → @A9 (wstępnie: Czy to potrzebne jeżeli będziemy stosować tamte benchmarki? - Jeżeli benchmarki tego nie uwzględniają to A) |
+| @phase-0:K14 | 🟢 Narzędzia jakości kodu | ✅ To zgadzam się na A (po @A9) |
 | @phase-0:K15 | 🟢 Notatki do nauki | A |
 | @phase-0:K16 | 🟢 Folder na pytania startowe | A |
 | @phase-0:K17 | 🟡 Push do GitHuba po sesji | Opcja B - Po każdym commicie rób też git push. |
@@ -43,7 +43,7 @@ Wszystkie pytania z `AGENTS/phases/*/agents-issues-*.md` w jednej tabeli: tytuł
 | @phase-0:K33 | 🟡 Co mogę robić bez Twojego „uruchom” | A |
 | @phase-0:K34 | 🟡 Jak chcesz wybierać metody | B |
 | @phase-0:K35 | 🟢 (ponowione K31) Ziarna przy wyborze danych kalibracyjnych | C |
-| @phase-0:K36 | 🟡 (ponowione K19) Jak zamienić wynik modelu nagrody na 0–100 | ⏳ w toku → @A10 (wstępnie: A co sądzisz o użyciu czegoś w rodzaju ELO Score? Poza tym podoba mi się twoja rekomendacja) |
+| @phase-0:K36 | 🟡 (ponowione K19) Jak zamienić wynik modelu nagrody na 0–100 | ✅ Zgadzam się na twoją propozycję (po @A10) |
 | @phase-0:K37 | 🟡 Limit długości odpowiedzi z myśleniem | B |
 | @phase-0:K38 | 🟢 Czy klasyfikator widzi myślenie modelu | A |
 | @phase-0:K39 | 🟡 Pytania w stylu IFEval w naszych 200 pytaniach a K28 | A, chociaż proszę o jakiś wątek wyjaśniający mi co to zmienia |

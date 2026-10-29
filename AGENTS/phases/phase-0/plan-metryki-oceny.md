@@ -28,7 +28,7 @@ Według Twoich decyzji: **reguły w Pythonie** (@phase-0:K28 = A) + **wieloatryb
 | 4 | czysty tekst | bez tokenów specjalnych, śmieciowych znaków, niezamkniętego `<think>` |
 | 5 | wynik zgodny z wzorcem | tylko pytania z jednoznaczną odpowiedzią (@phase-0:K40 = A) |
 
-**B. Atrybuty z modelu nagrody — 0–100** (percentyl względem odpowiedzi BF16, jeśli @phase-0:K36 = B)
+**B. Atrybuty z modelu nagrody — 0–100** (percentyl względem odpowiedzi BF16; @phase-0:K36)
 
 | # | Atrybut | Co mierzy |
 |---|---|---|
@@ -48,6 +48,14 @@ Według Twoich decyzji: **reguły w Pythonie** (@phase-0:K28 = A) + **wieloatryb
 |---|---|---|
 | 15 | wynik ogólny | skalar modelu nagrody, percentyl względem BF16 |
 | 16 | porównanie z BF16 | $100 \cdot \sigma(r_{\text{po kompresji}} - r_{\text{BF16}})$ dla tego samego pytania; 50 = tak samo dobra (@phase-0:K20 = C, K36 = A) |
+
+**D. Ranking wszystkich wariantów — Elo** (@phase-0:K36, propozycja z @A10)
+
+Nie jest to osobna metryka odpowiedzi, tylko **podsumowanie**. Każdy wariant (BF16, każda metoda × ustawienie) to „gracz”, a „mecz” to odpowiedzi dwóch wariantów na to samo pytanie, z szansą wygranej $\sigma(r_a - r_b)$ z modelu nagrody. Z wszystkich meczów dopasowujemy ranking Bradleya–Terry'ego na skali Elo:
+
+$$P(a \succ b) = \frac{1}{1 + 10^{(R_b - R_a)/400}}, \qquad R_{\text{BF16}} = 1000$$
+
+Słownie: każdy wariant dostaje jedną liczbę $R$, dobraną tak, żeby różnice między wariantami najlepiej przewidywały, który wygrywa w meczach. BF16 ma zawsze 1000. Różnica 100 punktów to ~64% szans na lepszą odpowiedź. Ranking nie wymaga GPU: liczy się z wyników modelu nagrody, które już mamy. Metrykę 16 można przeliczyć na różnicę Elo względem BF16: $\Delta R = 400 \log_{10}\frac{p}{1-p}$.
 
 Metryki 9 i 10 są **informacyjne**: po kompresji ich zmiana w dowolną stronę jest ciekawa, ale nie znaczy „lepiej” ani „gorzej”.
 
@@ -94,6 +102,14 @@ Skład pytań po Twoich decyzjach z 16:53 (@phase-0:K41 = C, K42 = B):
 Przygotowanie zestawu to moje zadanie @L7. Dalej czekam na Twoją opinię o liście 16 metryk.
 
 *2026-10-29 16:54 — Claude Opus 5.5*
+
+---
+---
+---
+
+Zmiana po decyzji końcowej @phase-0:K36 (19:32): dodałem sekcję **D. Ranking wszystkich wariantów — Elo** i usunąłem „jeśli” przy percentylach. Lista 16 metryk bez zmian; dalej czekam na Twoją opinię o niej.
+
+*2026-10-29 19:33 — Claude Opus 5.5*
 
 ---
 ---

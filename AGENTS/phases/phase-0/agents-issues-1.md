@@ -83,7 +83,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — wszędzie instrukcyjna (prościej, jeden model, ale perplexity mniej porównywalne z literaturą);
   - **C** — wszędzie Base (bez evalplus i oceny czatu).
 - **Rekomendacja:** A. Koszt jest mały, bo kompresja tą samą metodą to drugie uruchomienie tego samego skryptu.
-- **Decyzja:** ⏳ w toku → @A2 (wstępnie: Potrzebuję raportu o tym czym jest base, perplexity, jak to wpływa na rzeczy, czym jest wersja bez sufiksu etc.)
+- **Decyzja:** ✅ Zgadzam się na opcje A (po @A2)
 
 ### K8. 🟡 Dane kalibracyjne
 
@@ -93,7 +93,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — WikiText-2 (ryzyko zawyżenia wyniku perplexity na WikiText-2);
   - **C** — mieszanka C4 i kodu (lepiej chroni programowanie, ale trudniej porównać z literaturą).
 - **Rekomendacja:** A jako domyślne; C później jako osobny eksperyment („czy kalibracja na kodzie chroni evalplus?”).
-- **Decyzja:** ⏳ w toku → @A3 (wstępnie: W jaki sposób wybór wpływa na wyniki, o co tutaj chodzi, potrzebuję raportu)
+- **Decyzja:** ✅ Wybieram C, przy czym ja nie chcę kwantyzować modelu w klasyczny sposób (nie mówię że tego nie zrobimy, ale generalnie nie napisałem jeszcze tobie mojego głównego pomysłu) (po @A3)
 
 ### K9. 🟡 Protokół perplexity
 
@@ -103,7 +103,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — kontekst 4096 (bliżej realnego użycia Qwen3, ale dłużej i mniej porównywalne);
   - **C** — A plus dodatkowy pomiar na 4096 dla najlepszych konfiguracji.
 - **Rekomendacja:** A, a C dopiero przy wynikach końcowych.
-- **Decyzja:** ⏳ w toku → @A4 (wstępnie: Nie wiem co to perplexity, nie wiem co zmieniają odpowiedzi, proszę o raport)
+- **Decyzja:** ✅ Niech będzie A (po @A4)
 
 ### K10. 🟡 Kto i kiedy uruchamia obliczenia na GPU
 
@@ -154,7 +154,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — A, ale `mypy` zamiast `pyright`;
   - **C** — bez narzędzi.
 - **Rekomendacja:** A. Pyright lepiej rozumie najnowszą składnię typów.
-- **Decyzja:** ⏳ w toku → @A9 (wstępnie: Czy to potrzebne jeżeli będziemy stosować tamte benchmarki? - Jeżeli benchmarki tego nie uwzględniają to A)
+- **Decyzja:** ✅ To zgadzam się na A (po @A9)
 
 ### K15. 🟢 Notatki do nauki
 

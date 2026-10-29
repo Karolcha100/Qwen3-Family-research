@@ -57,3 +57,36 @@ Pełna lista „co odblokowuje co” jest zawsze aktualna w `AGENTS/memory/w-tok
 ---
 ---
 ---
+
+## Co masz zrobić
+
+Zaktualizowana lista (stan na 19:33). Zrobione od ostatniej listy: odpowiedzi końcowe w K7, K8, K9, K14 i K36. Zamknąłem zadania @A2, @A3, @A4, @A9, @A10, a Elo jest już w planie metryk (@L6). Sprawdziłem system: instalacje nadal nie są zrobione, a plan Phase 1 czeka na zatwierdzenie.
+
+### Teraz (do startu Phase 1) — bez zmian
+
+| # | Co | Gdzie w GUI | Czas | Odblokowuje |
+|---|---|---|---|---|
+| 1 | **Zatwierdź plan Phase 1** (✅ Zatwierdzam plan) | Plany do zatwierdzenia i opinii → `phases/phase-1/plan.md` | 2 min | wszystkie moje prace w Phase 1 |
+| 2 | **@A8:** jedno polecenie `sudo dnf install …` (pakiety + uv) | Twoje zadania (otwarte) → Ważne → A8 | 3 min | @L2: środowisko Pythona |
+| 3 | **@A6:** usunięcie CUDA 12 | Twoje zadania (otwarte) → Ważne → A6 | 10 min | @A7 |
+| 4 | **@A7:** instalacja CUDA 13.4 | Twoje zadania (otwarte) → Ważne → A7 | 15–20 min | @L3: budowa llama.cpp |
+
+### Przed Phase 2 — nowe, najważniejsze
+
+| # | Co | Gdzie |
+|---|---|---|
+| 5 | **Napisz mi swój główny pomysł.** W K8 wspomniałeś, że nie chcesz kwantyzować modelu w klasyczny sposób i że głównego pomysłu jeszcze nie opisałeś. Od niego zależy, które metody, dane kalibracyjne i kod mają sens, więc dopóki go nie znam, niczego pod metody nie projektuję. | ➕ Nowy wątek |
+| 6 | Na podstawie pomysłu: wybór metod i opis kolejnych faz (możesz skorzystać z katalogu albo nie) | Plany → `phases/phase-0/katalog-metod.md` |
+| 7 | Opinia o liście 16 metryk (teraz z sekcją Elo) | Plany → `phases/phase-0/plan-metryki-oceny.md` |
+
+### Co ja zrobię, gdy skończysz 1–4
+
+1. środowisko Pythona — @L2;
+2. budowa llama.cpp — @L3;
+3. napiszę „gotowe do testu” i **poczekam na Twoje „uruchom”** (@L4).
+
+*2026-10-29 19:33 — Claude Opus 5.5*
+
+---
+---
+---

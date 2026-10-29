@@ -30,7 +30,7 @@ $$P(a \succ b) = \sigma(r_a - r_b) = \frac{1}{1 + e^{-(r_a - r_b)}}$$
   - **B** — **percentyl względem odpowiedzi BF16:** „ta odpowiedź jest lepsza niż X% odpowiedzi oryginalnego modelu” (osobno dla każdego atrybutu). Działa dla każdej skali;
   - **C** — bez skali 0–100: surowe wyniki i ich różnice względem BF16.
 - **Rekomendacja:** A dla wyniku ogólnego + B dla atrybutów. Obie liczby są zrozumiałe bez znajomości skali modelu.
-- **Decyzja:** ⏳ w toku → @A10 (wstępnie: A co sądzisz o użyciu czegoś w rodzaju ELO Score? Poza tym podoba mi się twoja rekomendacja)
+- **Decyzja:** ✅ Zgadzam się na twoją propozycję (po @A10)
 
 ### K37. 🟡 Limit długości odpowiedzi z myśleniem
 

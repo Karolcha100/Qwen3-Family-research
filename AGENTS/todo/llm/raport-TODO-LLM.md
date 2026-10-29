@@ -13,3 +13,12 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 *2026-10-29 16:23 — Claude Opus 5.5*
 
 ---
+
+### [L6] Ranking Elo w planie metryk
+
+- dodałem sekcję D w `AGENTS/phases/phase-0/plan-metryki-oceny.md`: ranking Bradleya–Terry'ego na skali Elo, BF16 = 1000, wzór z opisem słownym, przeliczenie metryki 16 na $\Delta R$; wpis w dyskusji planu;
+- sprawdzone, że GUI dalej widzi plan; niczego nie uruchamiano.
+
+*2026-10-29 19:33 — Claude Opus 5.5*
+
+---
