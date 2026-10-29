@@ -1346,12 +1346,13 @@ wheels = [
 [[package]]
 name = "qwen3-family-research"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "accelerate" },
     { name = "datasets" },
     { name = "lm-eval" },
     { name = "safetensors" },
+    { name = "scipy" },
     { name = "torch" },
     { name = "transformers" },
 ]
@@ -1369,6 +1370,7 @@ requires-dist = [
     { name = "datasets" },
     { name = "lm-eval" },
     { name = "safetensors" },
+    { name = "scipy" },
     { name = "torch", specifier = ">=2.15", index = "https://download.pytorch.org/whl/cu134" },
     { name = "transformers" },
 ]

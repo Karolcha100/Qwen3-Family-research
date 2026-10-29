@@ -133,3 +133,14 @@ Dzięki temu po końcu kontekstu albo przerwie następna sesja wie, gdzie skońc
 - zmienić własnych uprawnień (`.claude/settings.json`) ani utworzyć repo na GitHubie — tryb auto blokuje (pułapki 9–10). Daję autorowi polecenie w zadaniu A;
 - `sudo` — zawsze zadanie A z poleceniami w blokach kodu, sprawdzonymi na żywym systemie (pułapka 11);
 - GPU bez „uruchom” autora (@phase-0:K10, K33).
+
+## 10. Kod i obliczenia (od Phase 2)
+
+- Kod: pakiet `src/qwen_compression/`, skrypty w `scripts/`, testy w `tests/`. Przed commitem:
+  ```bash
+  uv run ruff format src scripts tests/test_qwen_compression.py && uv run ruff check src scripts tests/test_qwen_compression.py && uv run pyright src scripts tests/test_qwen_compression.py && CUDA_VISIBLE_DEVICES="" uv run pytest -q
+  ```
+- Testy liczą na CPU na małym losowym Qwen3. Porównania bardzo małych KL rób w float64 (`at_least_float32` zamiast `.float()`).
+- Długie obliczenia: w tle (`run_in_background`), log w `results/<faza>/<etap>/log.jsonl`, skrypt pomija gotowe kroki (wznowienie tym samym poleceniem). Przed startem: `nvidia-smi` (czy GPU wolne) i wpis w `w-toku.md`.
+- Pobieranie z Hugging Face: `HF_HUB_DOWNLOAD_TIMEOUT=60` (pułapka 14).
+

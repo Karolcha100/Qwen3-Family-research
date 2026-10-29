@@ -10,6 +10,7 @@ dependencies = [
     "datasets",
     "safetensors",
     "lm-eval",
+    "scipy",
 ]
 
 [dependency-groups]
@@ -19,8 +20,12 @@ dev = [
     "pytest",
 ]
 
-[tool.uv]
-package = false
+[build-system]
+requires = ["uv_build>=0.12,<0.13"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "qwen_compression"
 
 [[tool.uv.index]]
 name = "pytorch-cu134"
@@ -33,6 +38,10 @@ torch = { index = "pytorch-cu134" }
 [tool.ruff]
 line-length = 120
 target-version = "py314"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
 
 [tool.pyright]
 pythonVersion = "3.14"

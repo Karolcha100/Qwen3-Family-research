@@ -13,19 +13,19 @@ Krótko: co już jest, co teraz robimy, co dalej i jakie decyzje czekają. Agent
 - **Repo:** `github.com/Karolcha100/Qwen3-Family-research` (prywatne). Commit + push po każdej sesji (@phase-0:K17 = B); pozwolenie `Bash(git push)` w `.claude/settings.json` (@A5).
 - **Decyzje (phase-0):** K1 GitHub; K2 rozpisujemy tylko Phase 1, dalsze fazy autor; K3 instalacje z `sudo` jako zadania A (@A6–@A8); K4 **uv**; K5 **Python 3.14**; K6 **gotowe biblioteki, metody wybiera autor**; K10 agent pisze kod, **uruchamia na GPU tylko na „uruchom” autora**; K11 wyniki w `results/*.jsonl`; K12 pakiet `src/…` „spoko”, ale **struktura dopiero po wyborze metod**; K15 notatki do nauki przy każdej metodzie; K16 `phase-0` na pytania ogólne; K17 commit + push; K30 zapisujemy tylko wybrane checkpointy (poza repo). K32 kalibracja zawsze C4; K33 bez „uruchom” wolno instalować, budować i pobierać (po zatwierdzeniu planu), GPU tylko na „uruchom”; K34 katalog metod + propozycja (`AGENTS/phases/phase-0/katalog-metod.md`, L1); K35 szum ziaren mierzony raz na 0.6B. K7 = A (Base do perplexity/KL/lm-eval, instrukcyjny do evalplus/IFEval/klasyfikatorów); K8 = C (kalibracja: mieszanka C4 + kod), ale **autor ma główny pomysł, inny niż klasyczna kwantyzacja, jeszcze nieopisany**; K9 = A (okna 2048 bez nakładania); K14 = A (ruff, pyright, pytest).
 - **Phase 1 (środowisko): ✅ skończona 2026-10-29 20:47.** CUDA 13.4.92, llama.cpp z CUDA (`~/llama.cpp`, commit `eb4e244be`), uv + Python 3.14 + torch 2.15.0+cu134. Testy: PPL WikiText-2 (okna 2048) Base 12,67, instrukcyjny 20,97; ~28 tys. tok/s przebiegu. Raport: `AGENTS/phases/phase-1/srodowisko.md`. GGUF i dane: `~/qwen3-checkpoints/`.
-- **Główny pomysł autora (@T009):** A zaburzenia neuronów MLP (δ ∈ {−1, −0,5, 0,5, 1}) i pomiar skutku, B rodzaje neuronów na wykresach, C zmniejszanie warstw (wybór neuronów, rekonstrukcja lokalna, dotrenowanie). Decyzje: neuron = neuron MLP (K1 A), zaburzenie mnożące (K2 A), miara KL (+ generacja i klasyfikator dla top ~250, K3 A), pilot (K4 C), trening warstwy „przez następną” (K5 B), dane na dysk (K6), start z najmniejszych kwadratów (K7 A), dotrenowanie najpierw tylko zmniejszonych warstw, potem LoRA (K8 D). **Phase 2 = etapy 1–4** (K9): plan `AGENTS/phases/phase-pomysl/plan-phase-2.md` do zatwierdzenia; K10–K15 rozstrzygnięte (tekst 75% C4 + 25% kod, pilot na warstwach 2/13/25, 1 mln tokenów na dysk, stopnie −5/−10/−20/−40%, pakiet `src/qwen_compression/`). **Cel autora: zmniejszać modele, zachowując sens** (uwaga 3).
+- **Główny pomysł autora (@T009):** A zaburzenia neuronów MLP (δ ∈ {−1, −0,5, 0,5, 1}) i pomiar skutku, B rodzaje neuronów na wykresach, C zmniejszanie warstw (wybór neuronów, rekonstrukcja lokalna, dotrenowanie). Decyzje: neuron = neuron MLP (K1 A), zaburzenie mnożące (K2 A), miara KL (+ generacja i klasyfikator dla top ~250, K3 A), pilot (K4 C), trening warstwy „przez następną” (K5 B), dane na dysk (K6), start z najmniejszych kwadratów (K7 A), dotrenowanie najpierw tylko zmniejszonych warstw, potem LoRA (K8 D). **Phase 2 = etapy 1–4** (K9): plan `AGENTS/phases/phase-pomysl/plan-phase-2.md` **zatwierdzony 2026-10-29 21:36**; kod etapu 1 (pakiet `src/qwen_compression/`, testy `tests/test_qwen_compression.py`, skrypt `scripts/phase2_stage1_pilot.py`) gotowy; K10–K15 rozstrzygnięte (tekst 75% C4 + 25% kod, pilot na warstwach 2/13/25, 1 mln tokenów na dysk, stopnie −5/−10/−20/−40%, pakiet `src/qwen_compression/`). **Cel autora: zmniejszać modele, zachowując sens** (uwaga 3).
 - **Ewaluacja (@T002):** 1) perplexity + KL, 2) lm-eval (z IFEval) + evalplus, 3) **klasyfikatory, bez sędziów generatywnych**: 4 reguły (K28) + wieloatrybutowy model nagrody (K29 = B, np. ArmoRM; wybór modelu: K18 „do rozważenia”). 200 pytań po angielsku (K21, K23), mieszanka źródeł (K22), sampling 3 odpowiedzi (K24), **tryb myślenia włączony** (K25), ocena bezwzględna + parami z BF16 (K20), ręczna kalibracja ~50 odpowiedzi w HTML (K26). Lista metryk: `AGENTS/phases/phase-0/plan-metryki-oceny.md` (do opiniowania). K37 limit 8192 tokenów; K38 model nagrody widzi tylko odpowiedź końcową; K39 bez pytań IFEval w naszych 200 (@T005); K40 metryka zgodności z wzorcem. K36: porównanie z BF16 + percentyle + ranking Elo (sekcja D planu metryk). K41 = C: 80 MT-Bench + 60 Arena-Hard + 40 AlpacaEval + 20 własnych; K42 = B: obie tury MT-Bench (druga oceniana osobno).
 - **Kod:** Python 3.14, z typami, po angielsku, bez komentarzy, pełne nazwy zmiennych.
 
 ## Następny krok
 
-1. Autor: zatwierdzenie `AGENTS/phases/phase-pomysl/plan-phase-2.md`.
-2. Agent po zatwierdzeniu: kod pakietu (bez GPU), potem etap 1 (pilot) po „uruchom” — @L13.
+1. Autor: „uruchom etap 1” (pilot, ~3 h GPU).
+2. Agent: pilot → analiza → raport `etap-1-pilot.md` (@L13; szczegóły w `AGENTS/memory/w-toku.md`).
 
 ## Otwarte decyzje autora
 
 - brak otwartych pytań.
-- Plan do zatwierdzenia: `AGENTS/phases/phase-pomysl/plan-phase-2.md`. Plany do opinii: `AGENTS/phases/phase-0/plan-metryki-oceny.md`, `AGENTS/phases/phase-0/katalog-metod.md`.
+- Plan do opinii: `AGENTS/phases/phase-0/katalog-metod.md` (plan metryk zatwierdzony 21:37).
 
 *Zmiana: 2026-10-29 15:03 — decyzje K3–K17, zadania A5–A8, raporty A2–A4 — Claude Opus 5.5*
 *Zmiana: 2026-10-29 15:45 — decyzje K11–K31, ocena klasyfikatorami — Claude Opus 5.5*
@@ -38,3 +38,4 @@ Krótko: co już jest, co teraz robimy, co dalej i jakie decyzje czekają. Agent
 *Zmiana: 2026-10-29 20:48 — Phase 1 skończona, główny pomysł autora — Claude Opus 5.5*
 *Zmiana: 2026-10-29 21:13 — decyzje K1–K9 pomysłu, plan Phase 2 — Claude Opus 5.5*
 *Zmiana: 2026-10-29 21:34 — K3, K10–K15 rozstrzygnięte — Claude Opus 5.5*
+*Zmiana: 2026-10-29 21:49 — plan Phase 2 zatwierdzony, kod etapu 1 gotowy — Claude Opus 5.5*

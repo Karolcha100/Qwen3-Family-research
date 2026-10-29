@@ -2,8 +2,7 @@
 
 *2026-10-29 15:45 — Claude Opus 5.5*
 
-**Status planu:** do opiniowania
-
+**Status planu:** zatwierdzony (2026-10-29 21:37, Autor)
 ## Co masz zrobić
 
 To lista metryk, którymi będziemy oceniać odpowiedzi skompresowanego Qwen3 na nasze 200 pytań (@phase-0:K27 = C). Napisz w dyskusji, co usunąć, dodać albo zmienić, np. „bez rozwlekłości, dodaj X”. Plan nie dotyczy metod kompresji (wybierzesz je Ty) ani poziomów 1–2 (perplexity, KL, benchmarki); ich podział jest w @T002.
@@ -115,3 +114,10 @@ Zmiana po decyzji końcowej @phase-0:K36 (19:32): dodałem sekcję **D. Ranking 
 ---
 ---
 
+✅ Plan zatwierdzony.
+
+*2026-10-29 21:37 — Autor*
+
+---
+---
+---
