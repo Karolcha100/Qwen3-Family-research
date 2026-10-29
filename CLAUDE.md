@@ -2,7 +2,7 @@
 
 Ten projekt używa struktury `AGENTS/` i GUI `agents_board` do komunikacji autora z Claude Code. Autor odpowiada w przeglądarce (`python3 -m agents_board`), a do Ciebie trafia przez pliki `.md` w `AGENTS/`.
 
-**Pełna instrukcja dla agenta: `AGENTS/todo/llm/INSTRUKCJA.md` — przeczytaj ją na początku każdej sesji i trzymaj się jej.** Mapa folderu: `AGENTS/README.md`. Pamięć projektu: `AGENTS/memory/`.
+**Pełna instrukcja dla agenta: `AGENTS/todo/llm/INSTRUKCJA.md` — przeczytaj ją na początku każdej sesji i trzymaj się jej.** Mapa folderu: `AGENTS/README.md`. Pamięć projektu: `AGENTS/memory/` — **zacznij od `AGENTS/memory/w-toku.md`** (czy poprzednia sesja przerwała zadanie), moje zadania: `AGENTS/todo/llm/TODO-dla-LLM.md`, jak robię typowe rzeczy: `AGENTS/memory/procedury.md`.
 
 ## Najważniejsze reguły (skrót; szczegóły w INSTRUKCJA.md)
 

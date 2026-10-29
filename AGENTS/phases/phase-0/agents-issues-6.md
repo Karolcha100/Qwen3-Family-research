@@ -18,7 +18,7 @@ Dwie decyzje wynikające z @phase-0:K39 = A. Wyjaśnienie jest w @T005. Nie blok
   - **D** — inny podział (wpisz jaki).
 - Pytania z Arena-Hard i AlpacaEval losujemy raz, ze stałym ziarnem, i zapisujemy listę w repo. 20 własnych napiszesz Ty (o tym, co Cię ciekawi), albo zaproponuję listę do Twojej akceptacji.
 - **Rekomendacja:** C. Mieszanka trudności działa dla 0.6B i dla 8B. Pytania z jednoznaczną odpowiedzią (metryka 5, @phase-0:K40 = A) dają głównie kategorie matematyka i rozumowanie z MT-Bench oraz część własnych.
-- **Decyzja:**
+- **Decyzja:** C
 
 ### K42. 🟢 Druga tura pytań MT-Bench
 
@@ -28,4 +28,4 @@ Dwie decyzje wynikające z @phase-0:K39 = A. Wyjaśnienie jest w @T005. Nie blok
   - **B** — obie tury: druga tura z własną pierwszą odpowiedzią modelu w kontekście, oceniana osobno (80 dodatkowych ocen, poza liczbą 200);
   - **C** — A jako standard, B jako osobny eksperyment dla wybranych wariantów.
 - **Rekomendacja:** C.
-- **Decyzja:**
+- **Decyzja:** B

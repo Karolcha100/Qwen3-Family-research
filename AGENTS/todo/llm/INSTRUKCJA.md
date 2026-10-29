@@ -14,7 +14,7 @@ Wtedy przejdź kroki z sekcji „Na początku każdej sesji”, odpowiedz na wsz
 
 ## Na początku każdej sesji (w tej kolejności)
 
-0. **`AGENTS/README.md`** (mapa), potem **`AGENTS/memory/`** (zacznij od `README.md`): stan projektu, zasady współpracy, pułapki.
+0. **`AGENTS/README.md`** (mapa), potem **`AGENTS/memory/`** (zacznij od `README.md`): **praca w toku (`w-toku.md`)**, stan projektu, indeks decyzji, zasady współpracy, procedury, pułapki.
 1. **`AGENTS/talk/od-autora-dla-llmow.md`**: przeczytaj nowe uwagi i oznacz każdą jako przeczytaną, dopisując na końcu jej linii `— *przeczytane: RRRR-MM-DD (model)*`. Poza tym w tym pliku **nic nie piszesz**.
 2. **`AGENTS/plan/phases-plans.md`**: na jakim etapie jest projekt.
 3. **Najnowszy plik w `AGENTS/talk/koniec/`** (jeśli jest nowszy niż Twój ostatni briefing): lista tego, na co autor odpowiedział — od tego zaczynasz. **Mimo to sprawdź pliki zmienione od ostatniego briefingu** (`git status`, `git diff`) i przeczytaj je — lista z Konca bywa niepełna (autor pisze też w VS Code).
@@ -28,7 +28,9 @@ Wtedy przejdź kroki z sekcji „Na początku każdej sesji”, odpowiedz na wsz
 
 1. **Odpowiedzi** we wszystkich miejscach, na które autor czekał (wątki, raport autora, dyskusje planów, propozycje końcowe w pytaniach).
 2. **TODO i raport:** statusy zadań `L…`, nowe zadania `A…` dla autora, wpisy w `raport-TODO-LLM.md`, plan faz.
-3. **Pamięć:** popraw `AGENTS/memory/*.md`, jeśli zmieniło się coś ważnego.
+3. **Pamięć:** popraw `AGENTS/memory/*.md`, jeśli zmieniło się coś ważnego; zawsze zaktualizuj `w-toku.md` i odśwież `decyzje.md` (`AGENTS/memory/procedury.md`, sekcja 6).
+
+**W trakcie dłuższych zadań** (instalacja, budowa, eksperyment) aktualizuj `AGENTS/memory/w-toku.md` po każdym ukończonym kroku, a nie dopiero na końcu sesji. Kontekst może się skończyć w połowie pracy.
 4. **Briefing:** `AGENTS/talk/briefings/RRRR-MM-DD-GGMM.md` (godzina z `date`) z **tą samą treścią** co odpowiedź w czacie. Nagłówek np. `# Briefing RRRR-MM-DD GG:MM — temat`.
 5. **Commit** z sensownym opisem, potem **`git push`** — po każdym prompcie autora (decyzja @phase-0:K17 = B). Jeśli push się nie uda, napisz to w briefingu i podaj autorowi polecenie w bloku kodu.
 6. **Odpowiedź w czacie** — tylko dwie części:
@@ -153,3 +155,4 @@ Nie zmieniaj ich bez zmiany `agents_board/model.py` i testów `tests/test_agents
 4. **Każde ograniczenie ma ścieżkę dla wyjątków:** „nie zmieniaj X” zawsze razem z „zgłoś kandydata do pliku Y”.
 5. **Pilot na różnych przypadkach** przed pełną falą; **krok koordynatora** po fali w planie fazy.
 6. **Agent recenzujący nie zapisuje danych** — zapis robi koordynator.
+*Zmiana: 2026-10-29 16:54 — notatniki agenta (w-toku, decyzje, procedury), @T006 — Claude Opus 5.5*

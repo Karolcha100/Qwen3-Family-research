@@ -59,3 +59,11 @@ Dwie decyzje:
 ---
 ---
 ---
+
+🔒 Wątek zamknięty.
+
+*2026-10-29 16:48 — Autor*
+
+---
+---
+---

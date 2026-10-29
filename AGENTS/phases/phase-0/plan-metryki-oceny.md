@@ -86,3 +86,16 @@ Dalej czekam na Twoją opinię o samej liście 16 metryk.
 ---
 ---
 ---
+
+Skład pytań po Twoich decyzjach z 16:53 (@phase-0:K41 = C, K42 = B):
+- 200 pytań = 80 MT-Bench + 60 Arena-Hard + 40 AlpacaEval + 20 własnych;
+- MT-Bench z obiema turami: druga tura (z własną pierwszą odpowiedzią modelu w kontekście) dostaje osobną ocenę, czyli 80 ocen więcej. W raporcie będzie osobna kolumna „rozmowa (2. tura)”, żeby było widać, czy kompresja psuje pamięć rozmowy.
+
+Przygotowanie zestawu to moje zadanie @L7. Dalej czekam na Twoją opinię o liście 16 metryk.
+
+*2026-10-29 16:54 — Claude Opus 5.5*
+
+---
+---
+---
+

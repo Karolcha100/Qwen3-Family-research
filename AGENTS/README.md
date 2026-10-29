@@ -12,7 +12,7 @@ Najwygodniej przeglądasz to w przeglądarce: `python3 -m agents_board` (drzewo 
 ```
 AGENTS/
   README.md                       ← ten plik
-  memory/                         pamięć projektu: stan, zasady współpracy, pułapki (agent czyta na starcie sesji)
+  memory/                         pamięć agenta: praca w toku, stan, indeks decyzji, zasady, procedury, pułapki (czytane na starcie sesji)
   plan/
     phases-plans.md               kolejność faz i statusy (przycisk „🗺️ Plan” w GUI; aktualizują agenci)
     phases-description.md         zakres faz

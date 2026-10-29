@@ -13,20 +13,20 @@ Krótko: co już jest, co teraz robimy, co dalej i jakie decyzje czekają. Agent
 - **Repo:** `github.com/Karolcha100/Qwen3-Family-research` (prywatne). Commit + push po każdej sesji (@phase-0:K17 = B); pozwolenie `Bash(git push)` w `.claude/settings.json` (@A5).
 - **Decyzje (phase-0):** K1 GitHub; K2 rozpisujemy tylko Phase 1, dalsze fazy autor; K3 instalacje z `sudo` jako zadania A (@A6–@A8); K4 **uv**; K5 **Python 3.14**; K6 **gotowe biblioteki, metody wybiera autor**; K10 agent pisze kod, **uruchamia na GPU tylko na „uruchom” autora**; K11 wyniki w `results/*.jsonl`; K12 pakiet `src/…` „spoko”, ale **struktura dopiero po wyborze metod**; K15 notatki do nauki przy każdej metodzie; K16 `phase-0` na pytania ogólne; K17 commit + push; K30 zapisujemy tylko wybrane checkpointy (poza repo). K32 kalibracja zawsze C4; K33 bez „uruchom” wolno instalować, budować i pobierać (po zatwierdzeniu planu), GPU tylko na „uruchom”; K34 katalog metod + propozycja (`AGENTS/phases/phase-0/katalog-metod.md`, L1); K35 szum ziaren mierzony raz na 0.6B. W toku: K7/K8/K9 → @A2/@A3/@A4 (raporty w `AGENTS/phases/phase-0/A2…A4-*.md`), K14 → @A9 (wyjaśnione, rekomendacja A).
 - **Phase 1 (środowisko):** plan `AGENTS/phases/phase-1/plan.md` do zatwierdzenia; zadania autora @A6 (usunięcie CUDA 12, 117 pakietów), @A7 (CUDA 13.4), @A8 (pakiety + uv).
-- **Ewaluacja (@T002):** 1) perplexity + KL, 2) lm-eval (z IFEval) + evalplus, 3) **klasyfikatory, bez sędziów generatywnych**: 4 reguły (K28) + wieloatrybutowy model nagrody (K29 = B, np. ArmoRM; wybór modelu: K18 „do rozważenia”). 200 pytań po angielsku (K21, K23), mieszanka źródeł (K22), sampling 3 odpowiedzi (K24), **tryb myślenia włączony** (K25), ocena bezwzględna + parami z BF16 (K20), ręczna kalibracja ~50 odpowiedzi w HTML (K26). Lista metryk: `AGENTS/phases/phase-0/plan-metryki-oceny.md` (do opiniowania). K37 limit 8192 tokenów; K38 model nagrody widzi tylko odpowiedź końcową; K39 bez pytań IFEval w naszych 200 (@T005); K40 metryka zgodności z wzorcem. K36 → @A10 (propozycja: porównanie z BF16 + percentyle + ranking Elo). Otwarte: K41 (skład 200 pytań), K42 (druga tura MT-Bench).
+- **Ewaluacja (@T002):** 1) perplexity + KL, 2) lm-eval (z IFEval) + evalplus, 3) **klasyfikatory, bez sędziów generatywnych**: 4 reguły (K28) + wieloatrybutowy model nagrody (K29 = B, np. ArmoRM; wybór modelu: K18 „do rozważenia”). 200 pytań po angielsku (K21, K23), mieszanka źródeł (K22), sampling 3 odpowiedzi (K24), **tryb myślenia włączony** (K25), ocena bezwzględna + parami z BF16 (K20), ręczna kalibracja ~50 odpowiedzi w HTML (K26). Lista metryk: `AGENTS/phases/phase-0/plan-metryki-oceny.md` (do opiniowania). K37 limit 8192 tokenów; K38 model nagrody widzi tylko odpowiedź końcową; K39 bez pytań IFEval w naszych 200 (@T005); K40 metryka zgodności z wzorcem. K36 → @A10 (propozycja: porównanie z BF16 + percentyle + ranking Elo). K41 = C: 80 MT-Bench + 60 Arena-Hard + 40 AlpacaEval + 20 własnych; K42 = B: obie tury MT-Bench (druga oceniana osobno).
 - **Kod:** Python 3.14, z typami, po angielsku, bez komentarzy, pełne nazwy zmiennych.
 
 ## Następny krok
 
-1. Autor: zatwierdzenie planu Phase 1, @A6–@A8, wybory w @A2–@A4, @A9, @A10, opis dalszych faz i wybór metod (katalog), K41–K42, opinie o planie metryk i katalogu.
-2. Agent po zatwierdzeniu planu i @A8: kroki 5–6 (środowisko uv); po @A7: budowa llama.cpp; GPU tylko po „uruchom”.
-3. Agent: po wyborze metod przez autora sprawdzić obsługę Qwen3 w bibliotekach (⚠️ w katalogu).
+1. Autor: zatwierdzenie planu Phase 1, @A6–@A8, wybory w @A2–@A4, @A9, @A10, opis dalszych faz i wybór metod (katalog), K43, opinie o planie metryk i katalogu.
+2. Agent: zadania L2–L11 w `AGENTS/todo/llm/TODO-dla-LLM.md` (co czeka na co: `AGENTS/memory/w-toku.md`). Bez blokad: L8 (przegląd modeli nagrody).
 
 ## Otwarte decyzje autora
 
-- `AGENTS/phases/phase-0/agents-issues-6.md` (K41–K42); @A2–@A4, @A9, @A10.
+- @phase-0:K43 (`agents-issues-7.md`, narzędzia agenta); @A2–@A4, @A9, @A10.
 - Plany: `AGENTS/phases/phase-1/plan.md` (zatwierdzenie), `AGENTS/phases/phase-0/plan-metryki-oceny.md` i `AGENTS/phases/phase-0/katalog-metod.md` (opinia).
 
 *Zmiana: 2026-10-29 15:03 — decyzje K3–K17, zadania A5–A8, raporty A2–A4 — Claude Opus 5.5*
 *Zmiana: 2026-10-29 15:45 — decyzje K11–K31, ocena klasyfikatorami — Claude Opus 5.5*
 *Zmiana: 2026-10-29 16:23 — decyzje K32–K40, katalog metod, push skonfigurowany — Claude Opus 5.5*
+*Zmiana: 2026-10-29 16:56 — K41/K42, notatniki agenta (@T006) — Claude Opus 5.5*
