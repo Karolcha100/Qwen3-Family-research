@@ -1,0 +1,40 @@
+[project]
+name = "qwen3-family-research"
+version = "0.1.0"
+description = "Learning project: LLM compression research on the Qwen3 family"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+    "torch>=2.15",
+    "transformers",
+    "accelerate",
+    "datasets",
+    "safetensors",
+    "lm-eval",
+]
+
+[dependency-groups]
+dev = [
+    "ruff",
+    "pyright[nodejs]",
+    "pytest",
+]
+
+[tool.uv]
+package = false
+
+[[tool.uv.index]]
+name = "pytorch-cu134"
+url = "https://download.pytorch.org/whl/cu134"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu134" }
+
+[tool.ruff]
+line-length = 120
+target-version = "py314"
+
+[tool.pyright]
+pythonVersion = "3.14"
+venvPath = "."
+venv = ".venv"

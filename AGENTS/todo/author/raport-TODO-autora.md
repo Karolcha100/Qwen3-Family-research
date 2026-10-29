@@ -288,3 +288,65 @@ lrwxrwxrwx. 1 root root 21 10-29 20:10 /usr/local/cuda -> /usr/local/cuda-13.4/
 > 🤖 **ODPOWIEDŹ LLM — koniec**
 
 ---
+
+### [A8] Zainstaluj pakiety do budowy llama.cpp i uv
+
+```
+❯ sudo dnf install uv
+uv --version
+[sudo] hasło użytkownika karol: 
+Aktualizowanie i ładowanie repozytoriów:
+ Fedora 44 - x86_64 - Updates                                                                                                                                                                       100% | 156.0 KiB/s |  17.5 KiB |  00m00s
+Załadowano repozytoria.
+Pakiet                                                                           Arch              Wersja                                                                           Repozytorium                                     Rozmiar
+Instalowanie:
+ uv                                                                              x86_64            0:0.12.24-1.fc44                                                                 updates                                         43.2 MiB
+
+Podsumowanie transakcji:
+ Instalowanie:                          1 pakietu
+
+Całkowity rozmiar pakietów przychodzących wynosi 13 MiB. Należy pobrać 13 MiB.
+Po tej operacji zostanie użyte dodatkowo 43 MiB (zainstaluje 43 MiB, usunie 0 B).
+Kontynuować? [t/N]: t
+[1/1] uv-0:0.12.24-1.fc44.x86_64                                                                                                                                                                    100% |  12.2 MiB/s |  13.1 MiB |  00m01s
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+[1/1] Razem                                                                                                                                                                                         100% |  12.2 MiB/s |  13.1 MiB |  00m01s
+Wykonywanie transakcji
+[1/3] Weryfikowanie plików pakietu                                                                                                                                                                  100% |  27.0   B/s |   1.0   B |  00m00s
+[2/3] Przygotowywanie transakcji                                                                                                                                                                    100% |   2.0   B/s |   1.0   B |  00m00s
+[3/3] Instalowanie uv-0:0.12.24-1.fc44.x86_64                                                                                                                                                       100% |  62.6 MiB/s |  43.2 MiB |  00m01s
+Ukończono!
+uv 0.12.24 (x86_64-unknown-linux-gnu)
+
+~/Pobrane via 🐍 v3.14.8 took 10s 
+❯ 
+```
+
+*2026-10-29 20:19 — Autor*
+
+---
+
+> 🤖 **ODPOWIEDŹ LLM — początek** (Claude Opus 5.5)
+>
+> ### [A8] Re: Zainstaluj pakiety do budowy llama.cpp i uv
+>
+> **Co masz zrobić:** nic do instalowania. **Środowisko jest gotowe.** Gdy zechcesz, napisz „uruchom” (tutaj albo w czacie), a zrobię krótkie testy na GPU (@L4, kilka minut): generowanie tekstu i szybką perplexity Qwen3-0.6B w PyTorchu oraz `llama-bench` i `llama-perplexity` w llama.cpp. Pobiorę przy tym Qwen3-0.6B (Base i instrukcyjny, ok. 2,5 GB).
+>
+> uv działa (0.12.24). Zaraz po nim postawiłem środowisko Pythona (@L2):
+>
+> | Co | Wersja |
+> |---|---|
+> | Python | 3.14.8 (`.python-version`) |
+> | PyTorch | 2.15.0 z CUDA 13.4 (cu134; cu132 omijamy przez błąd CUDA 13.2) |
+> | transformers / accelerate / datasets / safetensors | 5.22.0 / 1.15.0 / 5.1.0 / 0.8.0 |
+> | lm-eval | 0.4.13 |
+> | ruff / pyright / pytest | 0.17.3 / 1.1.414 / 9.2.0 |
+> | GPU widziane przez PyTorch | tak, 1 urządzenie, compute capability 8.9 |
+>
+> Pliki w repo: `pyproject.toml`, `uv.lock` (dokładne wersje 116 pakietów), `.python-version`. Środowisko jest w `.venv` (6 GB, poza gitem). Odtworzenie na innym komputerze to jedno `uv sync`. Na GPU niczego nie liczyłem; zapytałem tylko, czy karta jest widoczna. Zadanie oznaczyłem jako `[x]`.
+>
+> *przeczytane i odpowiedziane: 2026-10-29 20:22 — Claude Opus 5.5*
+>
+> 🤖 **ODPOWIEDŹ LLM — koniec**
+
+---

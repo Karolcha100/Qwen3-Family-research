@@ -37,3 +37,15 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 *2026-10-29 20:17 — Claude Opus 5.5*
 
 ---
+
+### [L2] Środowisko Pythona (Phase 1 kroki 5–6)
+
+- `pyproject.toml` (bez pakietu i struktury pod metody, `package = false`; @phase-0:K12), `.python-version` = 3.14, `uv.lock` (116 pakietów), środowisko w `.venv` (6 GB, w `.gitignore`);
+- PyTorch z indeksu `download.pytorch.org/whl/cu134`: **torch 2.15.0+cu134**. Dostępne były cu130, cu132 i cu134; cu132 pominięte przez błąd CUDA 13.2, a cu134 pasuje do sterownika 615 (CUDA ≤ 13.4);
+- wersje: transformers 5.22.0, accelerate 1.15.0, datasets 5.1.0, safetensors 0.8.0, lm-eval 0.4.13, ruff 0.17.3, pyright 1.1.414 (z `pyright[nodejs]`, bo zwykły nie mógł pobrać node.js), pytest 9.2.0;
+- PyTorch widzi GPU: 1 urządzenie, compute capability (8, 9). Wheel nie ma osobnego kodu `sm_89`, ale kod `sm_86` działa na Adzie (ta sama generacja 8.x);
+- bez obliczeń na GPU: mnożenie BF16 i testy modelu to @L4 po „uruchom”.
+
+*2026-10-29 20:22 — Claude Opus 5.5*
+
+---
