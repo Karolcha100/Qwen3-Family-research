@@ -6,6 +6,15 @@
 
 Uruchom dwa polecenia niżej (można przed @A6 i @A7, kolejność nie ma znaczenia) i wklej w raporcie pod @A8 wynik drugiego. Budowę llama.cpp zrobię ja po @A7, bez `sudo`. Pythona 3.14 masz już w systemie (decyzja @phase-0:K5 = A).
 
+**Dopisane 2026-10-29 20:12:** `git`, `cmake`, `gcc-c++`, `openssl-devel` i `libcurl-devel` są już w systemie (sprawdziłem). Wystarczy:
+
+```bash
+sudo dnf install uv
+uv --version
+```
+
+Pełne polecenie niżej też zadziała (dnf pominie to, co już jest).
+
 ## Kroki
 
 **1. Instalacja** (`uv` 0.12.24 jest w repo Fedory 44 — decyzja @phase-0:K4 = A):

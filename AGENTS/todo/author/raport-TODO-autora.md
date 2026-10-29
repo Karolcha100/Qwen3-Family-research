@@ -241,3 +241,50 @@ NVIDIA GeForce RTX 4070 SUPER, 615.78.08
 > 🤖 **ODPOWIEDŹ LLM — koniec**
 
 ---
+
+### [A7] Zainstaluj CUDA 13.4 (sam toolkit)
+
+```❯ nvcc --version
+ls -l /usr/local/cuda
+ldconfig -p | grep -c libcudart
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2026 NVIDIA Corporation
+Built on Tue_Sep_01_08:45:21_PDT_2026
+Cuda compilation tools, release 13.4, V13.4.92
+Build cuda_13.4.r13.4/compiler.38855100_0
+lrwxrwxrwx. 1 root root 21 10-29 20:10 /usr/local/cuda -> /usr/local/cuda-13.4/
+2
+```
+
+*2026-10-29 20:12 — Autor*
+
+---
+
+> 🤖 **ODPOWIEDŹ LLM — początek** (Claude Opus 5.5)
+>
+> ### [A7] Re: Zainstaluj CUDA 13.4 (sam toolkit)
+>
+> **Co masz zrobić:** wszystko się zgadza, **CUDA 13.4 działa**. Zostało @A8, które jest teraz jeszcze krótsze: pakiety do budowy już masz, brakuje tylko uv:
+>
+> ```bash
+> sudo dnf install uv
+> uv --version
+> ```
+>
+> Sprawdziłem i wszystko jest tak, jak powinno:
+>
+> | Co | Stan |
+> |---|---|
+> | `nvcc` | release 13.4, V13.4.92 (nie 13.2 ✓) |
+> | `/usr/local/cuda` | → `cuda-13.4` (7,8 GB) |
+> | `PATH` w `~/.zshrc` | linia 45 ✓ |
+> | `/etc/ld.so.conf.d/cuda.conf` | `/usr/local/cuda/lib64` ✓, `libcudart` widoczny dla systemu (2 wpisy) |
+> | zgodność z GCC 16 | ✓ — cmake w llama.cpp przyjął nvcc 13.4 z GCC 16.2.1, więc `gcc15-c++` niepotrzebne |
+>
+> Co już robię (bez GPU, zgodnie z @phase-0:K33 = A): **kompiluję llama.cpp z CUDA** (@L3), z niskim priorytetem procesora (`nice`), żeby nie przeszkadzać, jeśli grasz. Wynik dopiszę w raporcie agentów. Zadanie oznaczyłem jako `[x]`.
+>
+> *przeczytane i odpowiedziane: 2026-10-29 20:12 — Claude Opus 5.5*
+>
+> 🤖 **ODPOWIEDŹ LLM — koniec**
+
+---

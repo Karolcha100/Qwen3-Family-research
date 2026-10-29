@@ -8,15 +8,14 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Teraz
 
-Brak zadania w toku. @L3 częściowo zrobione: llama.cpp sklonowane do `~/llama.cpp` (commit `eb4e244be`, 2026-10-29, 640 MB); budowa czeka na @A7 i @A8.
+Brak zadania w toku. @L3 zrobione 20:16 (llama.cpp z CUDA zbudowane w `~/llama.cpp/build/bin`, GPU jeszcze nietestowane).
 
 ## Na co czekam (co odblokuje pracę)
 
 | Czekam na | Odblokuje |
 |---|---|
 | @A8 (uv) — plan Phase 1 zatwierdzony 19:39 | @L2 środowisko Pythona |
-| @A7 (CUDA 13.4; @A6 zrobione 20:04) + @A8 | @L3 budowa llama.cpp (kod już sklonowany) |
-| „uruchom” autora | @L4 testy dymne na GPU |
+| „uruchom” autora (+ @L2 dla części PyTorch) | @L4 testy dymne na GPU (część llama.cpp gotowa) |
 | opinia o `AGENTS/phases/phase-0/plan-metryki-oceny.md` + środowisko | @L7 zestaw 200 pytań |
 | **opis głównego pomysłu autora** (nowy wątek) + wybór metod | @L9 weryfikacja bibliotek, @L10 notatki do nauki, plan Phase 2 |
 
@@ -26,4 +25,4 @@ Brak zadania w toku. @L3 częściowo zrobione: llama.cpp sklonowane do `~/llama.
 
 ## Ostatnia sesja
 
-2026-10-29 20:05: @A6 zrobione i sprawdzone (CUDA 12 usunięta czysto, 208 GB wolnego). Następne: @A7, @A8.
+2026-10-29 20:17: @A7 zrobione i sprawdzone (CUDA 13.4.92); @L3 zrobione (llama.cpp z CUDA, nvcc 13.4 przyjął GCC 16). @A8 sprowadza się do `sudo dnf install uv`.
