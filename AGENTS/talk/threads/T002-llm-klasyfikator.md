@@ -125,3 +125,44 @@ Nazwy modeli są z mojej wiedzy. Przed wyborem sprawdzę aktualne rankingi (Rewa
 ---
 ---
 ---
+
+Dobra, czyli byśmy robili to co tutaj proponujesz, oraz te KL, Lm-eval, evalplus? - Czy w takim wypadku potrzebna jest metryka "0/1 sprawdzalne regułą" ? Dodatkowo metryki 0-100 czy 0-10, mogą być wypełniane klasyfikatorem na zasadzie że kilka razy używamy jednego modelu nagrody aby uzyskać te kilka metryk.
+
+*2026-10-29 14:07 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Dwie nowe decyzje wynikające z Twoich pytań: @phase-0:K28 (które metryki regułowe zostają) i @phase-0:K29 (czy sprawdzamy na danych, czy jeden model nagrody uruchamiany kilka razy daje osobne metryki). Wystarczy wpisać „rek”. Poprzednie pytania o sędziego (K18–K27) są nadal aktualne.
+
+**1. Tak: robimy wszystko razem, warstwami** (od najtańszej):
+
+| Warstwa | Co | Na czym | Kiedy |
+|---|---|---|---|
+| 1 | perplexity, KL względem BF16 | WikiText-2, C4 | każdy wariant, minuty |
+| 2 | lm-eval (ARC, HellaSwag, PIQA… + IFEval), evalplus | gotowe zestawy z odpowiedziami | warianty, które przeszły warstwę 1 |
+| 3 | sędzia (reguły + model nagrody + ewentualnie sędzia z rubryką) | nasze ~50 pytań otwartych | najciekawsze warianty |
+
+**2. Czy metryki „0/1 sprawdzalne regułą” są potrzebne, skoro jest lm-eval i evalplus?** Część nie:
+- **#4 Format zgodny z instrukcją** dubluje IFEval, który jest w lm-eval jako gotowe zadanie (~500 poleceń sprawdzanych regułą) → **usuwamy**;
+- **#5 Kod działa** dubluje evalplus → **usuwamy**.
+
+Cztery zostają: **#1 kompletna, #2 bez pętli, #3 właściwy język, #6 czysty tekst**. Nie mierzą „jak dobra jest odpowiedź”, tylko wyłapują **typowe awarie po kompresji** (pętle, bełkot, urwany tekst, przełączenie na chiński). Benchmarki tego nie raportują: zepsuta odpowiedź po prostu dostaje 0, a nie dowiadujemy się dlaczego. Są też **bramką dla sędziego**: model nagrody potrafi dać zapętlonej odpowiedzi zaskakująco wysoki wynik, więc taką odpowiedź oznaczamy przed oceną. Koszt to kilkadziesiąt linii Pythona, bez GPU. Decyzja: @phase-0:K28.
+
+**3. Jeden model nagrody uruchomiony kilka razy, po razie na metrykę?** Da się to zrobić technicznie: w treści przed odpowiedzią dopisujemy kryterium („oceń tylko poprawność merytoryczną”) i odpalamy model po razie na metrykę. Haczyk: **zwykły skalarny model nagrody był uczony na ogólnych preferencjach („która odpowiedź lepsza”) i zwykle ignoruje takie polecenie.** Wtedy „poprawność”, „spójność” i „pomocność” wyjdą prawie tymi samymi liczbami, a my będziemy mieli 8 kopii jednej metryki pod różnymi nazwami.
+
+Są trzy sposoby, żeby to zadziałało:
+- **model wieloatrybutowy** (np. ArmoRM): w jednym przebiegu zwraca kilkanaście osobnych ocen (pomocność, poprawność, spójność, złożoność, rozwlekłość…). To najbliżej Twojego pomysłu i jest najtańsze;
+- **modele nagrody uczone pod kryterium/zasadę** (tzw. principle-following reward models): przyjmują kryterium jako wejście i są pod to trenowane. To nowszy kierunek; sprawdzę, co jest dostępne w rozmiarze do ~8B;
+- **sędzia generatywny z rubryką:** na pewno rozróżnia kryteria, ale jest najwolniejszy.
+
+**Rekomendacja:** zamiast zakładać, sprawdźmy to na danych. Na ~50 odpowiedziach puszczamy skalarny model nagrody z 6 różnymi kryteriami i liczymy korelacje między „metrykami”. Jeśli wychodzą bliskie 1, model ignoruje kryterium i bierzemy model wieloatrybutowy albo z rubryką. Jeśli są wyraźnie różne, Twój pomysł działa i jest najtańszy. To ~10 minut GPU na Qwen3-0.6B. Decyzja: @phase-0:K29.
+
+*2026-10-29 14:09 — Claude Opus 5.5*
+
+---
+---
+---

@@ -51,3 +51,19 @@ Nie zmieniałem Twojego `~/.zshrc`, bo pytałeś, jak to zrobić. Jeśli wolisz,
 ---
 ---
 ---
+
+działa
+
+*2026-10-29 14:04 — Autor*
+
+---
+---
+---
+
+🔒 Wątek zamknięty.
+
+*2026-10-29 14:04 — Autor*
+
+---
+---
+---

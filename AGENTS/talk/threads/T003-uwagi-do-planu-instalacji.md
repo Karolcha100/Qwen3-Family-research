@@ -57,3 +57,42 @@ Sprawdziłem: masz **Minicondę 26.3.2** w `~/miniconda3` (solver libmamba, kana
 ---
 ---
 ---
+
+Okej, zostańmy przy twojej rekomendacji (uv + systemowa CUDA 13.4).
+
+Masz coś do dodania?
+
+*2026-10-29 14:08 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Wpisz w @phase-0:K4 decyzję „A” (uv), bo w polu Decyzja ciągle pusto, a wolę mieć to w pytaniu niż tylko w wątku. Zostają też @phase-0:K3 (czy instalacje z `sudo` dostają zadania A) i @phase-0:K5 (wersja Pythona). Po decyzji w K3 dam polecenia w zadaniach.
+
+Mam do dodania kilka rzeczy:
+
+**1. Instalacja uv: z repo Fedory.** `uv` 0.12.24 jest w `updates` Fedory 44, więc nie trzeba skryptu `curl | sh`:
+
+```bash
+sudo dnf install uv
+uv --version
+```
+
+Wchodzi to w zadania z K3, razem z CUDA.
+
+**2. Conda nie będzie przeszkadzać.** Sprawdziłem: `auto_activate` jest wyłączone, więc terminal nie startuje w `(base)`. To ważne, bo uv w aktywnym środowisku conda potrafi użyć jego Pythona zamiast `.venv` projektu. Jeśli kiedyś zrobisz `conda activate`, przed pracą w tym projekcie zrób `conda deactivate`.
+
+**3. PyTorch nie potrzebuje systemowej CUDA.** Wheel PyTorcha z CUDA 13.x działa ze sterownikiem 615. Systemowa CUDA 13.4 jest potrzebna do llama.cpp i kerneli, a nie do PyTorcha. Dlatego środowisko Pythona (kroki 5–7 planu Phase 1) mogę postawić, zanim zainstalujesz CUDA. Czeka tylko na zatwierdzenie planu i K5.
+
+**4. Kolejność wpisów w `~/.zshrc`.** Linia `export PATH=/usr/local/cuda/bin:$PATH` z instalacji CUDA może stać przed blokiem conda albo po nim; conda nie dodaje własnego `nvcc`, dopóki go w niej nie zainstalujesz. Bez znaczenia.
+
+**5. Miejsce na dysku.** Qwen3 0.6B–8B w BF16 to ~29 GB w cache Hugging Face (`~/.cache/huggingface`), do tego warianty GGUF i skompresowane checkpointy. Przy 184 GB wolnego (+34 GB po usunięciu CUDA 12.x) starczy. Modele zostają w domyślnym cache, tak jak ustaliliśmy w `local-llm-conversation.md`. Otwarte jest tylko to, czy zapisujemy skompresowane checkpointy, bo to one mogą zająć dużo miejsca: @phase-0:K30.
+
+*2026-10-29 14:09 — Claude Opus 5.5*
+
+---
+---
+---
