@@ -1,0 +1,84 @@
+# Phase 2 — plan: mapa neuronów i zmniejszenie jednej warstwy (etapy 1–4 głównego pomysłu)
+
+*2026-10-29 21:13 — Claude Opus 5.5*
+
+**Status planu:** do zatwierdzenia
+
+## Co masz zrobić
+
+Przeczytaj plan i zatwierdź (✅ Zatwierdzam plan) albo napisz w dyskusji, co zmienić. Plan obejmuje etapy 1–4 z `AGENTS/phases/phase-pomysl/raport-2-opinia.md` (@phase-pomysl:K9). Jest napisany pod Twoje decyzje K1–K9 i moje rekomendacje w otwartych pytaniach K10–K15 (`AGENTS/phases/phase-pomysl/agents-issues-2.md`). Jeśli odpowiesz tam inaczej, poprawię plan. **Każdy etap na GPU uruchamiam dopiero po Twoim „uruchom”** (@phase-0:K10).
+
+## Cel
+
+Zmierzyć, jak ważny jest każdy neuron MLP Qwen3-0.6B, opisać rodzaje neuronów w warstwach i sprawdzić na jednej warstwie, czy da się ją zmniejszyć, zachowując sens modelu.
+
+## Ustalenia (z decyzji)
+
+| | |
+|---|---|
+| neuron | jedna z 3072 ścieżek MLP w każdej z 28 warstw, razem 86 016 (@phase-pomysl:K1 = A) |
+| zaburzenie | $a \to (1+\delta)\,a$, $\delta \in \{-1, -0{,}5, 0{,}5, 1\}$ (K2 = A) |
+| miara skutku | średnia KL względem oryginału + zmiana straty; generacja i klasyfikator tylko dla ~100 najważniejszych neuronów (K3, @A11) |
+| sposób liczenia A | pilot, potem decyzja (K4 = C) |
+| model | Qwen3-0.6B-Base, BF16 (pomiary na zwykłym tekście, @phase-0:K7 = A) |
+| trening warstwy | „przez następną warstwę”: wejście $h^{(\ell-1)}$, cel $h^{(\ell+1)}$, warstwa $\ell+1$ zamrożona (K5 = B); dane zapisane na dysk (K6); start: zachowane neurony + $W_{\text{down}}$ z najmniejszych kwadratów (K7 = A) |
+| wyniki | `results/phase2/*.jsonl` i małe tablice (np. KL dla 86 016 × 4) w repo; duże dane (aktywacje, pary do treningu) w `~/qwen3-checkpoints/phase2/` |
+
+## Etapy
+
+### Etap 1 — pilot części A (3 warstwy)
+
+1. Zbiór pomiarowy: mieszanka C4 + kod (K11), stałe ziarno, 16 384 tokenów (zapas; pilot sprawdzi, czy wystarczy mniej).
+2. Statystyki aktywacji wszystkich 86 016 neuronów (jeden przebieg): średnia, odchylenie, maksimum, odsetek aktywności. Przydadzą się w B.
+3. **Dokładnie:** wszystkie neurony warstw 2, 13, 25 (K12) × 4 zaburzenia = 36 864 przebiegi, każdy od zaburzanej warstwy w górę.
+4. **Przesiew gradientem** dla tych samych neuronów (raport 1, część A).
+5. **Szum:** dla 500 losowych neuronów powtórka dokładnego pomiaru na drugim, rozłącznym zbiorze tokenów.
+6. Porównanie: korelacja rang (Spearman) przybliżenie ↔ dokładnie, pokrycie „top 10%”, wielkość szumu, wpływ liczby tokenów (4096 vs 16 384).
+
+**Wynik:** raport `AGENTS/phases/phase-pomysl/etap-1-pilot.md` z rekomendacją, jak liczyć etap 2 i na ilu tokenach. Czas GPU: ~1,5–3 h.
+
+### Etap 2 — część A dla całego modelu
+
+Sposób według pilota: albo wszystko dokładnie (do ~28 h, w kilku sesjach, gdy nie grasz), albo przesiew gradientem dla wszystkich + dokładnie dla ~10% najważniejszych i próbki kontrolnej. **Wynik:** $\Delta_{\ell,j,\delta}$ dla wszystkich neuronów (`results/phase2/`), raport `etap-2-mapa.md`. Czas GPU: od ~1 h do ~28 h.
+
+### Etap 3 — część B: rodzaje neuronów i wykresy
+
+1. Etykiety (raport 1, część B): martwy, krytyczny, zbędny, asymetryczny, „masywny”, selektywny. Progi z rozkładów z etapu 2, z uwzględnieniem szumu z pilota.
+2. Wykresy (PNG w folderze fazy, widoczne w GUI): liczba neuronów każdego rodzaju w każdej warstwie, rozkład KL w warstwach, mapa ciepła warstwa × rodzaj.
+3. Dla ~100 neuronów o największym KL: generacja odpowiedzi z wyłączonym neuronem i ocena (K3).
+
+**Wynik:** raport `etap-3-rodzaje-neuronow.md` z wykresami. Czas GPU: minuty, plus generacja dla ~100 neuronów.
+
+### Etap 4 — część C na jednej warstwie
+
+1. Wybór warstwy: najmniej wrażliwa według etapów 2–3 (do Twojej akceptacji w raporcie etapu 3).
+2. Zapis par $(h^{(\ell-1)}, h^{(\ell+1)})$ dla 1 mln tokenów (K13, ~4 GB).
+3. Dla każdego stopnia zmniejszenia (K14: −10%, −20%, −30%, −50%):
+   - zostawiamy najważniejsze neurony (według $\Delta_{\ell,j,-1}$);
+   - liczymy $\widetilde W_{\text{down}}$ metodą najmniejszych kwadratów;
+   - trenujemy zmniejszony MLP „przez zamrożoną warstwę $\ell+1$”;
+   - mierzymy KL i perplexity **całego modelu** po podmianie: (a) samo wycięcie, (b) + najmniejsze kwadraty, (c) + trening.
+4. Punkt odniesienia na tej samej warstwie: wybór neuronów według prostej ważności „średnia |aktywacja|” (jak w Minitronie), żeby zobaczyć, ile daje ważność z części A.
+
+**Wynik:** raport `etap-4-jedna-warstwa.md` z krzywą „ile wycięte → ile model stracił” dla wariantów (a)/(b)/(c) i obu sposobów wyboru neuronów. Czas GPU: ~1–2 h.
+
+## Czego w tej fazie nie robimy
+
+Zmniejszania wielu warstw naraz, dotrenowania całego modelu i pełnej ewaluacji (lm-eval, evalplus, klasyfikatory). To etapy 5–6, czyli Phase 3 (K10).
+
+## Kod
+
+Według K15 (rekomendacja: pakiet `src/qwen_compression/` + skrypty w `scripts/` + testy w `tests/`). Python 3.14 z typami, bez komentarzy, pełne nazwy. Każdy skrypt zapisuje wyniki z ziarnem i wersjami bibliotek.
+
+## Koniec fazy, gdy
+
+- jest rekomendacja z pilota i pełna mapa $\Delta$ dla 86 016 neuronów;
+- są wykresy rodzajów neuronów w 28 warstwach;
+- dla jednej warstwy jest krzywa zmniejszania z wariantami (a)/(b)/(c) i porównaniem z prostą ważnością;
+- raporty etapów 1–4 są w folderze fazy.
+
+## Dyskusja
+
+---
+---
+---

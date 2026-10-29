@@ -378,3 +378,58 @@ uruchom
 > 🤖 **ODPOWIEDŹ LLM — koniec**
 
 ---
+
+### [A11] K3: 🟡 Jak mierzymy „sensowność” w części A
+
+Rozwiń czym jest KL, poza tym także składaniam się do A - Przy czym, czy nie możemy po prostu użyć szybszego klasyfikatora?
+
+*2026-10-29 21:04 — Autor*
+
+---
+
+> 🤖 **ODPOWIEDŹ LLM — początek** (Claude Opus 5.5)
+>
+> ### [A11] Re: K3: 🟡 Jak mierzymy „sensowność” w części A
+>
+> **Co masz zrobić:** jeśli wyjaśnienie wystarcza, wpisz w @phase-pomysl:K3 odpowiedź końcową, np. „A”: KL + zmiana straty dla wszystkich zaburzeń, a generacja i klasyfikator tylko dla ~100 neuronów o największym wpływie oraz dla gotowych, zmniejszonych modeli.
+>
+> ### Czym jest KL
+>
+> Model na każdej pozycji tekstu daje **rozkład prawdopodobieństwa następnego tokenu**, np. po „Stolicą Francji jest” 70% „Paryż”, 20% „miasto”, 10% reszta. Oznaczmy przez $P$ rozkład **oryginalnego** modelu, a przez $Q$ rozkład modelu **z zaburzonym neuronem**. Dywergencja Kullbacka–Leiblera:
+>
+> $$D_{\mathrm{KL}}(P \,\|\, Q) = \sum_{v} P(v)\,\log\frac{P(v)}{Q(v)}$$
+>
+> Słownie: dla każdego tokenu $v$ sprawdzamy, ile razy zaburzony model ocenia go inaczej niż oryginał ($\log$ ilorazu), i ważymy to tym, jak ważny był ten token dla oryginału ($P(v)$). Wynik to **jedna liczba ≥ 0**; 0 tylko wtedy, gdy rozkłady są identyczne. Liczymy ją na każdej pozycji tekstu i uśredniamy.
+>
+> **Przykłady** (3 tokeny, oryginał $P = (0{,}7;\ 0{,}2;\ 0{,}1)$):
+>
+> | Zaburzony model $Q$ | KL | Co to znaczy |
+> |---|---|---|
+> | $(0{,}69;\ 0{,}21;\ 0{,}10)$ | 0,0003 | praktycznie bez zmian |
+> | $(0{,}6;\ 0{,}3;\ 0{,}1)$ | 0,027 | lekko „zachwiany”, nadal wybierze to samo |
+> | $(0{,}1;\ 0{,}2;\ 0{,}7)$ | 1,17 | model „chce powiedzieć” coś zupełnie innego |
+>
+> **Związek z perplexity:** KL to dokładnie tyle, o ile wzrosłaby strata (logarytm perplexity), gdyby za „prawdziwy tekst” uznać to, co mówi oryginał. Dlatego KL jest **czulsza niż perplexity**: patrzy na cały rozkład (~152 tys. tokenów), a nie tylko na jedno prawidłowe słowo. Wcześniej pisałem o tym w `AGENTS/phases/phase-0/A4-perplexity.md`, punkt 3.
+>
+> **Kierunek ma znaczenie:** $D_{\mathrm{KL}}(P\|Q) \ne D_{\mathrm{KL}}(Q\|P)$ (w przykładzie: 0,027 i 0,029). Liczymy $P$ = oryginał, bo pytamy: „ile z tego, co oryginał chciał powiedzieć, zaburzony model gubi?”.
+>
+> ### Czy nie prościej użyć szybkiego klasyfikatora?
+>
+> Wąskim gardłem nie jest klasyfikator, tylko **generowanie odpowiedzi**, które klasyfikator miałby ocenić:
+>
+> | | KL | Klasyfikator |
+> |---|---|---|
+> | co trzeba zrobić na jedno zaburzenie | 1 przebieg modelu po stałym tekście (np. 4096 tokenów) | wygenerować kilka–kilkanaście odpowiedzi token po tokenie, potem je ocenić |
+> | czas na jedno zaburzenie (Qwen3-0.6B, Twoje GPU) | ~0,15 s | ~1–5 s (nawet przy generowaniu wsadowym) |
+> | pilot (3 warstwy × 3072 neurony × 4 zaburzenia = 36 864) | ~1,5 h | ~10–50 h |
+> | czułość | widzi nawet drobne zmiany | widzi tylko zmianę, która **psuje tekst na tyle, że to widać** |
+>
+> Drugi powód jest ważniejszy: **wyłączenie jednego z 86 tys. neuronów prawie nigdy nie psuje tekstu na tyle, żeby klasyfikator to zauważył**. Dla ~99% neuronów dałby „wszystko OK” i nie odróżnilibyśmy neuronów lekko ważnych od zupełnie zbędnych, a właśnie tego potrzebujemy do wyboru, co wyciąć (część C). KL te różnice widzi.
+>
+> **Gdzie klasyfikator ma sens:** dla ~100 neuronów o największym KL (czy ich wyłączenie naprawdę psuje odpowiedzi?) i dla gotowych, zmniejszonych modeli. Tam liczy się to, czy model nadal ma sens, a nie drobne różnice.
+>
+> *przeczytane i odpowiedziane: 2026-10-29 21:12 — Claude Opus 5.5*
+>
+> 🤖 **ODPOWIEDŹ LLM — koniec**
+
+---

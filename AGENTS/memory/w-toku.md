@@ -14,13 +14,14 @@ Brak zadania w toku. Phase 1 skończona (@L2–@L5).
 
 | Czekam na | Odblokuje |
 |---|---|
-| odpowiedzi na @phase-pomysl:K1–K9 (zwłaszcza K1, K9) | @L12 plan etapów pomysłu, potem pilot części A |
-| opinia o `AGENTS/phases/phase-0/plan-metryki-oceny.md` | @L7 zestaw 200 pytań (potrzebny dopiero w etapie 6 pomysłu) |
+| zatwierdzenie `AGENTS/phases/phase-pomysl/plan-phase-2.md` (+ K10–K15) | @L13: kod pakietu (bez GPU) |
+| „uruchom” autora (osobno dla każdego etapu na GPU) | @L13: etapy 1–4 Phase 2 |
+| opinia o `AGENTS/phases/phase-0/plan-metryki-oceny.md` | @L7 zestaw pytań (dopiero Phase 3) |
 
-## Odłożone pytania (zadać przy planowaniu pilota części A)
+## Odłożone pytania
 
-- zbiór tokenów do pomiaru zaburzeń w części A: proporcje mieszanki C4 + kod i źródło kodu (@phase-0:K8 = C), wielkość $T$ (po pilocie).
+- brak (proporcje tekstu pomiarowego zadane jako @phase-pomysl:K11).
 
 ## Ostatnia sesja
 
-2026-10-29 20:48: @L4 i @L5 zrobione, Phase 1 skończona. Główny pomysł autora (@T009) opisany w dwóch raportach + pytania K1–K9 w `AGENTS/phases/phase-pomysl/`.
+2026-10-29 21:13: wyjaśnienie KL i odpowiedź „czemu nie klasyfikator” pod @A11; plan Phase 2 (etapy 1–4) + pytania K10–K15; @L12 zrobione, @L13 czeka.

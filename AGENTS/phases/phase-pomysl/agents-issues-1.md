@@ -17,7 +17,7 @@ Decyzje potrzebne, żeby z Twojego pomysłu (@T009) zrobić plan. Opis matematyc
   - **C** — głowa atencji (16 na warstwę, 448 w modelu);
   - **D** — A + C (najpierw A, potem głowy).
 - **Rekomendacja:** A. Pasuje do C („z 1000 do 800”), a MLP to 44% parametrów. Głowy (C) można dodać później.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K2. 🟡 Jak zaburzamy neuron (wartości −1, −0,5, 0,5, 1)
 
@@ -28,7 +28,7 @@ Decyzje potrzebne, żeby z Twojego pomysłu (@T009) zrobić plan. Opis matematyc
   - **C** — dodając wprost: $a \to a + \delta$ (dla neuronów o różnej skali wynik jest nieporównywalny);
   - **D** — A i B (2× koszt).
 - **Rekomendacja:** A. Jest czytelne („wyłącz, osłab, wzmocnij”), a −1 to dokładnie to, co robi przycinanie w części C.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K3. 🟡 Jak mierzymy „sensowność” w części A
 
@@ -38,7 +38,7 @@ Decyzje potrzebne, żeby z Twojego pomysłu (@T009) zrobić plan. Opis matematyc
   - **B** — tylko zmiana perplexity;
   - **C** — generacja i model nagrody dla każdego zaburzenia (najwierniej, ale miesiące liczenia).
 - **Rekomendacja:** A. KL jest najczulsza i liczy się jednym przebiegiem. Generację zostawiamy dla ciekawych przypadków.
-- **Decyzja:**
+- **Decyzja:** ⏳ w toku → @A11 (wstępnie: Rozwiń czym jest KL, poza tym także składaniam się do A - Przy czym, czy nie możemy po prostu użyć szybszego klasyfikatora?)
 
 ### K4. 🟡 Jak liczyć część A: wszystko czy z przesiewem
 
@@ -48,7 +48,7 @@ Decyzje potrzebne, żeby z Twojego pomysłu (@T009) zrobić plan. Opis matematyc
   - **B** — przesiew gradientem (wszystkie neurony naraz, minuty), a dokładnie tylko ~10% najważniejszych + losowa próbka do sprawdzenia przybliżenia;
   - **C** — pilot: dokładnie 2–3 warstwy, porównanie z przesiewem, potem decyzja A czy B dla reszty.
 - **Rekomendacja:** C. Pilot pokaże, czy przybliżenie gradientowe się sprawdza. Samo porównanie „przybliżenie vs dokładnie” to też ciekawy wynik.
-- **Decyzja:**
+- **Decyzja:** C
 
 ### K5. 🟡 Cel treningu zmniejszonej warstwy (C2–C3)
 
@@ -58,7 +58,7 @@ Decyzje potrzebne, żeby z Twojego pomysłu (@T009) zrobić plan. Opis matematyc
   - **B** — przez następną warstwę: wejście z warstwy $\ell-1$, cel na wyjściu zamrożonej warstwy $\ell+1$;
   - **C** — oba i porównanie.
 - **Rekomendacja:** C. A jest prostsze i ma dokładne rozwiązanie startowe (najmniejsze kwadraty), a B to Twoja wersja. Porównanie odpowie, czy „przez następną warstwę” daje coś więcej.
-- **Decyzja:**
+- **Decyzja:** wolę B
 
 ### K6. 🟢 Dane do treningu warstwy: zapis na dysk czy w locie
 
@@ -67,7 +67,7 @@ Decyzje potrzebne, żeby z Twojego pomysłu (@T009) zrobić plan. Opis matematyc
   - **A** — w locie: oryginalny model (1,2 GB) liczy cele na bieżąco, nic nie trafia na dysk;
   - **B** — zapis na dysk (szybsze kolejne eksperymenty na tych samych danych, ale GB na warstwę).
 - **Rekomendacja:** A. Model 0.6B jest szybki. Przy 4B/8B wrócimy do tego pytania.
-- **Decyzja:**
+- **Decyzja:** Zapis na dysk, ewentualnie zmniejszymy liczbę N_{tokens}
 
 ### K7. 🟢 Start zmniejszonej warstwy
 
@@ -77,7 +77,7 @@ Decyzje potrzebne, żeby z Twojego pomysłu (@T009) zrobić plan. Opis matematyc
   - **B** — tylko wagi zachowanych neuronów, potem trening;
   - **C** — losowe wagi (najwolniej, najgorzej).
 - **Rekomendacja:** A. Najmniejsze kwadraty często same dają wynik bliski wytrenowanemu, a jeśli nie, trening startuje z dobrego punktu.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K8. 🟡 Dotrenowanie całego modelu (C4)
 
@@ -88,7 +88,7 @@ Decyzje potrzebne, żeby z Twojego pomysłu (@T009) zrobić plan. Opis matematyc
   - **C** — trenujemy tylko zmniejszone warstwy (najtaniej);
   - **D** — C, a jeśli nie wystarczy, B.
 - **Rekomendacja:** D. Najpierw sprawdzamy, ile da najtańszy wariant.
-- **Decyzja:**
+- **Decyzja:** D
 
 ### K9. 🟡 Plan faz z pomysłu
 
@@ -98,4 +98,4 @@ Decyzje potrzebne, żeby z Twojego pomysłu (@T009) zrobić plan. Opis matematyc
   - **B** — rozpiszę je sam (napiszę w @T009);
   - **C** — najpierw rozmowa w @T009, potem plan.
 - **Rekomendacja:** A, bo plan i tak przechodzi przez Twoje zatwierdzenie i dyskusję.
-- **Decyzja:**
+- **Decyzja:** Podane przez ciebie propozycje etapów Phase 1 są dobre, aczkolwiek chciałbym w phase 1 realizować tylko etapy 1, 2, 3, 4.

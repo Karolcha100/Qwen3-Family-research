@@ -7,3 +7,5 @@ Ogólne uwagi autora dla wszystkich agentów, numerowane od najstarszej. Agent c
 1. Jeżeli piszesz komendy (w szczególności te dłuższe) do wykonania przezemnie, to pisz je w "```" (żeby pojawiły się jako oddzielna linia w specjalnej czcionce) — *przeczytane: 2026-10-29 (Claude Opus 5.5)*
 
 2. Pamiętaj aby używać wzorów matematycznych w TeX kiedy piszesz jakieś równania, generalnie najlepiej przy sprawach techniczno-matematycznych, dawać opis słowny i w TeX. — *przeczytane: 2026-10-29 (Claude Opus 5.5)*
+
+3. Dobra, jak coś to nie musisz ciągle pisać czego dana rzecz mnie uczy, moim celem jest po prostu zmniejszanie modeli tak aby zachować ich sens — *przeczytane: 2026-10-29 (Claude Opus 5.5)*

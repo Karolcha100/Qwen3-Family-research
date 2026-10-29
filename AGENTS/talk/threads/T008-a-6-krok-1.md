@@ -194,3 +194,11 @@ Mój błąd: w @A6 powinienem był uprzedzić, że dnf dołoży nieużywane zale
 ---
 ---
 ---
+
+🔒 Wątek zamknięty.
+
+*2026-10-29 20:58 — Autor*
+
+---
+---
+---

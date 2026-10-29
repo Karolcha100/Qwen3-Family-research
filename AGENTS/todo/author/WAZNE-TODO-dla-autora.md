@@ -30,3 +30,4 @@ Rzeczy, które blokują dalszą pracę agentów. Zasady (numeracja `A…`, statu
   *(zamknięte przez agenta: 2026-10-29 19:33 — decyzja końcowa autora: K14 = A)*
 - [x] **A10. K36: 🟡 (ponowione K19) Jak zamienić wynik modelu nagrody na 0–100** — z pytania @phase-0:K36 (`phases/phase-0/agents-issues-5.md`). *(dodane 2026-10-29 16:18)*
   *(zamknięte przez agenta: 2026-10-29 19:33 — decyzja końcowa autora: K36 = porównanie z BF16 + percentyle + Elo)*
+- [ ] **A11. K3: 🟡 Jak mierzymy „sensowność” w części A** — z pytania @phase-pomysl:K3 (`phases/phase-pomysl/agents-issues-1.md`). *(dodane 2026-10-29 21:04)*

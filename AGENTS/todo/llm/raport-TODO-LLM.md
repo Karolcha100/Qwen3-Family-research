@@ -68,3 +68,12 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 *2026-10-29 20:48 — Claude Opus 5.5*
 
 ---
+
+### [L12] Plan etapów głównego pomysłu
+
+- `AGENTS/phases/phase-pomysl/plan-phase-2.md` (do zatwierdzenia): etapy 1–4 według @phase-pomysl:K9 (pilot A, A dla całego modelu, B rodzaje neuronów i wykresy, C na jednej warstwie), z decyzjami K1–K9;
+- nowe pytania K10–K15 (`AGENTS/phases/phase-pomysl/agents-issues-2.md`): numer fazy, tekst pomiarowy, warstwy pilota, liczba tokenów, stopnie zmniejszenia, układ kodu.
+
+*2026-10-29 21:13 — Claude Opus 5.5*
+
+---
