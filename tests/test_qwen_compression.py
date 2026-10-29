@@ -2,15 +2,24 @@ import copy
 
 import pytest
 import torch
-from scipy.stats import spearmanr
 from transformers import AutoTokenizer, Qwen3Config, Qwen3ForCausalLM
 
 from qwen_compression.activations import collect_neuron_statistics
+from qwen_compression.analysis import spearman, top_overlap
 from qwen_compression.data import interleave_sources, pack_sequences
 from qwen_compression.importance import fisher_kl_coefficients
 from qwen_compression.metrics import kl_and_loss_change, reference_log_probabilities
-from qwen_compression.model_parts import down_projection, final_hidden_states, hidden_states_before_layer
+from qwen_compression.model_parts import (
+    decoder_layers,
+    down_projection,
+    final_hidden_states,
+    hidden_states_before_layer,
+    mlp_of,
+    replaced_mlp,
+    run_layer_window,
+)
 from qwen_compression.perturbation import measure_perturbations, scaled_neurons
+from qwen_compression.reconstruction import LeastSquaresStatistics, pruned_mlp
 
 SEQUENCE_LENGTH = 16
 CHUNK_LENGTH = 5
@@ -133,7 +142,7 @@ def test_fisher_coefficients_rank_neurons_like_exact_kl(model: Qwen3ForCausalLM,
         kl, _ = exact_kl_and_loss(double_model, sequence, layer_index, torch.arange(width), scales)
         exact += kl / token_ids.shape[0]
     predicted = coefficients[layer_index] * delta**2
-    correlation = spearmanr(predicted.numpy(), exact.numpy()).statistic
+    correlation = spearman(predicted, exact)
     assert correlation > 0.9
     assert 0.5 < (predicted.sum() / exact.sum()).item() < 2.0
 
@@ -175,3 +184,73 @@ def test_measure_perturbations_matches_single_measurements(model: Qwen3ForCausal
             )
             torch.testing.assert_close(kl[row, sequence_index], expected_kl[0].double())
             torch.testing.assert_close(loss_change[row, sequence_index], expected_loss[0].double())
+
+
+def test_spearman_and_top_overlap() -> None:
+    values = torch.tensor([3.0, 1.0, 4.0, 1.5, 9.0, 2.6])
+    assert abs(spearman(values, values * 2 + 1) - 1) < 1e-12
+    assert abs(spearman(values, -values) + 1) < 1e-12
+    assert abs(spearman(torch.tensor([1.0, 2.0, 3.0, 4.0, 5.0]), torch.tensor([2.0, 1.0, 4.0, 3.0, 5.0])) - 0.8) < 1e-12
+    assert top_overlap(values, values, 0.5) == 1.0
+
+
+def test_layer_window_reproduces_hidden_states(model: Qwen3ForCausalLM, token_ids: torch.Tensor) -> None:
+    with torch.no_grad():
+        hidden = model.model(input_ids=token_ids, output_hidden_states=True, use_cache=False).hidden_states
+        layers = list(decoder_layers(model))
+        output = run_layer_window(model, hidden[1], layers[1:3])
+    torch.testing.assert_close(output, hidden[3])
+    assert len(model.model.layers) == 4
+
+
+def test_pruned_mlp_keeping_all_neurons_is_identical(model: Qwen3ForCausalLM, token_ids: torch.Tensor) -> None:
+    mlp = mlp_of(model, 1)
+    with replaced_mlp(model, 1, pruned_mlp(mlp, torch.arange(48))):
+        pruned_logits = full_logits(model, token_ids)
+    torch.testing.assert_close(pruned_logits, full_logits(model, token_ids))
+
+
+def test_pruned_mlp_matches_zeroed_neurons(model: Qwen3ForCausalLM, token_ids: torch.Tensor) -> None:
+    keep = torch.tensor([index for index in range(48) if index % 3 != 0])
+    removed = torch.tensor([index for index in range(48) if index % 3 == 0])
+    with replaced_mlp(model, 2, pruned_mlp(mlp_of(model, 2), keep)):
+        pruned_logits = full_logits(model, token_ids)
+    zeroed_model = copy.deepcopy(model)
+    down_projection(zeroed_model, 2).weight[:, removed] = 0
+    torch.testing.assert_close(pruned_logits, full_logits(zeroed_model, token_ids))
+
+
+def test_least_squares_recovers_down_projection_when_keeping_all(
+    model: Qwen3ForCausalLM, token_ids: torch.Tensor
+) -> None:
+    double_model = copy.deepcopy(model).double()
+    statistics = LeastSquaresStatistics(48, 32)
+    projection = down_projection(double_model, 1)
+
+    def record(module: torch.nn.Module, arguments: tuple[torch.Tensor, ...], output: torch.Tensor) -> None:
+        statistics.add(arguments[0], output)
+
+    handle = projection.register_forward_hook(record)
+    full_logits(double_model, torch.randint(0, 64, (10, SEQUENCE_LENGTH), generator=torch.Generator().manual_seed(3)))
+    handle.remove()
+    torch.testing.assert_close(statistics.down_weight(torch.arange(48), 1e-12), projection.weight, atol=1e-6, rtol=1e-6)
+
+
+def test_least_squares_beats_plain_pruning(model: Qwen3ForCausalLM, token_ids: torch.Tensor) -> None:
+    double_model = copy.deepcopy(model).double()
+    statistics = LeastSquaresStatistics(48, 32)
+    captured: list[tuple[torch.Tensor, torch.Tensor]] = []
+
+    def record(module: torch.nn.Module, arguments: tuple[torch.Tensor, ...], output: torch.Tensor) -> None:
+        statistics.add(arguments[0], output)
+        captured.append((arguments[0].reshape(-1, 48), output.reshape(-1, 32)))
+
+    projection = down_projection(double_model, 1)
+    handle = projection.register_forward_hook(record)
+    full_logits(double_model, token_ids)
+    handle.remove()
+    activations, targets = captured[0]
+    keep = torch.arange(0, 48, 2)
+    plain_error = (activations[:, keep] @ projection.weight[:, keep].T - targets).square().sum()
+    fitted_error = (activations[:, keep] @ statistics.down_weight(keep, 1e-9).T - targets).square().sum()
+    assert fitted_error < plain_error

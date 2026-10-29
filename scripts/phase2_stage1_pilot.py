@@ -20,11 +20,13 @@ DTYPES = {"bfloat16": torch.bfloat16, "float32": torch.float32}
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--steps", nargs="+", default=["data", "statistics", "precision", "exact", "noise", "fisher"])
-    parser.add_argument("--dtype", choices=DTYPES, default="bfloat16")
+    parser.add_argument("--dtype", choices=DTYPES, default="float32")
     parser.add_argument("--layers", type=int, nargs="+", default=[2, 13, 25])
     parser.add_argument("--sequence-count", type=int, default=64)
     parser.add_argument("--sequence-length", type=int, default=2048)
-    parser.add_argument("--measurement-sequences", type=int, default=8)
+    parser.add_argument("--measurement-sequences", type=int, nargs="+", default=[0, 3])
+    parser.add_argument("--second-sequences", type=int, nargs="+", default=[4, 7])
+    parser.add_argument("--statistics-sequences", type=int, default=8)
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--chunk-length", type=int, default=256)
     parser.add_argument("--precision-neurons", type=int, default=64)
@@ -156,8 +158,8 @@ def main() -> None:
     token_ids, sources = load_or_build_measurement_set(
         arguments.data_path, tokenizer, arguments.sequence_count, arguments.sequence_length, 3, arguments.seed
     )
-    measured = token_ids[: arguments.measurement_sequences]
-    second = token_ids[arguments.measurement_sequences : 2 * arguments.measurement_sequences]
+    measured = token_ids[arguments.measurement_sequences]
+    second = token_ids[arguments.second_sequences]
     log_event(
         output,
         {
@@ -165,7 +167,8 @@ def main() -> None:
             "arguments": {key: str(value) for key, value in vars(arguments).items()},
             "torch": torch.__version__,
             "transformers": transformers.__version__,
-            "sources_measured": sources[: arguments.measurement_sequences],
+            "sources_measured": [sources[index] for index in arguments.measurement_sequences],
+            "sources_second": [sources[index] for index in arguments.second_sequences],
         },
     )
     if "precision" in arguments.steps and not (output / "precision.pt").exists():
@@ -176,7 +179,7 @@ def main() -> None:
     model = load_model(DTYPES[arguments.dtype])
     if "statistics" in arguments.steps and not (output / "statistics.pt").exists():
         start = time.perf_counter()
-        run_statistics(model, measured, output)
+        run_statistics(model, token_ids[: arguments.statistics_sequences], output)
         log_event(output, {"step": "statistics", "seconds": time.perf_counter() - start})
     if "exact" in arguments.steps:
         run_exact(model, arguments, measured, output)

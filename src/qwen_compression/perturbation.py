@@ -68,3 +68,7 @@ def measure_perturbations(
             kl[start : start + batch_size, sequence_index] = batch_kl.double().cpu()
             loss_change[start : start + batch_size, sequence_index] = batch_loss_change.double().cpu()
     return kl, loss_change
+
+
+def perturbation_grid(neurons: torch.Tensor, deltas: tuple[float, ...]) -> tuple[torch.Tensor, torch.Tensor]:
+    return neurons.repeat_interleave(len(deltas)), (1 + torch.tensor(deltas)).repeat(neurons.numel())

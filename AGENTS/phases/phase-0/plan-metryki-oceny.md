@@ -121,3 +121,25 @@ Zmiana po decyzji końcowej @phase-0:K36 (19:32): dodałem sekcję **D. Ranking 
 ---
 ---
 ---
+
+## Co masz zrobić
+
+Nic. Plan zostaje zatwierdzony.
+
+**Przeniesione z dyskusji planu Phase 2** (wpis trafił tam przez pomyłkę; @T010, punkt 6):
+
+> Zamknąłem bo chyba z tego nie korzystamy ostatecznie jak coś - jeżeli nie, to wznów
+>
+> *2026-10-29 21:38 — Autor*
+
+**Odpowiedź:** korzystamy, ale nie od razu:
+- **etap 3 Phase 2:** generacja i ocena klasyfikatorem ~250 neuronów o największym wpływie (@phase-pomysl:K3). Odłożone do wyboru klasyfikatora (@phase-0:K18) i zestawu pytań (@L7);
+- **Phase 3:** ocena zmniejszonych modeli (poziom 3 z @T002).
+
+Zatwierdzenie jest więc w porządku: plan czeka na użycie i niczego nie trzeba wznawiać.
+
+*2026-10-29 22:11 — Claude Opus 5.5*
+
+---
+---
+---

@@ -8,10 +8,11 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Teraz
 
-**@L13: Phase 2, etap 1 (pilot) — kod gotowy, czeka na „uruchom etap 1”.**
-- Zrobione: pakiet `src/qwen_compression/` (data, model_parts, perturbation z `measure_perturbations`, metrics, activations, importance), 28 testów CPU, ruff/pyright czyste; zbiór pomiarowy `~/qwen3-checkpoints/phase2/measurement-set.pt` (64 × 2048, co 4. = kod, 7 języków); skrypt `scripts/phase2_stage1_pilot.py` (kroki: precision, statistics, exact, noise, fisher; każdy zapisuje wynik i jest pomijany przy wznowieniu).
-- Następny krok po „uruchom”: `uv run python scripts/phase2_stage1_pilot.py` w tle (wyniki: `results/phase2/stage1/`, log: `results/phase2/stage1/log.jsonl`), ~3 h; potem skrypt analizy (Spearman przesiew ↔ dokładnie, pokrycie top 10%, szum, 4096 vs 16 384 tokenów, bf16 vs fp32) i raport `AGENTS/phases/phase-pomysl/etap-1-pilot.md`.
-- Wznowienie po przerwaniu: to samo polecenie (gotowe kroki i warstwy są pomijane).
+**@L13: Phase 2 — autor (22:07): „uruchom wszystkie etapy, idę spać”.** Plan nocy i zastrzeżenia: @T010.
+- **Etap 1 (pilot) liczy się w float32 od 22:10**, PID 110275 (`nohup`), 4096 tokenów (sekwencje 0 = C4, 3 = kod; szum na 4 i 7). Wznowienie: `HF_HUB_DOWNLOAD_TIMEOUT=60 nohup .venv/bin/python scripts/phase2_stage1_pilot.py >> results/phase2/stage1/stdout.log 2>&1 &` (gotowe kroki i warstwy są pomijane).
+- Zrobione: `precision.pt` (bf16 = szum 1,3e-3; float32 kontrola −2e-9, mediana wyłączenia 1,3e-5 → float32), `statistics.pt` (bf16, 8 sekwencji, wystarczy).
+- W trakcie (CPU): skrypt analizy etapu 1, skrypty etapów 2–4 z testami; wpis „zamknąłem…” do planu metryk; @L14 (błąd GUI?).
+- Dalej: analiza → raport `etap-1-pilot.md` → etap 2 według reguł z @T010 → etap 3 (bez klasyfikatora) → etap 4 (warstwa tymczasowa).
 
 ## Na co czekam (co odblokuje pracę)
 
