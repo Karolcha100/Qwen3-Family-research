@@ -126,3 +126,72 @@ Czy to potrzebne jeżeli będziemy stosować tamte benchmarki? - Jeżeli benchma
 > 🤖 **ODPOWIEDŹ LLM — koniec**
 
 ---
+
+### [A5] Pozwól agentowi na git push
+
+zrobione sposobem 2
+
+*2026-10-29 16:14 — Autor*
+
+---
+
+> 🤖 **ODPOWIEDŹ LLM — początek** (Claude Opus 5.5)
+>
+> ### [A5] Re: Pozwól agentowi na git push
+>
+> **Co masz zrobić:** nic. Dzięki!
+>
+> Sprawdziłem: `.claude/settings.json` zawiera regułę `Bash(git push)`. Dodaję go do repo w tym commicie, a push tej sesji idzie już z tą regułą. Zadanie oznaczyłem jako `[x]`.
+>
+> *przeczytane i odpowiedziane: 2026-10-29 16:21 — Claude Opus 5.5*
+>
+> 🤖 **ODPOWIEDŹ LLM — koniec**
+
+---
+
+### [A10] K36: 🟡 (ponowione K19) Jak zamienić wynik modelu nagrody na 0–100
+
+A co sądzisz o użyciu czegoś w rodzaju ELO Score? Poza tym podoba mi się twoja rekomendacja
+
+*2026-10-29 16:18 — Autor*
+
+---
+
+> 🤖 **ODPOWIEDŹ LLM — początek** (Claude Opus 5.5)
+>
+> ### [A10] Re: K36: 🟡 (ponowione K19) Jak zamienić wynik modelu nagrody na 0–100
+>
+> **Co masz zrobić:** jeśli pasuje Ci propozycja niżej, wpisz w @phase-0:K36 odpowiedź końcową: „A + B + ranking Elo”. Wystarczy: „zgoda”.
+>
+> **Opinia: Elo to dobry pomysł i pasuje do modeli nagrody niemal idealnie. Proponuję go jako *dodatek* do mojej rekomendacji, nie zamiast niej.**
+>
+> **Czym jest Elo.** To system rankingowy z szachów (a dziś też z Chatbot Areny, która porównuje modele LLM). Każdy gracz ma wynik $R$. Przewidywana szansa, że $A$ wygra z $B$:
+>
+> $$E_A = \frac{1}{1 + 10^{(R_B - R_A)/400}}$$
+>
+> Słownie: liczy się tylko **różnica** wyników. 0 punktów różnicy daje 50%, 100 punktów ≈ 64%, 200 punktów ≈ 76%, 400 punktów ≈ 91%.
+>
+> **Dlaczego pasuje:** to dokładnie ten sam wzór, którego uczy się model nagrody, $P(a \succ b) = \sigma(r_a - r_b)$, tylko w innych jednostkach (podstawa 10 i skala 400 zamiast $e$). Wynik modelu nagrody to w praktyce „Elo pojedynczej odpowiedzi”.
+>
+> **Jak by to działało u nas:**
+> - każdy wariant (BF16, GPTQ-4bit, Wanda-50%…) to „gracz”;
+> - „mecz” to dwie odpowiedzi różnych wariantów na **to samo pytanie**, a model nagrody wyznacza szansę wygranej;
+> - z wszystkich meczów dopasowujemy ranking **Bradleya–Terry'ego**, czyli wersję Elo liczoną od razu ze wszystkich meczów, a nie mecz po meczu. Klasyczne Elo zależy od kolejności meczów, a tej wady nie ma. Tak liczy dziś Chatbot Arena;
+> - BF16 dostaje stałe **1000** punktów, więc „GPTQ-4bit: 962” znaczy, że jego odpowiedź jest lepsza od odpowiedzi BF16 w ~45% przypadków.
+>
+> **Plusy:**
+> - **jeden ranking wszystkich wariantów naraz**, także między sobą (nie tylko każdy z BF16);
+> - **nic nie kosztuje:** model nagrody ocenia każdą odpowiedź raz, a wszystkie mecze to już tylko arytmetyka, bez GPU;
+> - łatwo zrozumiałe różnice i łatwo dodać nowy wariant.
+>
+> **Minusy:**
+> - skala jest **względna**: ranking zależy od tego, które warianty biorą udział. Dodanie nowego lekko przesuwa pozostałe; stałe BF16 = 1000 ogranicza ten efekt;
+> - przy kilku wariantach ranking niewiele dodaje ponad metrykę 16 z planu (porównanie z BF16). Zyskuje, gdy wariantów jest dużo.
+>
+> **Propozycja końcowa:** **A** (porównanie z BF16, 0–100) + **B** (percentyle atrybutów) + **ranking Elo (Bradley–Terry)** wszystkich wariantów z BF16 = 1000 jako podsumowanie. Wynik A da się wprost przeliczyć na różnicę Elo: $\Delta R = 400 \log_{10}\frac{p}{1-p}$, gdzie $p$ to szansa wygranej z BF16.
+>
+> *przeczytane i odpowiedziane: 2026-10-29 16:21 — Claude Opus 5.5*
+>
+> 🤖 **ODPOWIEDŹ LLM — koniec**
+
+---

@@ -26,7 +26,7 @@ Cztery nowe decyzje po Twoich odpowiedziach z 14:58. K33 doprecyzowuje @phase-0:
   - **B** — dla wersji instrukcyjnej dialogi w szablonie czatu Qwen3 (np. z otwartego zbioru rozmów);
   - **C** — A jako standard, a B jako osobny eksperyment („czy kalibracja czatowa chroni IFEval i sędziego?”).
 - **Rekomendacja:** C.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K33. 🟡 Co mogę robić bez Twojego „uruchom”
 
@@ -36,7 +36,7 @@ Cztery nowe decyzje po Twoich odpowiedziach z 14:58. K33 doprecyzowuje @phase-0:
   - **B** — „uruchom” potrzebne do GPU **i** do pobierania modeli/danych (bo zajmują łącze i dysk); instalacje i budowę robię sam;
   - **C** — „uruchom” potrzebne do wszystkiego poza edycją plików.
 - **Rekomendacja:** A. Instalacje i budowa nie przeszkadzają w grze, a dzięki temu po Twoim „uruchom” od razu liczymy, zamiast czekać na pobieranie.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K34. 🟡 Jak chcesz wybierać metody
 
@@ -46,4 +46,4 @@ Cztery nowe decyzje po Twoich odpowiedziach z 14:58. K33 doprecyzowuje @phase-0:
   - **B** — A plus mój proponowany zestaw startowy z uzasadnieniem (wybór zostaje przy Tobie);
   - **C** — nic nie przygotowuję; sam podajesz metody, a ja sprawdzam, czy są wykonalne.
 - **Rekomendacja:** B. Najpierw Phase 1, więc katalog przygotuję w trakcie, a będzie gotowy, zanim zaczniesz rozpisywać Phase 2.
-- **Decyzja:**
+- **Decyzja:** B

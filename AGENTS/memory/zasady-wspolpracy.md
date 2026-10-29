@@ -34,7 +34,7 @@ Reszta treści trafia do plików w `AGENTS/`.
 ## Stałe reguły
 
 - **Commit i push po każdym prompcie autora:** sensowny opis, potem `git push` (@phase-0:K17 = B).
-- **Obliczenia na GPU (@phase-0:K10 = B z zastrzeżeniem):** agent pisze kod i polecenia, ale **uruchamia je dopiero, gdy autor powie „uruchom”** (w GUI albo w czacie). Autor nie wpisuje poleceń sam. Bez takiego polecenia nic na GPU.
+- **Obliczenia na GPU (@phase-0:K10 = B z zastrzeżeniem):** agent pisze kod i polecenia, ale **uruchamia je dopiero, gdy autor powie „uruchom”** (w GUI albo w czacie). Autor nie wpisuje poleceń sam. Bez takiego polecenia nic na GPU. Instalacje pakietów, budowę (CPU) i pobieranie modeli/danych agent robi sam, gdy plan jest zatwierdzony (@phase-0:K33 = A).
 - **Wzory w TeX z opisem słownym** przy sprawach technicznych i matematycznych (uwaga 2 w `AGENTS/talk/od-autora-dla-llmow.md`).
 - **Decyzje zawsze jako pytania w `AGENTS/phases/<faza>/agents-issues-N.md`, każda osobno** (`### K1. …` z opcjami, rekomendacją i polem Decyzja), a nie jako lista pytań w wątku. Autor **chce dużo pytań**, także o drobne decyzje, które teraz nie mają znaczenia, ale mogą mieć 200 decyzji dalej. Lepiej zapytać niż przyjąć coś po cichu. Wątek służy do rozmowy i opinii (źródło: @T001, 2026-10-29). Pytania organizacyjne, niezwiązane z jedną fazą, trafiają do `AGENTS/phases/phase-0/`.
 - **Polecenia dla autora zawsze w blokach kodu** (` ```bash … ``` `, każde w osobnej linii), nigdy w tekście w pojedynczych backtickach (uwaga 1 w `AGENTS/talk/od-autora-dla-llmow.md`).
@@ -59,3 +59,4 @@ Reszta treści trafia do plików w `AGENTS/`.
 *Zmiana: 2026-10-29 — reguła: decyzje jako osobne pytania w agents-issues, pytamy dużo (@T001) — Claude Opus 5.5*
 *Zmiana: 2026-10-29 — polecenia dla autora w blokach kodu (uwaga 1) — Claude Opus 5.5*
 *Zmiana: 2026-10-29 15:45 — nie zakładać metod z góry; porządek odpowiedzi w wątkach — Claude Opus 5.5*
+*Zmiana: 2026-10-29 16:23 — co wolno bez „uruchom” (K33) — Claude Opus 5.5*

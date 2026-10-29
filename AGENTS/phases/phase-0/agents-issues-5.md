@@ -16,7 +16,7 @@ Sześć decyzji. Wszystkie dotyczą **oceny** (nie metod kompresji, które wybie
   - **B** — 3 ziarna dla każdego wariantu: 3 skompresowane modele, wynik jako średnia ± odchylenie (3× dłużej);
   - **C** — raz, na Qwen3-0.6B, mierzymy szum na 3–5 ziarnach dla kilku metod, a potem 1 ziarno. Różnice mniejsze niż zmierzony szum oznaczamy jako „nierozstrzygnięte”.
 - **Rekomendacja:** C.
-- **Decyzja:**
+- **Decyzja:** C
 
 ### K36. 🟡 (ponowione K19) Jak zamienić wynik modelu nagrody na 0–100
 
@@ -30,7 +30,7 @@ $$P(a \succ b) = \sigma(r_a - r_b) = \frac{1}{1 + e^{-(r_a - r_b)}}$$
   - **B** — **percentyl względem odpowiedzi BF16:** „ta odpowiedź jest lepsza niż X% odpowiedzi oryginalnego modelu” (osobno dla każdego atrybutu). Działa dla każdej skali;
   - **C** — bez skali 0–100: surowe wyniki i ich różnice względem BF16.
 - **Rekomendacja:** A dla wyniku ogólnego + B dla atrybutów. Obie liczby są zrozumiałe bez znajomości skali modelu.
-- **Decyzja:**
+- **Decyzja:** ⏳ w toku → @A10 (wstępnie: A co sądzisz o użyciu czegoś w rodzaju ELO Score? Poza tym podoba mi się twoja rekomendacja)
 
 ### K37. 🟡 Limit długości odpowiedzi z myśleniem
 
@@ -40,7 +40,7 @@ $$P(a \succ b) = \sigma(r_a - r_b) = \frac{1}{1 + e^{-(r_a - r_b)}}$$
   - **B** — limit 8192;
   - **C** — 32 768 (zalecenie Qwen, najwierniej, najdrożej).
 - **Rekomendacja:** B. Ucięcie liczymy jako metrykę „kompletna = 0”, więc i tak widzimy, jak często model się zapętla.
-- **Decyzja:**
+- **Decyzja:** B
 
 ### K38. 🟢 Czy klasyfikator widzi myślenie modelu
 
@@ -50,7 +50,7 @@ $$P(a \succ b) = \sigma(r_a - r_b) = \frac{1}{1 + e^{-(r_a - r_b)}}$$
   - **B** — klasyfikator dostaje całość;
   - **C** — obie wersje (2× ocen).
 - **Rekomendacja:** A.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K39. 🟡 Pytania w stylu IFEval w naszych 200 pytaniach a K28
 
@@ -60,7 +60,7 @@ $$P(a \succ b) = \sigma(r_a - r_b) = \frac{1}{1 + e^{-(r_a - r_b)}}$$
   - **B** — pytania IFEval zostają i tylko dla nich przywracamy metrykę „format zgodny”;
   - **C** — zostają bez sprawdzania formatu (ocenia je tylko klasyfikator).
 - **Rekomendacja:** A. Bez dublowania, a wykonywanie poleceń mierzymy na większym zbiorze.
-- **Decyzja:**
+- **Decyzja:** A, chociaż proszę o jakiś wątek wyjaśniający mi co to zmienia
 
 ### K40. 🟢 Zgodność z odpowiedzią wzorcową
 
@@ -69,4 +69,4 @@ $$P(a \succ b) = \sigma(r_a - r_b) = \frac{1}{1 + e^{-(r_a - r_b)}}$$
   - **A** — dodajemy 5. metrykę regułową „wynik zgodny z wzorcem” (0/1) dla pytań z jednoznaczną odpowiedzią;
   - **B** — nie dodajemy; poprawność ocenia tylko klasyfikator.
 - **Rekomendacja:** A. To tania metryka i chroni przed sytuacją, w której model nagrody daje wysoki wynik pewnej siebie, ale błędnej odpowiedzi.
-- **Decyzja:**
+- **Decyzja:** A

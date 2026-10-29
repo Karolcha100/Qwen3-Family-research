@@ -20,3 +20,4 @@ Rzeczy, które blokują dalszą pracę agentów. Zasady (numeracja `A…`, statu
 - [ ] **A7. Zainstaluj CUDA 13.4 (sam toolkit)** — po @A6 (plan Phase 1 krok 2). Polecenia: `AGENTS/phases/phase-1/A7-instalacja-cuda-13-4.md`. Wynik `nvcc --version` wklej w raporcie. *(dodane 2026-10-29 15:00)*
 - [ ] **A8. Zainstaluj pakiety do budowy llama.cpp i uv** (plan Phase 1 krok 3; @phase-0:K4 = A). Polecenia: `AGENTS/phases/phase-1/A8-pakiety-do-budowy-i-uv.md`. *(dodane 2026-10-29 15:00)*
 - [ ] **A9. K14: 🟢 Narzędzia jakości kodu** — z pytania @phase-0:K14 (`phases/phase-0/agents-issues-1.md`). *(dodane 2026-10-29 15:38)*
+- [ ] **A10. K36: 🟡 (ponowione K19) Jak zamienić wynik modelu nagrody na 0–100** — z pytania @phase-0:K36 (`phases/phase-0/agents-issues-5.md`). *(dodane 2026-10-29 16:18)*

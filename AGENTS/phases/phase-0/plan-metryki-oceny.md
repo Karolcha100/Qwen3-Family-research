@@ -18,15 +18,15 @@ Według Twoich decyzji: **reguły w Pythonie** (@phase-0:K28 = A) + **wieloatryb
 
 ## Proponowane metryki (16)
 
-**A. Reguły w Pythonie — 0/1, bez GPU** (sprawdzają też część `<think>`, jeśli @phase-0:K38 = A)
+**A. Reguły w Pythonie — 0/1, bez GPU** (sprawdzają też część `<think>`; @phase-0:K38 = A)
 
 | # | Metryka | Kiedy 1 |
 |---|---|---|
-| 1 | kompletna | odpowiedź niepusta i niezakończona limitem tokenów (limit: @phase-0:K37) |
+| 1 | kompletna | odpowiedź niepusta i niezakończona limitem **8192 tokenów** (@phase-0:K37 = B) |
 | 2 | bez pętli | brak powtórzonych fragmentów ponad próg |
 | 3 | właściwy język | odpowiedź po angielsku (@phase-0:K21 = A) |
 | 4 | czysty tekst | bez tokenów specjalnych, śmieciowych znaków, niezamkniętego `<think>` |
-| 5 | wynik zgodny z wzorcem | tylko pytania z jednoznaczną odpowiedzią — jeśli @phase-0:K40 = A |
+| 5 | wynik zgodny z wzorcem | tylko pytania z jednoznaczną odpowiedzią (@phase-0:K40 = A) |
 
 **B. Atrybuty z modelu nagrody — 0–100** (percentyl względem odpowiedzi BF16, jeśli @phase-0:K36 = B)
 
@@ -67,6 +67,21 @@ $$\rho = 1 - \frac{6 \sum_i d_i^2}{n(n^2 - 1)}$$
 gdzie $d_i$ to różnica pozycji odpowiedzi $i$ w rankingu Twoim i modelu, a $n$ to liczba odpowiedzi. Słownie: $\rho = 1$ znaczy, że model nagrody układa odpowiedzi w tej samej kolejności co Ty, a $\rho \approx 0$, że jego kolejność nie ma związku z Twoją.
 
 ## Dyskusja
+
+---
+---
+---
+
+Zmiany po Twoich decyzjach z 16:21:
+- metryka 1: limit 8192 tokenów (@phase-0:K37 = B);
+- reguły sprawdzają też `<think>`, a model nagrody widzi tylko odpowiedź końcową (@phase-0:K38 = A);
+- metryka 5 potwierdzona (@phase-0:K40 = A);
+- bez pytań IFEval w naszych 200 (@phase-0:K39 = A; wyjaśnienie w @T005). Wykonywanie poleceń mierzy IFEval w lm-eval, a metryka 11 zostaje jako miękka ocena;
+- skala wyników: propozycja końcowa pod @A10 (A + B + ranking Elo). Jeśli ją przyjmiesz, dopiszę ranking Elo do sekcji C.
+
+Dalej czekam na Twoją opinię o samej liście 16 metryk.
+
+*2026-10-29 16:21 — Claude Opus 5.5*
 
 ---
 ---
