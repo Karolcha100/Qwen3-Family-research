@@ -43,7 +43,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **A** — dodam je jako zadania A w WAŻNE, z poleceniami z `local-llm-conversation.md`; po każdym kroku wklejasz wynik w raporcie (np. `nvcc --version`), a ja go sprawdzam;
   - **B** — robisz je bez zadań i dajesz znać w wątku, gdy skończysz.
 - **Rekomendacja:** A, bo każdy krok ma wynik do sprawdzenia (`rpm -qa | grep -i cuda`, `nvcc --version`, `llama-cli --version`).
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K4. 🟡 Menedżer środowiska Pythona
 
@@ -53,7 +53,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — `python -m venv` + `pip` + `requirements.txt`: nic nowego do instalowania, ale bez lockfile;
   - **C** — conda/mamba: wygodna dla CUDA, ale ciężka i miesza się z pip.
 - **Rekomendacja:** A. Lockfile pozwala odtworzyć dokładnie te same wersje bibliotek po miesiącach, co przy porównywaniu wyników jest ważne.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K5. 🟡 Wersja Pythona
 
@@ -63,7 +63,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — 3.15, jeśli PyTorch, transformers i lm-eval mają już wheele (sprawdzę przed instalacją); jeśli nie, wracam do 3.14;
   - **C** — 3.15 i kompilujemy brakujące pakiety ze źródeł.
 - **Rekomendacja:** B. Dostajesz najnowszą wersję, kiedy tylko się da, bez kompilowania PyTorcha.
-- **Decyzja:**
+- **Decyzja:** Opcja A
 
 ### K6. 🔴 Własne implementacje czy gotowe biblioteki
 
@@ -73,7 +73,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — tylko biblioteki: szybko, ale mniej się uczymy;
   - **C** — główne metody piszemy sami (krótko, bez optymalizacji), a wynik każdej porównujemy z biblioteką albo z liczbami z artykułu; metody trudne inżynieryjnie (QuIP#, AQLM, kernele) bierzemy z bibliotek.
 - **Rekomendacja:** C. Własny kod uczy, a biblioteka sprawdza, czy działa poprawnie.
-- **Decyzja:**
+- **Decyzja:** Opcja B, aczkolwiek pragnę zaznaczyć ze sam wybiorę metody.
 
 ### K7. 🟡 Qwen3 Base czy wersja instrukcyjna
 
@@ -83,7 +83,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — wszędzie instrukcyjna (prościej, jeden model, ale perplexity mniej porównywalne z literaturą);
   - **C** — wszędzie Base (bez evalplus i oceny czatu).
 - **Rekomendacja:** A. Koszt jest mały, bo kompresja tą samą metodą to drugie uruchomienie tego samego skryptu.
-- **Decyzja:**
+- **Decyzja:** ⏳ w toku → @A2 (wstępnie: Potrzebuję raportu o tym czym jest base, perplexity, jak to wpływa na rzeczy, czym jest wersja bez sufiksu etc.)
 
 ### K8. 🟡 Dane kalibracyjne
 
@@ -93,7 +93,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — WikiText-2 (ryzyko zawyżenia wyniku perplexity na WikiText-2);
   - **C** — mieszanka C4 i kodu (lepiej chroni programowanie, ale trudniej porównać z literaturą).
 - **Rekomendacja:** A jako domyślne; C później jako osobny eksperyment („czy kalibracja na kodzie chroni evalplus?”).
-- **Decyzja:**
+- **Decyzja:** ⏳ w toku → @A3 (wstępnie: W jaki sposób wybór wpływa na wyniki, o co tutaj chodzi, potrzebuję raportu)
 
 ### K9. 🟡 Protokół perplexity
 
@@ -103,7 +103,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — kontekst 4096 (bliżej realnego użycia Qwen3, ale dłużej i mniej porównywalne);
   - **C** — A plus dodatkowy pomiar na 4096 dla najlepszych konfiguracji.
 - **Rekomendacja:** A, a C dopiero przy wynikach końcowych.
-- **Decyzja:**
+- **Decyzja:** ⏳ w toku → @A4 (wstępnie: Nie wiem co to perplexity, nie wiem co zmieniają odpowiedzi, proszę o raport)
 
 ### K10. 🟡 Kto i kiedy uruchamia obliczenia na GPU
 
@@ -113,7 +113,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **B** — agent pisze kod i polecenia, a uruchamiasz zawsze Ty;
   - **C** — agent uruchamia wszystko sam, kiedy pracuje.
 - **Rekomendacja:** A. Przed każdym uruchomieniem sprawdzam `nvidia-smi` i nie startuję, jeśli GPU jest zajęte przez grę.
-- **Decyzja:**
+- **Decyzja:** Generalnie wolę B, z zastrzeżeniem że raczej ja powiem kiedy Agent ma uruchomić a nie że wpisuję sam komendy.
 
 ### K11. 🟢 Zapis wyników
 
@@ -144,7 +144,7 @@ To decyzje na start projektu: organizacja, środowisko, sposób pracy i protokó
   - **C** — model nagrody, np. Skywork-Reward-V2 (warianty od 0.6B do 8B): daje jedną liczbę, jest szybki, ale bez uzasadnienia;
   - **D** — duży ogólny model jako sędzia (np. 14B w Q4): elastyczny, ale wolniejszy i z ryzykiem, że model z rodziny Qwen faworyzuje odpowiedzi Qwen.
 - **Rekomendacja:** A, a potem porównanie B i C na ~50 parach odpowiedzi, które ocenisz ręcznie. Wybieramy sędziego, który najbardziej zgadza się z Tobą.
-- **Decyzja:**
+- **Decyzja:** Myślę że pójdziemy w opcję C, przy czym to trzeba jeszcze dopracować.
 
 ### K14. 🟢 Narzędzia jakości kodu
 

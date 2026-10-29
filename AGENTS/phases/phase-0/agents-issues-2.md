@@ -16,7 +16,7 @@ Nowe decyzje po Twoich odpowiedziach z 13:28: K17 dotyczy GitHuba (@phase-0:K1),
   - **B** — po każdym commicie robię też `git push`. Wtedy dodaję regułę pozwalającą na `git push` w `.claude/settings.json` projektu i zmieniam regułę w `CLAUDE.md`;
   - **C** — push robię tylko na Twoje wyraźne polecenie w danej sesji.
 - **Rekomendacja:** A na razie. Repo jest prywatne i tylko Twoje, więc nic nie tracisz, a zachowujesz kontrolę nad tym, co wychodzi z komputera. B ma sens, jeśli chcesz kopię zapasową po każdej sesji.
-- **Decyzja:**
+- **Decyzja:** Opcja B - Po każdym commicie rób też git push.
 
 ### K18. 🟡 Z czego składa się sędzia
 

@@ -11,7 +11,7 @@ Ten projekt używa struktury `AGENTS/` i GUI `agents_board` do komunikacji autor
 - **Podpis każdego wpisu:** `*RRRR-MM-DD GG:MM — <Twój model>*` jako ostatnia linia wpisu; godzina zawsze z `date "+%Y-%m-%d %H:%M"`, nigdy szacowana. W wątkach po podpisie trzy linie `---`.
 - **Koniec każdej odpowiedzi na prompt autora:**
   1. briefing `AGENTS/talk/briefings/RRRR-MM-DD-GGMM.md` z tą samą treścią co odpowiedź w czacie;
-  2. **commit** (bez push) z sensownym opisem;
+  2. **commit** z sensownym opisem, potem **`git push`** (decyzja @phase-0:K17 = B);
   3. odpowiedź w czacie tylko z dwóch części: **Zmiany** (linki do plików z CRE/MOD/DEL) i **Do odpowiedzi** (miejsce w drzewie GUI + krótki opis).
 - **„Co ty na to?”, „co sądzisz?”, „jak widzisz?”** = tylko opinia (plusy, minusy, rekomendacja); niczego nie uruchamiasz bez wyraźnej zgody.
 - **Każdy plik dla autora zaczyna się od `## Co masz zrobić`** z pytaniem i gotowymi opcjami.

@@ -20,17 +20,17 @@ Phase 1 ma dać działające środowisko: Qwen3-0.6B działa na GPU w PyTorchu i
 
 | # | Krok | Kto | Wynik do sprawdzenia |
 |---|---|---|---|
-| 1 | Usunięcie CUDA 12.8 / 12.9 (polecenia z `local-llm-conversation.md`) | Ty (`sudo`) | `rpm -qa \| grep -i cuda` pokazuje tylko `xorg-x11-drv-nvidia-cuda*` |
-| 2 | CUDA 13.4: runfile, tylko toolkit, `PATH` w `~/.zshrc`, `ldconfig` | Ty (`sudo`) | `nvcc --version` → 13.4 |
-| 3 | Pakiety do budowy: `git cmake gcc-c++ openssl-devel libcurl-devel` | Ty (`sudo dnf`) | — |
+| 1 | Usunięcie CUDA 12.8 / 12.9 — @A6 | Ty (`sudo`) | `rpm -qa \| grep -i cuda` pokazuje tylko `xorg-x11-drv-nvidia-cuda*` |
+| 2 | CUDA 13.4: runfile, tylko toolkit, `PATH` w `~/.zshrc`, `ldconfig` — @A7 | Ty (`sudo`) | `nvcc --version` → 13.4 |
+| 3 | Pakiety do budowy + `uv`: `git cmake gcc-c++ openssl-devel libcurl-devel uv` — @A8 | Ty (`sudo dnf`) | `uv --version` |
 | 4 | Budowa llama.cpp w `~/llama.cpp` (CUDA, `sm_89`); przy błędzie GCC 16 → `gcc15-c++` | ja (bez `sudo`) | `llama-cli --version`, `llama-bench` na GPU |
-| 5 | Środowisko Pythona według K4/K5: `pyproject.toml` + lock (uv) albo env conda + pip; PyTorch z wheelem CUDA zgodnym ze sterownikiem 615 | ja | `torch.cuda.is_available()`, mnożenie BF16 na GPU |
+| 5 | Środowisko Pythona: **uv** (`pyproject.toml` + `uv.lock`), **Python 3.14** (@phase-0:K4, K5 = A); PyTorch z wheelem CUDA zgodnym ze sterownikiem 615 | ja | `torch.cuda.is_available()`, mnożenie BF16 na GPU |
 | 6 | Biblioteki: `transformers`, `accelerate`, `datasets`, `safetensors`, `lm-eval`; narzędzia jakości według K14 | ja | import bez błędów |
-| 7 | Test dymny PyTorch: Qwen3-0.6B (Base i instrukcyjny według K7) → generacja + szybka perplexity na fragmencie WikiText-2 | ja (GPU według K10) | sensowny tekst, perplexity w rozsądnym zakresie |
-| 8 | Test dymny llama.cpp: konwersja Qwen3-0.6B do GGUF (BF16 i Q4_K_M) → `llama-bench`, `llama-perplexity` | ja | tokeny/s, perplexity Q4 nieco wyższa niż BF16 |
+| 7 | Test dymny PyTorch: Qwen3-0.6B (Base i/lub instrukcyjny według @A2) → generacja + szybka perplexity na fragmencie WikiText-2 | ja, **po Twoim „uruchom”** (@phase-0:K10) | sensowny tekst, perplexity w rozsądnym zakresie |
+| 8 | Test dymny llama.cpp: konwersja Qwen3-0.6B do GGUF (BF16 i Q4_K_M) → `llama-bench`, `llama-perplexity` | ja, **po Twoim „uruchom”** | tokeny/s, perplexity Q4 nieco wyższa niż BF16 |
 | 9 | Raport środowiska `AGENTS/phases/phase-1/srodowisko.md`: wersje (sterownik, CUDA, GCC, Python, torch, transformers, llama.cpp commit), zajętość VRAM, polecenia do odtworzenia | ja | raport w GUI |
 
-Kroki 5–7 nie zależą od 1–4, bo PyTorch ma własne biblioteki CUDA (@T003). Zrobię je od razu po zatwierdzeniu planu, niezależnie od tego, czy zakończyłeś już instalację CUDA. Jeśli K3 = A, kroki 1–3 dostaną zadania A z poleceniami.
+Kroki 5–7 nie zależą od 1–4, bo PyTorch ma własne biblioteki CUDA (@T003). Kroki 5–6 zrobię po zatwierdzeniu planu i po @A8 (potrzebne `uv`), niezależnie od CUDA. Czy instalacje i pobieranie modeli wymagają Twojego „uruchom”, rozstrzyga @phase-0:K33. Kroki 7–8 (GPU) uruchamiam tylko na Twoje polecenie.
 
 Modele i dane trafiają do domyślnego cache Hugging Face (`~/.cache/huggingface`); nic dużego nie trafia do repozytorium.
 
@@ -43,6 +43,19 @@ Modele i dane trafiają do domyślnego cache Hugging Face (`~/.cache/huggingface
 - jest raport środowiska.
 
 ## Dyskusja
+
+---
+---
+---
+
+Zmiany w planie po Twoich decyzjach z 14:58:
+- kroki 1–3 mają zadania @A6, @A7, @A8 z poleceniami (@phase-0:K3 = A). W @A6 dodałem 42 pakiety CUDA 12 (`libcublas-12-8`…), które pomijało polecenie z `local-llm-conversation.md`;
+- krok 3: doszło `uv`; krok 5: uv + Python 3.14 (@phase-0:K4, K5);
+- kroki 7–8 (GPU) tylko po Twoim „uruchom” (@phase-0:K10); co z instalacjami i pobieraniem: @phase-0:K33.
+
+Plan nadal czeka na zatwierdzenie (✅ Zatwierdzam plan) albo uwagi.
+
+*2026-10-29 15:03 — Claude Opus 5.5*
 
 ---
 ---

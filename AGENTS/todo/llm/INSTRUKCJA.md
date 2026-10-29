@@ -30,7 +30,7 @@ Wtedy przejdź kroki z sekcji „Na początku każdej sesji”, odpowiedz na wsz
 2. **TODO i raport:** statusy zadań `L…`, nowe zadania `A…` dla autora, wpisy w `raport-TODO-LLM.md`, plan faz.
 3. **Pamięć:** popraw `AGENTS/memory/*.md`, jeśli zmieniło się coś ważnego.
 4. **Briefing:** `AGENTS/talk/briefings/RRRR-MM-DD-GGMM.md` (godzina z `date`) z **tą samą treścią** co odpowiedź w czacie. Nagłówek np. `# Briefing RRRR-MM-DD GG:MM — temat`.
-5. **Commit** (bez pushowania) z sensownym opisem — po każdym prompcie autora.
+5. **Commit** z sensownym opisem, potem **`git push`** — po każdym prompcie autora (decyzja @phase-0:K17 = B). Jeśli push się nie uda, napisz to w briefingu i podaj autorowi polecenie w bloku kodu.
 6. **Odpowiedź w czacie** — tylko dwie części:
    - **Zmiany:** pliki jako linki markdown z oznaczeniem **CRE / MOD / DEL** (utworzony / zmieniony / usunięty);
    - **Do odpowiedzi:** rzeczy dla autora z miejscem w drzewie GUI (np. „Co czeka na mnie → Wątki — agent odpowiedział → @T003”) i bardzo krótkim opisem.
