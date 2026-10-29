@@ -66,3 +66,62 @@ Co o tym sądzisz?
 ---
 ---
 ---
+
+## Co masz zrobić
+
+Pytałeś o opinię, więc niczego nie uruchamiam. Decyzje rozbiłem na pytania @phase-0:K18–K27 w `AGENTS/phases/phase-0/agents-issues-2.md`. Wystarczy wpisać „rek” albo literę. Otwarte jest też @phase-0:K13 („czy i kiedy sędzia”); po Twojej odpowiedzi tutaj możesz tam wpisać np. „sędzia: tak, według K18–K27”.
+
+**Krótko:** pomysł jest dobry. Jest jeden haczyk: **model nagrody w ścisłym sensie zwraca jedną liczbę**, a nie 16. Dlatego proponuję hybrydę (@phase-0:K18, opcja C):
+
+| Rodzaj metryki | Narzędzie | Koszt |
+|---|---|---|
+| 0/1 sprawdzalne regułą | Python (regex, wykrywanie języka, uruchomienie kodu) | ~0 |
+| ogólna jakość 0–100 | skalarny model nagrody (np. Skywork-Reward-V2) albo wieloatrybutowy (np. ArmoRM) | sekundy |
+| 0/1 i 0–100 wymagające rozumienia | sędzia generatywny z rubryką (np. Prometheus 2) | minuty–godzina na wariant |
+
+**Szkic 16 metryk** (do dopracowania w @phase-0:K27):
+
+0/1 według reguł:
+1. **Kompletna** — niepusta i nie urwana na limicie tokenów;
+2. **Bez pętli** — brak powtórzeń n-gramów ponad próg (typowy objaw agresywnej kwantyzacji);
+3. **Właściwy język** — w języku pytania;
+4. **Format zgodny z instrukcją** — pytania w stylu IFEval („3 punkty”, „JSON”, „poniżej 50 słów”);
+5. **Kod działa** — dla pytań o kod: kompiluje się i przechodzi test;
+6. **Czysty tekst** — bez wycieku `<think>`, tokenów specjalnych i śmieciowych znaków.
+
+0/1 od sędziego:
+
+7. **Na temat** — odpowiada na zadane pytanie;
+8. **Poprawny wynik końcowy** — dla pytań z odpowiedzią wzorcową.
+
+0–100 od modelu nagrody:
+
+9. **Ogólna jakość** — skalar z modelu nagrody, znormalizowany do 0–100 (np. percentyl względem odpowiedzi BF16).
+
+0–100 od sędziego (rubryka 1–10 → 0–100):
+
+10. **Poprawność merytoryczna**;
+11. **Brak halucynacji** — zmyślone fakty, nazwy, liczby;
+12. **Spójność i logika** — czy wywód się trzyma;
+13. **Pomocność** — czy rozwiązuje problem pytającego;
+14. **Płynność językowa** — gramatyka, naturalność (ważne dla pytań po polsku);
+15. **Zwięzłość** — bez lania wody i niepotrzebnych powtórzeń.
+
+Porównanie z BF16:
+
+16. **Nie gorsza niż BF16** — porównanie parami (win/tie/loss → 0–100), ocenione w obu kolejnościach.
+
+**Na co uważać:**
+- **skala 0–100:** sędziowie słabo rozróżniają 100 poziomów, więc lepiej rubryka 1–10 i średnia ważona prawdopodobieństwami (@phase-0:K19);
+- **szum:** 50 pytań wystarczy, żeby wybrać i skalibrować sędziego, ale do porównywania metod kompresji lepiej ~150–200 (@phase-0:K23);
+- **koszt:** sędzia generatywny 7–8B na RTX 4070S to rząd ~50 tokenów/s na jedno zapytanie; równoległe sloty w llama.cpp mocno to przyspieszają. Przy 50 pytaniach × 8 metrykach × każdy wariant warto mieć ocenę wszystkich metryk w jednym wywołaniu albo cache;
+- **VRAM:** najpierw generujemy odpowiedzi wszystkich wariantów do pliku, potem w osobnym kroku ładujemy sędziów. Na 12 GB nie zmieszczą się jednocześnie Qwen3-4B/8B i sędzia 8B;
+- **bias rodziny:** jako sędziów lepiej wziąć modele spoza rodziny Qwen (Skywork na Llamie, ArmoRM na Llamie, Prometheus na Mistralu).
+
+Nazwy modeli są z mojej wiedzy. Przed wyborem sprawdzę aktualne rankingi (RewardBench 2, JudgeBench), czy nie ma czegoś nowszego.
+
+*2026-10-29 13:30 — Claude Opus 5.5*
+
+---
+---
+---

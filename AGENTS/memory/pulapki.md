@@ -14,3 +14,4 @@ Każda pułapka: co się stało, jak tego unikać. Agent dopisuje nowe na końcu
 6. **Lista z pliku Koniec bywa niepełna** (autor dopisuje też w VS Code). Zawsze sprawdź `git status` / `git diff` od ostatniego briefingu.
 7. **Zmiana konwencji plików bez zmiany GUI** psuje drzewo (zadania, pytania, wątki). Konwencje: `AGENTS/todo/llm/INSTRUKCJA.md`, sekcja „Konwencje, na których opiera się GUI”.
 8. **Duże wyniki wczytywane w całości** potrafią wyczerpać RAM i zamknąć edytor autora. Przy dużych danych czytaj tylko potrzebne kolumny i kawałki.
+9. **Polecenia wysyłające dane na zewnątrz (`gh repo create --push`, `git push`) blokuje tryb auto Claude Code**, nawet przy decyzji autora. Nie obchodzimy blokady. Dajemy autorowi gotowe polecenie w zadaniu A (tak powstało @A1), a o stałe pozwolenie pytamy w agents-issues (@phase-0:K17). *(2026-10-29, Claude Opus 5.5)*
