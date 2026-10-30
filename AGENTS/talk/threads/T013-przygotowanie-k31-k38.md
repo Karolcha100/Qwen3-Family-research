@@ -58,3 +58,38 @@ Kod: `scripts/phase2_stage4_one_layer.py` (nowe starty, `--objective output`, `-
 ---
 ---
 ---
+
+Napisz mi tutaj przewidywany czas obliczeń tych rzeczy
+
+*2026-10-30 14:20 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Jeśli czasy Ci pasują, odpowiedz „A” w **K39** (`AGENTS/phases/phase-2/agents-issues-7.md`). Postęp na żywo zobaczysz na pasku w GUI (@T014).
+
+### Przewidywany czas obliczeń
+
+Razem **ok. 2 h 50 min** (moim zdaniem realnie 2,5–3,5 h). Szacunki opierają się na czasach dzisiejszych przebiegów na tej karcie: ocena modelu po podmianie warstwy ~55 s, epoka treningu „za następną warstwą” ~14 s, pełne przejście modelu ~0,25 s na sekwencję 2048 tokenów.
+
+| Krok | Szacunek | Na czym opieram szacunek | Pewność |
+|---|---|---|---|
+| oryginał: HumanEval i MBPP (generowanie + testy w kontenerze) | 13 min | ~25 ms na token, po 16 zadań naraz; testy rozwiązań wzorcowych trwały 30–50 s | średnia (zależy od tego, jak długie odpowiedzi pisze model) |
+| K38: mapa 100% kod, warstwa 13, 20% i 40% | 10 min | 2 × (3 oceny po ~55 s + 6 epok po ~14 s) | duża |
+| K31: 4 punkty startu, 40%, po 16 epok | 28 min | 4 × (3 oceny + 16 epok po ~14 s), plus ~1 min na łączenie neuronów | duża |
+| K37: cel na wyjściu modelu, warstwa 13, 40% i 20% | 76 min | każda sekwencja przechodzi przez 15 warstw i warstwę wyjściową w przód i wstecz, ~0,7 s; 480 sekwencji × 6 epok × 2 stopnie | **mała**: nie mierzyłem tego na GPU, może wyjść 45–120 min |
+| K37: warstwa 26, 40% | 14 min | tylko 2 warstwy za zmniejszaną, większość czasu to warstwa wyjściowa | mała |
+| HumanEval i MBPP dla dwóch wersji warstwy 13 (−40%) | 26 min | jak dla oryginału, 2 razy | średnia |
+
+Pasek w GUI na bieżąco poprawia czas „do końca”: bierze pod uwagę, o ile szybciej lub wolniej szły już skończone kroki i jaką część bieżącego kroku zgłosił skrypt. Po pierwszych epokach K37 zobaczysz więc dokładniejszy czas.
+
+Zmiana techniczna: kolejka jest teraz w pliku `results/phase2/code/queue.json` (te same kroki co w `queue.sh` z treści K39, plus szacowany czas każdego kroku) i uruchamia ją `scripts/run_queue.py`, który zapisuje postęp dla paska.
+
+*2026-10-30 14:26 — Claude Opus 5.5*
+
+---
+---
+---

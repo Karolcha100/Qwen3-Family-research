@@ -123,6 +123,7 @@ Odpowiedź na pytanie przeniesione do raportu ma identyfikator pytania, np. `###
 - **Rozmowa** jak w planie: sekcja `## Dyskusja` na końcu, wpisy jak w wątkach. Raport czeka na autora, gdy ostatni wpis jest od agenta (albo dyskusji jeszcze nie ma).
 - **Status `zamknięty (…)`** ustawia autor przyciskiem 🔒 Zakończ dyskusję. Agent go nie ustawia.
 - **Wykresy:** raport z liczbami ma wykresy pokazujące główne wyniki, każdy z 1–2 zdaniami „co widać”.
+- **Długie obliczenia** (dłużej niż kilka minut) uruchamiasz przez `scripts/run_queue.py` z plikiem kolejki, żeby autor widział w GUI pasek postępu, czas od startu i czas do końca (@T014; szczegóły: `AGENTS/memory/procedury.md`, sekcja 10).
 
 ## Pytania do autora (`AGENTS/phases/<faza>/agents-issues-N.md`)
 

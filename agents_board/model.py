@@ -20,6 +20,8 @@ The .md files stay the source of truth; this module only relies on their convent
                     results report; 'do przeczytania' = open, 'zamknięty …' = the author ended its discussion
                     (button). Discussion in '## Dyskusja' as in a plan
     mention         @T002, @A12, @L3, @phase-2:R1 — links to threads, tasks and questions
+    progress        postep-obliczen.json (T014): written by a long computation (queue runner); steps with
+                    estimates, start/end times and an optional fraction; the GUI shows %, elapsed time and ETA
 Every write checks a content hash taken when the page was rendered, so an answer never
 overwrites a file that changed in the meantime (e.g. edited in VS Code).
 """
@@ -28,9 +30,11 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import json
 import os
 import re
 import tempfile
+import time
 import unicodedata
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
@@ -62,6 +66,9 @@ PLAN_OPEN = ("do zatwierdzenia", "do opiniowania")
 PLAN_DISCUSSION = "## Dyskusja"
 REPORT_STATUS_RE = re.compile(r"^\*\*Status raportu:\*\*\s*(?P<status>.+?)\s*$", re.MULTILINE)
 REPORT_OPEN = ("do przeczytania",)
+PROGRESS_FILE = "postep-obliczen.json"
+PROGRESS_STALE_SECONDS = 180
+MINIMUM_FRACTION_FOR_PACE = 0.05
 HELP = Path(__file__).parent / "HELP.md"
 IMAGE_TYPES = {".svg": "image/svg+xml", ".png": "image/png"}
 MAX_IMAGE_BYTES = 3_000_000   # bigger files are not embedded
@@ -76,6 +83,46 @@ class StaleFile(BoardError):
 
 
 # --- files -------------------------------------------------------------------------------
+
+def progress_summary(data: dict, current_time: float) -> dict:
+    """Percent done, elapsed and remaining time of a computation queue (T014).
+
+    Remaining time: the running step from its own reported fraction (once it is at least 5%), otherwise
+    from its estimate; waiting steps from their estimates, scaled by how much slower or faster the finished
+    steps were than estimated. Percent is by time: elapsed / (elapsed + remaining)."""
+    steps = data["steps"]
+    finished_at = data.get("finished_at")
+    end = finished_at if finished_at is not None else current_time
+    done = [s for s in steps if s["status"] in ("done", "failed") and s.get("finished_at") is not None]
+    estimated_done = sum(s["estimate_seconds"] for s in done)
+    pace = sum(s["finished_at"] - s["started_at"] for s in done) / estimated_done if estimated_done else 1.0
+    running = next((s for s in steps if s["status"] == "running"), None)
+    remaining = pace * sum(s["estimate_seconds"] for s in steps if s["status"] == "waiting")
+    if running is not None:
+        running_elapsed = end - running["started_at"]
+        fraction = running.get("fraction") or 0.0
+        expected = (running_elapsed / fraction if fraction >= MINIMUM_FRACTION_FOR_PACE
+                    else pace * running["estimate_seconds"])
+        remaining += max(expected - running_elapsed, 0.0)
+    elapsed = end - data["started_at"]
+    total = elapsed + remaining
+    return {
+        "title": data.get("title", "Obliczenia"),
+        "percent": 100.0 if finished_at is not None else (100.0 * elapsed / total if total > 0 else 0.0),
+        "elapsed_seconds": elapsed,
+        "remaining_seconds": 0.0 if finished_at is not None else remaining,
+        "eta": datetime.fromtimestamp(end + (0.0 if finished_at is not None else remaining)).strftime("%H:%M"),
+        "finished": finished_at is not None,
+        "current": running["name"] if running is not None else None,
+        "current_fraction": (running.get("fraction") or 0.0) if running is not None else None,
+        "steps_done": sum(s["status"] == "done" for s in steps),
+        "steps_failed": [s["name"] for s in steps if s["status"] == "failed"],
+        "steps_total": len(steps),
+        "steps": [{"name": s["name"], "status": s["status"]} for s in steps],
+        "silent_seconds": None if finished_at is not None else current_time - data.get("updated_at", current_time),
+        "stale": finished_at is None and current_time - data.get("updated_at", current_time) > PROGRESS_STALE_SECONDS,
+    }
+
 
 def file_version(path: Path) -> str:
     return hashlib.sha1(path.read_bytes()).hexdigest()[:12] if path.exists() else "missing"
@@ -450,7 +497,18 @@ class Board:
             "statuses": STATUSES,
             "since": self.last_koniec(),
             "activity": self.activity(),
+            "progress": self.progress(),
         }
+
+    def progress(self) -> dict | None:
+        """Summary of the running (or last) computation queue, from postep-obliczen.json (T014)."""
+        path = self.root / PROGRESS_FILE
+        if not path.exists():
+            return None
+        try:
+            return progress_summary(json.loads(path.read_text(encoding="utf-8")), time.time())
+        except (ValueError, KeyError, TypeError, ZeroDivisionError):
+            return None
 
     # --- writing ---------------------------------------------------------------------
     def write_decision(self, rel: str, issue_id: str, text: str, version: str) -> None:

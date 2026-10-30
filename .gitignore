@@ -27,3 +27,8 @@ outputs/
 logs/
 *.log
 .claude/settings.local.json
+
+# progress of long computations (T014)
+AGENTS/postep-obliczen.json
+AGENTS/postep-obliczen.fraction
+AGENTS/*.tmp

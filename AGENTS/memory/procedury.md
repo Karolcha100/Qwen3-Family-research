@@ -143,4 +143,5 @@ Dzięki temu po końcu kontekstu albo przerwie następna sesja wie, gdzie skońc
 - Testy liczą na CPU na małym losowym Qwen3. Porównania bardzo małych KL rób w float64 (`at_least_float32` zamiast `.float()`).
 - Długie obliczenia: w tle (`run_in_background`), log w `results/<faza>/<etap>/log.jsonl`, skrypt pomija gotowe kroki (wznowienie tym samym poleceniem). Przed startem: `nvidia-smi` (czy GPU wolne) i wpis w `w-toku.md`.
 - Pobieranie z Hugging Face: `HF_HUB_DOWNLOAD_TIMEOUT=60` (pułapka 14).
+- **Kolejki obliczeń z paskiem postępu (@T014):** kroki z szacowanym czasem w `results/<faza>/…/queue.json` (`title`, `steps`: `name`, `estimate_minutes`, `command`, `log`), start w tle: `uv run --no-sync python scripts/run_queue.py results/…/queue.json` (zapisuje `AGENTS/postep-obliczen.json`, który GUI pokazuje jako pasek). Skrypty zgłaszają część zrobionej pracy przez `qwen_compression.progress.report_progress(ułamek)`. Szacunki czasu bierz z czasów poprzednich przebiegów (`seconds` w `results.jsonl`, czasy w `log.jsonl`). *(2026-10-30 14:26)*
 

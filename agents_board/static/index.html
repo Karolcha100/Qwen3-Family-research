@@ -128,6 +128,12 @@ a.mention { color: var(--accent); background: var(--accent-soft); border-radius:
 #mention-box div.on { background: var(--accent); color: #fff; }
 #mention-box b { font-family: monospace; }
 .briefing-list a { color: var(--accent); cursor: pointer; margin-right: 10px; }
+#progress { flex-basis: 100%; display: flex; gap: 10px; align-items: center; font-size: 12px; color: var(--muted); }
+#progress .bar { flex: 0 0 min(320px, 40%); height: 8px; border-radius: 4px; background: var(--code); overflow: hidden; }
+#progress .fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width .5s; }
+#progress.done .fill { background: var(--ok); }
+#progress.stale .fill, #progress.failed .fill { background: var(--warn); }
+#progress .percent { color: var(--text); font-weight: 600; }
 #toast { position: fixed; right: 16px; bottom: 16px; padding: 10px 14px; border-radius: 8px; background: var(--ok); color: #fff; display: none; }
 @media (max-width: 760px) { main, body.graph-mode main { grid-template-columns: 1fr; grid-template-rows: 40vh 1fr; }
   #tree { border-right: 0; border-bottom: 1px solid var(--line); } .splitter { display: none; } #detail.with-pin { grid-template-columns: 1fr; } #pinned { display: none; } }
@@ -157,6 +163,7 @@ a.mention { color: var(--accent); background: var(--accent-soft); border-radius:
   <button class="secondary" id="help-btn" title="Jak korzystać z AGENTS board">❓ Instrukcja</button>
   <button class="secondary" id="reload" title="Wczytaj pliki ponownie">Odśwież</button>
   <button id="koniec-btn" title="Skończyłem odpowiadać: zapisz podsumowanie i skopiuj prompt dla agenta">✅ Koniec</button>
+  <div id="progress" hidden><span class="bar"><div class="fill"></div></span><span class="percent"></span><span class="progress-text"></span></div>
 </header>
 <main>
   <nav id="tree"></nav>
@@ -335,9 +342,37 @@ async function load() {
   for (const [token, key] of Object.entries(MENTION_KEYS))
     for (const [old, now] of Object.entries(RENAMED_PHASES)) if (token.startsWith(now + ":")) MENTION_KEYS[old + token.slice(now.length)] = key;
   document.getElementById("meta").textContent = "stan plików: " + STATE.generated;
+  renderProgress(STATE.progress);
   renderTree();
   if (SELECTED && getItem(SELECTED)) select(SELECTED); else if (SELECTED) clearDetail();
   renderPinned();
+}
+
+function duration(seconds) {
+  const minutes = Math.round(seconds / 60);
+  return minutes < 60 ? `${minutes} min` : `${Math.floor(minutes / 60)} h ${String(minutes % 60).padStart(2, "0")} min`;
+}
+const STEP_MARK = { done: "✅", failed: "❌", running: "⏳", waiting: "·" };
+function renderProgress(p) {
+  const box = document.getElementById("progress");
+  box.hidden = !p;
+  if (!p) return;
+  box.className = p.finished ? (p.steps_failed.length ? "failed" : "done") : (p.stale ? "stale" : "");
+  box.querySelector(".fill").style.width = p.percent.toFixed(1) + "%";
+  box.querySelector(".percent").textContent = `${p.title}: ${Math.floor(p.percent)}%`;
+  const parts = [`krok ${Math.min(p.steps_done + p.steps_failed.length + (p.finished ? 0 : 1), p.steps_total)} z ${p.steps_total}`];
+  if (p.finished) parts.push(`zakończone o ${p.eta}, trwało ${duration(p.elapsed_seconds)}`);
+  else {
+    parts.push(`minęło ${duration(p.elapsed_seconds)}`, `zostało ~${duration(p.remaining_seconds)} (koniec ok. ${p.eta})`);
+    if (p.current) parts.push(`teraz: ${p.current}` + (p.current_fraction ? ` (${Math.floor(100 * p.current_fraction)}%)` : ""));
+  }
+  if (p.steps_failed.length) parts.push(`❌ nieudane: ${p.steps_failed.join(", ")}`);
+  if (p.stale) parts.push(`⚠️ brak sygnału od ${duration(p.silent_seconds)} — obliczenia mogły się przerwać`);
+  box.querySelector(".progress-text").textContent = parts.join(" · ");
+  box.title = p.steps.map(s => `${STEP_MARK[s.status] || "·"} ${s.name}`).join("\n");
+}
+async function pollProgress() {
+  try { const r = await fetch("/api/progress"); if (r.ok) renderProgress((await r.json()).progress); } catch {}
 }
 
 function getItem(key) {
@@ -1063,6 +1098,7 @@ document.getElementById("back-btn").onclick = () => history.back();
 document.getElementById("fwd-btn").onclick = () => history.forward();
 // the side mouse buttons need no code: the browser maps them to history.back()/forward() itself
 load();
+if (!CONFIG.state) setInterval(pollProgress, 15000);
 </script>
 </body>
 </html>

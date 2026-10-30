@@ -8,8 +8,8 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Teraz
 
-- Nic się nie liczy. **@L19 zrobione** (przygotowanie K31–K38, @T013). **Kolejka gotowa, nieuruchomiona:** `results/phase2/code/queue.sh` (czeka na @phase-2:K39 = „uruchom”); stan zapisze w `results/phase2/code/queue-status.txt`.
-- Uruchomienie w tle: `nohup results/phase2/code/queue.sh > results/phase2/code/queue.log 2>&1 &` (zapisz PID; pułapka 18). Po zakończeniu: wykresy/raport dla K31 (`results/phase2/code/k31/`), K37 (`results/phase2/code/k37/`), K38 (wiersze `code-only` w `results/phase2/code/stage4/layer-13/`), testy kodu (`results/phase2/code-eval/*/…-summary.json`, `…-efficiency.json`).
+- Nic się nie liczy. **@L19, @L21 zrobione** (przygotowanie K31–K38 @T013, pasek postępu @T014). **Kolejka gotowa, nieuruchomiona:** `results/phase2/code/queue.json` (16 kroków, ~167 min według szacunków; czeka na @phase-2:K39 = „uruchom”).
+- Uruchomienie w tle (Bash `run_in_background`): `uv run --no-sync python scripts/run_queue.py results/phase2/code/queue.json` — postęp w `AGENTS/postep-obliczen.json` (pasek w GUI). Po zakończeniu: wykresy/raport dla K31 (`results/phase2/code/k31/`), K37 (`results/phase2/code/k37/`), K38 (wiersze `code-only` w `results/phase2/code/stage4/layer-13/`), testy kodu (`results/phase2/code-eval/*/…-summary.json`, `…-efficiency.json`). Porównać faktyczne czasy kroków z szacunkami (procedury, sekcja 10).
 - Kontener: `podman build -t qwen-code-sandbox sandbox` (zbudowany), wolumen `qwen-evalplus-cache` (zadania i oczekiwane wyniki). Zadania: `results/phase2/code-eval/*-problems.jsonl`.
 - Dane poza repo: `~/qwen3-checkpoints/phase2-code/` (zbiory, pary warstw 2/13/14/26, `mlps/` po kolejce).
 

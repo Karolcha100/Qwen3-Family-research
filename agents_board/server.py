@@ -65,6 +65,8 @@ def make_handler(board: Board, token: str, read_only: bool):
             if self.path in ("/", "/index.html"):
                 config = {"token": token, "readOnly": read_only, "state": None}
                 self._send(HTTPStatus.OK, render_page(config), "text/html; charset=utf-8")
+            elif self.path == "/api/progress":
+                self._json(HTTPStatus.OK, {"progress": board.progress()})
             elif self.path == "/api/state":
                 try:
                     self._json(HTTPStatus.OK, board.state())

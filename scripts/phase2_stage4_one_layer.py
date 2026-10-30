@@ -3,6 +3,7 @@ import copy
 import json
 import math
 import time
+from collections.abc import Callable
 from pathlib import Path
 
 import torch
@@ -22,6 +23,7 @@ from qwen_compression.model_parts import (
     replaced_mlp,
     run_layer_window,
 )
+from qwen_compression.progress import report_progress
 from qwen_compression.reconstruction import (
     LeastSquaresStatistics,
     linear_from_weight,
@@ -34,6 +36,8 @@ from qwen_compression.training import output_kl
 
 MODEL_NAME = "Qwen/Qwen3-0.6B-Base"
 SHARD_SEQUENCES = 32
+EVALUATION_WORK = 1.0
+EPOCH_WORK = {"window": 0.25, "output": 6.0}
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -193,6 +197,7 @@ def train_through_next_layer(
     student_mlp: nn.Module,
     pair_directory: Path,
     arguments: argparse.Namespace,
+    on_epoch: Callable[[], None],
 ) -> dict[str, float | int | list[float]]:
     layers = decoder_layers(model)
     student_layer = copy.deepcopy(layers[layer_index])
@@ -235,6 +240,7 @@ def train_through_next_layer(
                 optimizer.step()
         epoch_loss = validation_loss()
         epoch_losses.append(epoch_loss)
+        on_epoch()
         if epoch_loss < best_loss:
             best_loss, best_state, best_epoch = epoch_loss, copy.deepcopy(student_mlp.state_dict()), epoch
     student_mlp.load_state_dict(best_state)
@@ -253,6 +259,7 @@ def train_on_output(
     student_mlp: nn.Module,
     pair_directory: Path,
     arguments: argparse.Namespace,
+    on_epoch: Callable[[], None],
 ) -> dict[str, float | int | list[float]]:
     student_mlp.requires_grad_(True)
     optimizer = torch.optim.Adam(student_mlp.parameters(), lr=arguments.learning_rate)
@@ -289,6 +296,7 @@ def train_on_output(
                 optimizer.step()
         epoch_kl = validation_kl()
         epoch_losses.append(epoch_kl)
+        on_epoch()
         if epoch_kl < best_kl:
             best_kl, best_state, best_epoch = epoch_kl, copy.deepcopy(student_mlp.state_dict()), epoch
     student_mlp.load_state_dict(best_state)
@@ -403,6 +411,25 @@ def main() -> None:
     width = model.config.intermediate_size
     trained_variant = "trained" if arguments.objective == "window" else "trained_output"
     train = train_through_next_layer if arguments.objective == "window" else train_on_output
+    variant_work = {
+        "sliced": EVALUATION_WORK,
+        "least_squares": EVALUATION_WORK,
+        trained_variant: EVALUATION_WORK + arguments.epochs * EPOCH_WORK[arguments.objective],
+    }
+    work_total = sum(
+        variant_work[variant]
+        for importance_kind in arguments.importances
+        for removed_fraction in arguments.removed_fractions
+        for variant in variant_work
+        if (importance_kind, removed_fraction, variant) not in done
+    )
+    work_done = 0.0
+
+    def add_work(amount: float) -> None:
+        nonlocal work_done
+        work_done += amount
+        report_progress(work_done / work_total if work_total else 1.0)
+
     for importance_kind in arguments.importances:
         importance = neuron_importance(
             "perturbation" if importance_kind == "merged" else importance_kind, arguments.layer, statistics, arguments
@@ -425,6 +452,7 @@ def main() -> None:
                         mlp,
                         arguments.data_directory / f"layer-{arguments.layer:02d}-pairs",
                         arguments,
+                        lambda: add_work(EPOCH_WORK[arguments.objective]),
                     )
                 row = {
                     "importance": importance_kind,
@@ -438,6 +466,7 @@ def main() -> None:
                 with results_path.open("a") as results_file:
                     results_file.write(json.dumps(row) + "\n")
                 log_event(output, {"step": "variant", **row})
+                add_work(EVALUATION_WORK)
                 if arguments.save_mlps is not None and variant == trained_variant:
                     arguments.save_mlps.mkdir(parents=True, exist_ok=True)
                     torch.save(

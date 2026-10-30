@@ -20,6 +20,7 @@ Wszystko, co tu piszesz, trafia do zwykłych plików `.md` w `AGENTS/`, więc da
   - **📋 Briefing**: podsumowanie ostatniej sesji agenta, czyli to samo, co w okienku czatu; wcześniejsze briefingi są jako linki nad tekstem;
   - **❓ Instrukcja**: ten tekst;
   - **Odśwież**: wczytuje pliki ponownie (np. po pracy agenta).
+- **Pasek postępu obliczeń** (druga linia paska, tylko gdy agent coś liczy): ile procent zrobione, który krok, ile czasu minęło, ile zostało i o której mniej więcej koniec. Odświeża się sam co 15 s. Po najechaniu myszą: lista kroków (✅ zrobione, ⏳ trwa, ❌ nieudane, · czeka). Czas „zostało” liczony jest z szacunków agenta, poprawianych tym, jak szybko szły już skończone kroki i jaką część bieżącego kroku zgłosił skrypt. Kolor pomarańczowy i „⚠️ brak sygnału”: od 3 min nic nie zapisało postępu, więc obliczenia mogły się przerwać. Zielony: koniec.
 - **✅ Koniec**: gdy skończysz odpowiadać:
   - pokazuje listę rzeczy, na które odpowiedziałeś od poprzedniego Konca: Twoje działania w GUI (decyzje, statusy, wpisy, nowe wątki, zamknięcia, uwagi) oraz wpisy podpisane „— Autor” w wątkach i w raporcie, także te dopisane w VS Code. Zmiany zrobione przez agentów się nie liczą;
   - zapisuje ją do `AGENTS/talk/koniec/`;

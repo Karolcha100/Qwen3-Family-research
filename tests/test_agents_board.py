@@ -1,12 +1,21 @@
 import json
 import threading
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
 
 import pytest
 
-from agents_board.model import Board, BoardError, StaleFile, ascii_slug, file_version, split_entries
+from agents_board.model import (
+    Board,
+    BoardError,
+    StaleFile,
+    ascii_slug,
+    file_version,
+    progress_summary,
+    split_entries,
+)
 from agents_board.server import make_handler, render_page
 
 ISSUES = """# Pytania
@@ -372,3 +381,56 @@ def test_images_are_embedded(root):
     (root / "phases" / "phase-x" / "chart.svg").write_text('<svg xmlns="http://www.w3.org/2000/svg"/>')
     images = Board(root).state()["images"]
     assert list(images) == ["phases/phase-x/chart.svg"] and images["phases/phase-x/chart.svg"].startswith("data:image/svg+xml;base64,")
+
+
+def queue(steps, finished_at=None, updated_at=1000.0):
+    return {"title": "Kolejka", "started_at": 0.0, "updated_at": updated_at, "finished_at": finished_at, "steps": steps}
+
+
+def test_progress_scales_waiting_steps_by_pace_of_finished_ones():
+    data = queue([
+        {"name": "a", "estimate_seconds": 100, "status": "done", "started_at": 0.0, "finished_at": 200.0},
+        {"name": "b", "estimate_seconds": 100, "status": "running", "started_at": 200.0},
+        {"name": "c", "estimate_seconds": 300, "status": "waiting"},
+    ])
+    summary = progress_summary(data, 250.0)
+    assert summary["remaining_seconds"] == pytest.approx(150 + 600)
+    assert summary["percent"] == pytest.approx(100 * 250 / (250 + 750))
+    assert summary["current"] == "b" and summary["steps_done"] == 1 and summary["steps_total"] == 3
+
+
+def test_progress_uses_reported_fraction_of_running_step():
+    data = queue([
+        {"name": "a", "estimate_seconds": 100, "status": "running", "started_at": 0.0, "fraction": 0.25},
+        {"name": "b", "estimate_seconds": 100, "status": "waiting"},
+    ])
+    summary = progress_summary(data, 60.0)
+    assert summary["remaining_seconds"] == pytest.approx(180 + 100)
+    assert summary["current_fraction"] == 0.25
+
+
+def test_progress_finished_and_stale_queue():
+    steps = [{"name": "a", "estimate_seconds": 10, "status": "failed", "started_at": 0.0, "finished_at": 50.0}]
+    finished = progress_summary(queue(steps, finished_at=50.0, updated_at=50.0), 5000.0)
+    assert finished["percent"] == 100.0 and finished["remaining_seconds"] == 0.0 and not finished["stale"]
+    assert finished["steps_failed"] == ["a"] and finished["elapsed_seconds"] == 50.0
+    running = [{"name": "a", "estimate_seconds": 1000, "status": "running", "started_at": 0.0}]
+    assert progress_summary(queue(running, updated_at=0.0), 600.0)["stale"]
+    assert not progress_summary(queue(running, updated_at=590.0), 600.0)["stale"]
+
+
+def test_board_progress_reads_file_and_server_endpoint(root):
+    from http.server import ThreadingHTTPServer
+
+    board = Board(root)
+    assert board.progress() is None and board.state()["progress"] is None
+    (root / "postep-obliczen.json").write_text(json.dumps(queue(
+        [{"name": "a", "estimate_seconds": 10, "status": "waiting"}], updated_at=time.time())))
+    assert board.progress()["steps_total"] == 1
+    srv = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(board, "secret", read_only=True))
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    try:
+        answer = json.load(urllib.request.urlopen(f"http://127.0.0.1:{srv.server_address[1]}/api/progress"))
+        assert answer["progress"]["title"] == "Kolejka"
+    finally:
+        srv.shutdown()

@@ -8,6 +8,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, Qwen3ForCausalLM
 
 from qwen_compression.model_parts import decoder_layers
+from qwen_compression.progress import report_progress
 
 MODEL_NAME = "Qwen/Qwen3-0.6B-Base"
 COMMON_STOP_TEXTS = ["<|endoftext|>", "<|endofmask|>", "</s>", "\nif __name__", "\ndef main(", "\nprint("]
@@ -78,6 +79,7 @@ def main() -> None:
             task_ids, tokenizer.batch_decode(new_tokens, skip_special_tokens=True), strict=True
         ):
             solutions[task_id] = prompts[task_id] + truncated(completion, stop_texts)
+        report_progress(len(solutions) / len(order))
     seconds = time.perf_counter() - start
     arguments.output.parent.mkdir(parents=True, exist_ok=True)
     arguments.output.write_text(

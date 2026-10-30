@@ -147,3 +147,11 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 - pytanie K39 (uruchomienie kolejki): `AGENTS/phases/phase-2/agents-issues-7.md`; opis: @T013.
 
 *2026-10-30 14:14 — Claude Opus 5.5*
+
+### [L21] Pasek postępu obliczeń
+
+- `scripts/run_queue.py` uruchamia kroki z `queue.json` i zapisuje `AGENTS/postep-obliczen.json` (poza gitem); skrypty zgłaszają postęp przez `qwen_compression.progress.report_progress`;
+- `agents_board/model.py`: `progress_summary` (procent według czasu, tempo skończonych kroków, ułamek bieżącego kroku, brak sygnału > 3 min), `/api/progress`, pasek w nagłówku odświeżany co 15 s; 4 testy;
+- kolejka K31–K38 przeniesiona do `results/phase2/code/queue.json` z szacunkami (razem 167 min); szacunki w @T013.
+
+*2026-10-30 14:27 — Claude Opus 5.5*
