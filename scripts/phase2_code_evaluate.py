@@ -4,8 +4,11 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+from qwen_compression.code_metrics import pass_at_k
+
 SANDBOX_IMAGE = "qwen-code-sandbox"
 PASS = "pass"
+MAXIMUM_K = 3
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -35,7 +38,7 @@ def sandbox_command(work_directory: Path, command: list[str]) -> list[str]:
     ]
 
 
-def run_tests(samples: Path, dataset: str, parallel: int) -> dict[str, dict[str, str]]:
+def run_tests(samples: Path, dataset: str, parallel: int) -> dict[str, list[dict[str, str]]]:
     work_directory = samples.parent
     sanitized = samples.with_name(samples.name.replace(".jsonl", "-sanitized.jsonl"))
     results_path = sanitized.with_name(sanitized.name.replace(".jsonl", "_eval_results.json"))
@@ -60,13 +63,24 @@ def run_tests(samples: Path, dataset: str, parallel: int) -> dict[str, dict[str,
     )
     evaluation = json.loads(results_path.read_text())["eval"]
     return {
-        task_id: {
-            "solution": runs[0]["solution"],
-            "base_status": runs[0]["base_status"],
-            "plus_status": runs[0]["plus_status"],
-        }
+        task_id: [
+            {"solution": run["solution"], "base_status": run["base_status"], "plus_status": run["plus_status"]}
+            for run in runs
+        ]
         for task_id, runs in evaluation.items()
     }
+
+
+def correct_counts(runs: list[dict[str, str]]) -> dict[str, int]:
+    return {
+        "samples": len(runs),
+        "correct_base": sum(run["base_status"] == PASS for run in runs),
+        "correct_plus": sum(run["base_status"] == run["plus_status"] == PASS for run in runs),
+    }
+
+
+def mean_pass_at_k(counts: dict[str, dict[str, int]], key: str, k: int) -> float:
+    return sum(pass_at_k(task["samples"], task[key], k) for task in counts.values()) / len(counts)
 
 
 def file_name(task_id: str) -> str:
@@ -118,22 +132,36 @@ def static_analysis(solutions: dict[str, str]) -> dict[str, dict[str, float]]:
 def main() -> None:
     arguments = parse_arguments()
     tasks = run_tests(arguments.samples, arguments.dataset, arguments.parallel)
-    analysis = static_analysis({task_id: task["solution"] for task_id, task in tasks.items()})
+    analysis = static_analysis({task_id: runs[0]["solution"] for task_id, runs in tasks.items()})
+    counts = {task_id: correct_counts(runs) for task_id, runs in tasks.items()}
     task_count = len(tasks)
+    sample_count = min(task["samples"] for task in counts.values())
     summary = {
         "dataset": arguments.dataset,
         "samples": str(arguments.samples),
         "tasks": task_count,
-        "pass_at_1_base": sum(task["base_status"] == PASS for task in tasks.values()) / task_count,
-        "pass_at_1_plus": sum(task["base_status"] == task["plus_status"] == PASS for task in tasks.values())
-        / task_count,
+        "samples_per_task": sample_count,
+        "pass_at_1_base": mean_pass_at_k(counts, "correct_base", 1),
+        "pass_at_1_plus": mean_pass_at_k(counts, "correct_plus", 1),
+        "pass_at_k": {
+            variant: {
+                str(k): mean_pass_at_k(counts, f"correct_{variant}", k)
+                for k in range(1, min(MAXIMUM_K, sample_count) + 1)
+            }
+            for variant in ("base", "plus")
+        },
         **{
             f"mean_{metric}": sum(values[metric] for values in analysis.values()) / task_count
             for metric in ("ruff_findings", "pyright_errors", "max_cyclomatic_complexity", "lines")
         },
         "per_task": {
-            task_id: {"base_status": task["base_status"], "plus_status": task["plus_status"], **analysis[task_id]}
-            for task_id, task in tasks.items()
+            task_id: {
+                "base_status": runs[0]["base_status"],
+                "plus_status": runs[0]["plus_status"],
+                **counts[task_id],
+                **analysis[task_id],
+            }
+            for task_id, runs in tasks.items()
         },
     }
     output = arguments.samples.with_name(arguments.samples.name.replace(".jsonl", "-summary.json"))

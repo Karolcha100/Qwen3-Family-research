@@ -64,3 +64,31 @@ Każde zadanie daje wynik 0 albo 1, więc mała zmiana w modelu może „przerzu
 ---
 ---
 ---
+
+Wolę abyś pisał o liczbie zadań które wykonuje oryginalny model i nasz model, dodatkowo, przydałoby się rozważać nie tylko pass@1 ale także pass@2 i pass@3
+
+*2026-10-30 17:58 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Jeśli chcesz pass@2 i pass@3, odpowiedz na **K44** w `AGENTS/phases/phase-2/agents-issues-9.md` (wystarczy „rek”, a jeśli od razu liczyć, dopisz „uruchom”).
+
+### Liczby zadań
+
+Od teraz piszę **liczby zadań** oryginału i naszego modelu, a procenty najwyżej obok. Zapisałem to w zasadach współpracy. Pierwszy raport w tej formie to `AGENTS/phases/phase-2/porownanie-z-oryginalem.md`. Przykład: oryginał rozwiązuje 38 ze 164 zadań HumanEval+, a model ze zmniejszoną warstwą 13 rozwiązuje 34, czyli traci 10 zadań i zyskuje 6.
+
+### pass@2 i pass@3
+
+pass@k to szansa, że **co najmniej jedna z k odpowiedzi** rozwiązuje zadanie. Żeby to policzyć, model musi dać kilka różnych odpowiedzi, więc je losujemy, np. 10 na zadanie. Ze wzoru wynika potem, jaka jest szansa sukcesu przy 1, 2 i 3 próbach (wzór i opis słowny są w K44). Kod jest już gotowy i sprawdzony bez GPU. Potrzebna jest tylko Twoja zgoda na obliczenia, które według mojego szacunku zajmą ~2–2,5 h przy trzech modelach.
+
+W liczbach zadań poda to np. „rozwiązane w co najmniej 1 z 3 prób”.
+
+*2026-10-30 18:39 — Claude Opus 5.5*
+
+---
+---
+---

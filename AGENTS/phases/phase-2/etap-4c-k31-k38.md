@@ -167,3 +167,72 @@ Szacunki dla treningów były trafne (±10%), poza celem na wyjściu w warstwie 
 - kod: `scripts/phase2_code_generate.py`, `scripts/phase2_code_evaluate.py`, `scripts/phase2_code_k31_k38_analysis.py`, `src/qwen_compression/training.py`, kontener `sandbox/`.
 
 *2026-10-30 17:13 — Claude Opus 5.5*
+
+## Dyskusja
+
+---
+---
+---
+
+w "5. K37: mniejszy krok uczenia (dodatkowa kolejka)" nie widać wykresu (o ile jest).
+
+Generalnie uważam że lepiej trzymać się jednej metody, czyli cel za warstwą i po prostu wybierać warstwy które są pełne mało znaczących neuronów (tutaj przydałaby się wizualizacja mapy - dodaj ją)
+
+Co do "6. K38: mapa 100% kod", uważam że powinniśmy trzymać się mapy 75% kod / 25 % tekst
+
+Zastanawiam się nad pass@1,2,3
+
+*2026-10-30 18:28 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Potwierdź dwie decyzje, które wynikają z Twojego wpisu, i odpowiedz na nowe pytania:
+- w `AGENTS/phases/phase-2/agents-issues-8.md` wpisz **K40: C** (zawsze cel za warstwą) i **K41: A** (mapa 75/25). Odczytuję tak Twój wpis, ale pola Decyzja wypełniasz Ty; K42 i K43 nadal czekają;
+- pytania **K44** (pass@2, pass@3) i **K45** (warstwy najtańsze według mapy) są w `AGENTS/phases/phase-2/agents-issues-9.md`.
+
+### Wykres do sekcji 5 (brakowało go)
+
+![Krok uczenia](AGENTS/phases/phase-2/figures/kod-k37-krok-uczenia.png)
+
+Lewy wykres: błąd walidacji (KL na wyjściu modelu na odłożonej porcji danych treningowych) po kolejnych epokach. Epoka 0 to start po najmniejszych kwadratach. Pomarańczowa linia (krok $5 \cdot 10^{-5}$) przez cały trening jest powyżej startu, więc trening nic nie poprawia. Zielona (krok $1 \cdot 10^{-5}$) spada w każdej epoce. Prawy wykres: KL na odłożonym Pythonie po treningu. Nawet z mniejszym krokiem cel na wyjściu (zielony) zostaje za starym celem za warstwą (żółty).
+
+### Jeden cel treningu i wybór warstw: zgadzam się
+
+Z wyników też to wynika: cel za warstwą działa w środku modelu i jest ~12–18× szybszy. Jedyny argument za celem na wyjściu to końcowe warstwy (26). Tam jednak testy kodu nic nie straciły, więc ta przewaga widać tylko w KL. Wybór warstw według mapy jest prostszy i spójny z Twoim pomysłem z @T009.
+
+### Wizualizacja mapy
+
+![Mapa warstw](AGENTS/phases/phase-2/figures/kod-mapa-warstwy.png)
+
+Każdy wiersz to jedna warstwa (0 u góry, 27 na dole), a w wierszu 3072 neurony ułożone od najważniejszego (lewo) do najmniej ważnego (prawo). Kolor to ważność neuronu (z mapy kodu 75/25) w skali logarytmicznej względem średniej całego modelu: ciemny = ważny, jasny = mało ważny. Pomarańczowe linie pokazują, które neurony usuwamy przy −20% i −40%.
+
+Co widać: końcowe warstwy (ok. 17–25) mają po prawej stronie najjaśniejsze pasy. Najsłabsze 5% neuronów jest tam **~10–20× mniej ważne niż średnia**, a w warstwie 13 ~6× mniej. Na początku modelu (0–7) neurony są bardziej wyrównane: nawet najsłabsze są tylko ~3× mniej ważne niż średnia. Warstwy 26 i 27 mają po lewej najciemniejsze neurony, czyli kilka bardzo ważnych.
+
+![Koszt warstw](AGENTS/phases/phase-2/figures/kod-mapa-koszt-warstw.png)
+
+Lewy wykres: przewidywany koszt usunięcia 20% (niebieskie) i 40% (pomarańczowe) najmniej ważnych neuronów każdej warstwy, czyli suma ich ważności z mapy. Im niżej, tym taniej. ▼ oznacza warstwy już zmniejszane. Prawy wykres: przewidywany koszt (oś pozioma) a zmierzona KL na Pythonie po samym wycięciu (oś pionowa) dla tych czterech warstw.
+
+Co widać:
+- **najtańsze według mapy są warstwy 20–25**, przy 40% koszt jest tam ~1,5× mniejszy niż w warstwie 13 i ~2,5× mniejszy niż w warstwach 2–6;
+- mapa dobrze porządkuje warstwy 2, 13 i 14. **Warstwa 26 jest wyjątkiem:** zmierzona KL jest tam 2× większa, niż wynikałoby z mapy. Mapa sumuje ważność neuronów osobno, a w końcowych warstwach usunięte neurony najwyraźniej działają razem;
+- warstwa 26 mimo to nic nie straciła w testach kodu (raport `porownanie-z-oryginalem.md`), więc mapa może trafniej przewidywać umiejętność pisania kodu niż KL. Sprawdzenie warstw 20–25 to pytanie **K45**.
+
+Skrypt: `scripts/phase2_code_map_figures.py`, koszty warstw: `results/phase2/code/map-layer-costs.json`.
+
+### Mapa 75/25: zgoda
+
+Zostajemy przy 75/25 (K41 = A po Twoim potwierdzeniu).
+
+### pass@1, 2, 3
+
+Przygotowane bez GPU (pytanie **K44**). Wyniki będę podawał też jako liczby zadań, jak prosiłeś w @T015.
+
+*2026-10-30 18:38 — Claude Opus 5.5*
+
+---
+---
+---

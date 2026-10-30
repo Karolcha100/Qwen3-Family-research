@@ -1,4 +1,5 @@
 import copy
+import itertools
 
 import pytest
 import torch
@@ -6,6 +7,7 @@ from transformers import AutoTokenizer, Qwen3Config, Qwen3ForCausalLM
 
 from qwen_compression.activations import collect_neuron_statistics
 from qwen_compression.analysis import spearman, top_overlap
+from qwen_compression.code_metrics import pass_at_k
 from qwen_compression.data import interleave_evenly, interleave_sources, pack_sequences
 from qwen_compression.importance import fisher_kl_coefficients
 from qwen_compression.metrics import kl_and_loss_change, reference_log_probabilities
@@ -316,3 +318,15 @@ def test_output_kl_matches_direct_computation_and_gradient(model: Qwen3ForCausal
     for parameter, direct_parameter in zip(student.parameters(), direct_student.parameters(), strict=True):
         torch.testing.assert_close(parameter.grad, direct_parameter.grad)
     assert output_kl(double_model, 2, student, layer_input, CHUNK_LENGTH) == pytest.approx(direct.item(), rel=1e-9)
+
+
+def test_pass_at_k_matches_enumeration() -> None:
+    sample_count, correct_count = 6, 2
+    outcomes = [True] * correct_count + [False] * (sample_count - correct_count)
+    for k in (1, 2, 3):
+        subsets = list(itertools.combinations(outcomes, k))
+        expected = sum(any(subset) for subset in subsets) / len(subsets)
+        assert pass_at_k(sample_count, correct_count, k) == pytest.approx(expected)
+    assert pass_at_k(10, 0, 3) == 0.0
+    assert pass_at_k(10, 8, 3) == 1.0
+    assert pass_at_k(1, 1, 1) == 1.0

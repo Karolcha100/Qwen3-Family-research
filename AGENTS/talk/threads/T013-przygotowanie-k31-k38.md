@@ -117,3 +117,37 @@ Sprawność oryginału przy generowaniu (po 16 zadań naraz, bf16): 124–134 to
 ---
 ---
 ---
+
+Dobra, jak to wygląda względem oryginalnego Qwen3? - Zrób porównanie i uwzględnij dodatkową kolejkę do 17:30
+
+*2026-10-30 18:02 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Przeczytaj raport `AGENTS/phases/phase-2/porownanie-z-oryginalem.md`. Jest w nim pełne porównanie z oryginałem, razem z dodatkową kolejką do 17:13. Tę samą prośbę napisałeś też w @T016, więc obie dostały jeden raport.
+
+### W skrócie (liczba rozwiązanych zadań)
+
+| Model | HumanEval (z 164) | HumanEval+ | MBPP (z 378) | MBPP+ |
+|---|---|---|---|---|
+| **oryginał** | **49** | **38** | **195** | **162** |
+| w. 13 −40%, cel za warstwą | 44 | 34 | 186 | 152 |
+| w. 13 −40%, cel na wyjściu | 45 | 34 | 182 | 150 |
+| w. 13 −40%, mapa 100% kod (dodatkowa kolejka) | 42 | 32 | 190 | 159 |
+| w. 26 −40%, cel na wyjściu (dodatkowa kolejka) | **50** | **40** | **196** | **165** |
+
+Każdy wariant to oryginał z jedną warstwą zmniejszoną o 40% neuronów (−0,6% parametrów):
+- **warstwa 13** traci od 9 do 16 zadań z 542 w testach „+”; na MBPP+ to strata prawdziwa, a nie przypadek;
+- **warstwa 26** nie traci nic.
+
+Pamięć i szybkość się nie zmieniają, bo zmiana jest za mała. Jakość kodu (ruff, pyright, złożoność) też się nie zmienia.
+
+*2026-10-30 18:39 — Claude Opus 5.5*
+
+---
+---
+---

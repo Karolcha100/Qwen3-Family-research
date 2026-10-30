@@ -1,0 +1,307 @@
+[
+  {
+    "name": "original",
+    "model": "oryginał",
+    "kl_code": 0.0,
+    "kl_c4": 0.0,
+    "wikitext2_perplexity": 12.66009202072348,
+    "humaneval": {
+      "solved": 49,
+      "tasks": 164,
+      "gained": 0,
+      "lost": 0,
+      "p_value": 1.0
+    },
+    "humaneval_plus": {
+      "solved": 38,
+      "tasks": 164,
+      "gained": 0,
+      "lost": 0,
+      "p_value": 1.0
+    },
+    "humaneval_static": {
+      "ruff_findings": 0.07317073170731707,
+      "pyright_errors": 0.024390243902439025,
+      "max_cyclomatic_complexity": 5.9939024390243905,
+      "lines": 20.158536585365855
+    },
+    "humaneval_efficiency": {
+      "parameters": 596049920,
+      "peak_memory_bytes": 3376587776,
+      "generated_tokens": 15914,
+      "seconds": 128.4247664019931,
+      "tokens_per_second": 123.9169082868818
+    },
+    "mbpp": {
+      "solved": 195,
+      "tasks": 378,
+      "gained": 0,
+      "lost": 0,
+      "p_value": 1.0
+    },
+    "mbpp_plus": {
+      "solved": 162,
+      "tasks": 378,
+      "gained": 0,
+      "lost": 0,
+      "p_value": 1.0
+    },
+    "mbpp_static": {
+      "ruff_findings": 0.042328042328042326,
+      "pyright_errors": 0.031746031746031744,
+      "max_cyclomatic_complexity": 3.4761904761904763,
+      "lines": 7.177248677248677
+    },
+    "mbpp_efficiency": {
+      "parameters": 596049920,
+      "peak_memory_bytes": 3085030912,
+      "generated_tokens": 27089,
+      "seconds": 201.45995201400365,
+      "tokens_per_second": 134.46344908350332
+    }
+  },
+  {
+    "name": "layer13-40-window",
+    "model": "w. 13 −40%, cel za warstwą",
+    "kl_code": 0.003063801588723436,
+    "kl_c4": 0.00777914171339944,
+    "wikitext2_perplexity": 12.747570689432548,
+    "humaneval": {
+      "solved": 44,
+      "tasks": 164,
+      "gained": 7,
+      "lost": 12,
+      "p_value": 0.359283447265625
+    },
+    "humaneval_plus": {
+      "solved": 34,
+      "tasks": 164,
+      "gained": 6,
+      "lost": 10,
+      "p_value": 0.454498291015625
+    },
+    "humaneval_static": {
+      "ruff_findings": 0.06707317073170732,
+      "pyright_errors": 0.012195121951219513,
+      "max_cyclomatic_complexity": 5.4939024390243905,
+      "lines": 21.597560975609756
+    },
+    "humaneval_efficiency": {
+      "parameters": 592274432,
+      "peak_memory_bytes": 3369036800,
+      "generated_tokens": 17027,
+      "seconds": 129.15167767000094,
+      "tokens_per_second": 131.8372343834833
+    },
+    "mbpp": {
+      "solved": 186,
+      "tasks": 378,
+      "gained": 6,
+      "lost": 15,
+      "p_value": 0.0783538818359375
+    },
+    "mbpp_plus": {
+      "solved": 152,
+      "tasks": 378,
+      "gained": 5,
+      "lost": 15,
+      "p_value": 0.04138946533203125
+    },
+    "mbpp_static": {
+      "ruff_findings": 0.042328042328042326,
+      "pyright_errors": 0.023809523809523808,
+      "max_cyclomatic_complexity": 3.685185185185185,
+      "lines": 7.26984126984127
+    },
+    "mbpp_efficiency": {
+      "parameters": 592274432,
+      "peak_memory_bytes": 3077481984,
+      "generated_tokens": 26064,
+      "seconds": 219.60522295399278,
+      "tokens_per_second": 118.68570177613853
+    }
+  },
+  {
+    "name": "layer13-40-output",
+    "model": "w. 13 −40%, cel na wyjściu",
+    "kl_code": 0.0037500245452974923,
+    "kl_c4": 0.008686781016876921,
+    "wikitext2_perplexity": 12.761964250927601,
+    "humaneval": {
+      "solved": 45,
+      "tasks": 164,
+      "gained": 6,
+      "lost": 10,
+      "p_value": 0.454498291015625
+    },
+    "humaneval_plus": {
+      "solved": 34,
+      "tasks": 164,
+      "gained": 5,
+      "lost": 9,
+      "p_value": 0.4239501953125
+    },
+    "humaneval_static": {
+      "ruff_findings": 0.07926829268292683,
+      "pyright_errors": 0.024390243902439025,
+      "max_cyclomatic_complexity": 5.237804878048781,
+      "lines": 21.25609756097561
+    },
+    "humaneval_efficiency": {
+      "parameters": 592274432,
+      "peak_memory_bytes": 3369036800,
+      "generated_tokens": 15618,
+      "seconds": 131.48405654200178,
+      "tokens_per_second": 118.78246238174836
+    },
+    "mbpp": {
+      "solved": 182,
+      "tasks": 378,
+      "gained": 6,
+      "lost": 19,
+      "p_value": 0.01463329792022705
+    },
+    "mbpp_plus": {
+      "solved": 150,
+      "tasks": 378,
+      "gained": 4,
+      "lost": 16,
+      "p_value": 0.01181793212890625
+    },
+    "mbpp_static": {
+      "ruff_findings": 0.04497354497354497,
+      "pyright_errors": 0.0291005291005291,
+      "max_cyclomatic_complexity": 3.8968253968253967,
+      "lines": 7.402116402116402
+    },
+    "mbpp_efficiency": {
+      "parameters": 592274432,
+      "peak_memory_bytes": 3077549056,
+      "generated_tokens": 29076,
+      "seconds": 246.78628918000322,
+      "tokens_per_second": 117.818538852425
+    }
+  },
+  {
+    "name": "layer13-40-code-only",
+    "model": "w. 13 −40%, mapa 100% kod",
+    "kl_code": 0.002843651924195001,
+    "kl_c4": 0.0101321532856673,
+    "wikitext2_perplexity": 12.792166092106799,
+    "humaneval": {
+      "solved": 42,
+      "tasks": 164,
+      "gained": 5,
+      "lost": 12,
+      "p_value": 0.143463134765625
+    },
+    "humaneval_plus": {
+      "solved": 32,
+      "tasks": 164,
+      "gained": 5,
+      "lost": 11,
+      "p_value": 0.210113525390625
+    },
+    "humaneval_static": {
+      "ruff_findings": 0.08536585365853659,
+      "pyright_errors": 0.03048780487804878,
+      "max_cyclomatic_complexity": 4.951219512195122,
+      "lines": 19.609756097560975
+    },
+    "humaneval_efficiency": {
+      "parameters": 592274432,
+      "peak_memory_bytes": 3369036800,
+      "generated_tokens": 13043,
+      "seconds": 129.32937376400514,
+      "tokens_per_second": 100.85102572135177
+    },
+    "mbpp": {
+      "solved": 190,
+      "tasks": 378,
+      "gained": 8,
+      "lost": 13,
+      "p_value": 0.38331031799316406
+    },
+    "mbpp_plus": {
+      "solved": 159,
+      "tasks": 378,
+      "gained": 11,
+      "lost": 14,
+      "p_value": 0.6900379657745361
+    },
+    "mbpp_static": {
+      "ruff_findings": 0.03968253968253968,
+      "pyright_errors": 0.037037037037037035,
+      "max_cyclomatic_complexity": 3.5291005291005293,
+      "lines": 6.841269841269841
+    },
+    "mbpp_efficiency": {
+      "parameters": 592274432,
+      "peak_memory_bytes": 3077476352,
+      "generated_tokens": 26556,
+      "seconds": 188.56257213400386,
+      "tokens_per_second": 140.8338871254244
+    }
+  },
+  {
+    "name": "layer26-40-output",
+    "model": "w. 26 −40%, cel na wyjściu",
+    "kl_code": 0.009396433644724311,
+    "kl_c4": 0.020859428273979574,
+    "wikitext2_perplexity": 13.207932107418635,
+    "humaneval": {
+      "solved": 50,
+      "tasks": 164,
+      "gained": 4,
+      "lost": 3,
+      "p_value": 1.0
+    },
+    "humaneval_plus": {
+      "solved": 40,
+      "tasks": 164,
+      "gained": 4,
+      "lost": 2,
+      "p_value": 0.6875
+    },
+    "humaneval_static": {
+      "ruff_findings": 0.08536585365853659,
+      "pyright_errors": 0.03048780487804878,
+      "max_cyclomatic_complexity": 5.646341463414634,
+      "lines": 19.79268292682927
+    },
+    "humaneval_efficiency": {
+      "parameters": 592274432,
+      "peak_memory_bytes": 3369118720,
+      "generated_tokens": 15597,
+      "seconds": 145.05507440700603,
+      "tokens_per_second": 107.52467684265086
+    },
+    "mbpp": {
+      "solved": 196,
+      "tasks": 378,
+      "gained": 7,
+      "lost": 6,
+      "p_value": 1.0
+    },
+    "mbpp_plus": {
+      "solved": 165,
+      "tasks": 378,
+      "gained": 6,
+      "lost": 3,
+      "p_value": 0.5078125
+    },
+    "mbpp_static": {
+      "ruff_findings": 0.037037037037037035,
+      "pyright_errors": 0.031746031746031744,
+      "max_cyclomatic_complexity": 3.6296296296296298,
+      "lines": 7.455026455026455
+    },
+    "mbpp_efficiency": {
+      "parameters": 592274432,
+      "peak_memory_bytes": 3077477888,
+      "generated_tokens": 27829,
+      "seconds": 227.80590944299183,
+      "tokens_per_second": 122.16101008110229
+    }
+  }
+]

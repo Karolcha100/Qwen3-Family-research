@@ -8,14 +8,16 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Teraz
 
-- Nic nie liczy się na GPU. Kolejki K31–K38 i dodatkowa (do 17:13) skończone; raport `AGENTS/phases/phase-2/etap-4c-k31-k38.md`, pytania K40–K43 w `AGENTS/phases/phase-2/agents-issues-8.md`. Jeśli K43 = A: najpierw policzyć zgodność najbardziej prawdopodobnego tokenu (top-1) z oryginałem dla 4 gotowych modeli (`~/qwen3-checkpoints/phase2-code/mlps/`, ~5 min GPU) i porównać z pass@1 (warstwa 13 −2,7 pkt, warstwa 26 0 pkt).
-- Analiza: `scripts/phase2_code_k31_k38_analysis.py` → `results/phase2/code/k31-k38-summary.json` + wykresy `kod-k31-*`, `kod-k37-*`, `kod-k38-*`, `kod-testy-pass1.png`.
+- Nic nie liczy się na GPU. Czekam na K40–K45. Autor w dyskusji etapu 4c: jeden cel (za warstwą) + wybór warstw z mapy, mapa 75/25 → poproszony o wpisanie K40 = C, K41 = A w `agents-issues-8.md`.
+- K44 = A (pass@2/3): kolejka z `scripts/phase2_code_generate.py --samples-per-task 10 --batch-size 30` (10 odpowiedzi, T 0,8, top-p 0,95; pamięć KV: ~112 KB/token, 30 sekwencji mieści się w 12 GB) dla `original`, `layer13-40-window`, `layer26-40-output`; wyniki do osobnych katalogów (np. `results/phase2/code-eval/<model>-sampled/`), żeby nie nadpisać odpowiedzi zachłannych. Najpierw oryginał, zmierzyć czas.
+- K45 = A: `scripts/phase2_stage4_one_layer.py --layer L --importances perturbation --removed-fractions 0.4 --epochs 6 --save-mlps …` dla L = 20–25 (każda warstwa: ~3 min zbieranie par, 4 GB na dysku), potem testy kodu dla dwóch najlepszych.
 
 ## Na co czekam (co odblokuje pracę)
 
 | Czekam na | Odblokuje |
 |---|---|
 | K40–K43 (`AGENTS/phases/phase-2/agents-issues-8.md`) | cel treningu, waga mapy, scalanie, miara kodu (K43 A: ~5 min GPU) |
+| K44, K45 (`AGENTS/phases/phase-2/agents-issues-9.md`) | pass@2/3 (~2–2,5 h GPU), warstwy 20–25 (~1 h GPU) |
 | opinia o `AGENTS/phases/phase-0/katalog-metod.md` | wybór metod klasycznych |
 
 ## Odłożone pytania
@@ -24,4 +26,4 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Ostatnia sesja
 
-2026-10-30 17:13: kolejka K31–K38 i dodatkowa kolejka (zgoda autora 16:30), raport etap 4c, pytania K40–K43.
+2026-10-30 18:39: porównanie z oryginałem (liczby zadań), mapa warstw, przygotowanie pass@k, pytania K44–K45.

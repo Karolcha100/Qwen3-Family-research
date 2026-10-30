@@ -164,3 +164,11 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 - raport `AGENTS/phases/phase-2/etap-4c-k31-k38.md`, pytania K40–K43 `AGENTS/phases/phase-2/agents-issues-8.md`; zmierzone czasy w `procedury.md`, sekcja 10.
 
 *2026-10-30 17:13 — Claude Opus 5.5*
+
+### [L22] Porównanie z oryginałem, mapa, pass@k
+
+- raport `AGENTS/phases/phase-2/porownanie-z-oryginalem.md` (liczby zadań, zyski/straty z testem McNemara, KL, perpleksja, sprawność, analiza statyczna; `scripts/phase2_code_comparison.py`);
+- wizualizacja mapy i przewidywany koszt warstw (`scripts/phase2_code_map_figures.py`): najtańsze 20–25; wykres kroku uczenia K37; oba w dyskusji `etap-4c-k31-k38.md`;
+- pass@k: `--samples-per-task` w `scripts/phase2_code_generate.py`, pass@1–3 w `scripts/phase2_code_evaluate.py`, `src/qwen_compression/code_metrics.py` + test; sprawdzone w kontenerze na dwóch zestawach odpowiedzi; pytania K44, K45 (`agents-issues-9.md`).
+
+*2026-10-30 18:39 — Claude Opus 5.5*

@@ -159,6 +159,45 @@ def objective_figure(
     return table
 
 
+def learning_rate_figure(
+    window_rows: list[dict], output_rows: list[dict], small_step_rows: list[dict], figures: Path
+) -> None:
+    runs = (
+        ("cel na wyjściu, krok 5e-5", find_row(output_rows, "perturbation", 0.2, "trained_output")),
+        ("cel na wyjściu, krok 1e-5", find_row(small_step_rows, "perturbation", 0.2, "trained_output")),
+    )
+    figure, axes = new_figure(2, width_per_panel=5.2, height=4.0)
+    for position, (label, row) in enumerate(runs):
+        if row is None:
+            continue
+        losses = [row["output_kl_before"], *row["epoch_losses"]]
+        axes[0].plot(
+            range(len(losses)), losses, color=SERIES_COLORS[position + 1], linewidth=2, marker="o", label=label
+        )
+    axes[0].set_xlabel("epoka (0 = start po najmniejszych kwadratach)")
+    axes[0].set_ylabel("KL na wyjściu, odłożona porcja treningowa")
+    axes[0].set_title("Błąd walidacji w trakcie treningu", fontsize=10, loc="left")
+    axes[0].legend(frameon=False, fontsize=8, labelcolor=PRIMARY_INK)
+    variants = (
+        ("najmniejsze\nkwadraty", find_row(small_step_rows, "perturbation", 0.2, "least_squares")),
+        ("na wyjściu\nkrok 5e-5", runs[0][1]),
+        ("na wyjściu\nkrok 1e-5", runs[1][1]),
+        ("za warstwą\nkrok 5e-5", find_row(window_rows, "perturbation", 0.2, "trained")),
+    )
+    axes[1].bar(
+        range(len(variants)),
+        [row["kl_code"] if row else 0.0 for _, row in variants],
+        color=[SERIES_COLORS[0], SERIES_COLORS[1], SERIES_COLORS[2], SERIES_COLORS[3]],
+        width=0.6,
+    )
+    axes[1].set_xticks(range(len(variants)), [label for label, _ in variants], fontsize=8)
+    axes[1].set_ylabel("KL do oryginału (nat / token)")
+    axes[1].set_title("KL na odłożonym Pythonie po treningu", fontsize=10, loc="left")
+    save_figure(
+        figure, str(figures / "kod-k37-krok-uczenia.png"), "K37: mniejszy krok uczenia, warstwa 13, zmniejszenie o 20%"
+    )
+
+
 def code_summary(code_evaluation: Path) -> list[dict]:
     table = []
     for name, label in CODE_MODELS:
@@ -270,6 +309,7 @@ def main() -> None:
         "k37_learning_rate": load_rows(code_results / "k37-lr1e-5" / "layer-13" / "results.jsonl"),
         "code": code_summary(arguments.code_evaluation),
     }
+    learning_rate_figure(stage4_rows["13"], output_rows["13"], summary["k37_learning_rate"], arguments.figures)
     summary["code_paired"] = paired_with_original(summary["code"])
     code_figure(summary["code"], arguments.figures)
     (code_results / "k31-k38-summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False))
