@@ -50,23 +50,23 @@ def per_source_mean_absolute(arguments: argparse.Namespace) -> dict[str, torch.T
     return result
 
 
-def disabled_kl_map(arguments: argparse.Namespace) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
-    fisher = torch.load(arguments.stage1 / "fisher.pt")["coefficients"]
-    layer_count, width = fisher.shape
-    kl_disabled = torch.zeros(layer_count, width, dtype=torch.float64)
-    kl_amplified = torch.full((layer_count, width), float("nan"), dtype=torch.float64)
-    measured = torch.zeros(layer_count, width, dtype=torch.bool)
-    scale = torch.ones(layer_count, dtype=torch.float64)
-    for layer_index in range(layer_count):
-        stored = torch.load(arguments.stage2 / f"layer-{layer_index:02d}.pt")
-        neurons = stored["neurons"]
-        exact_disabled = stored["kl"][:, 0, :].mean(dim=1)
-        scale[layer_index] = (exact_disabled / fisher[layer_index, neurons].clamp_min(1e-30)).median()
-        kl_disabled[layer_index] = fisher[layer_index] * scale[layer_index]
-        kl_disabled[layer_index, neurons] = exact_disabled
-        kl_amplified[layer_index, neurons] = stored["kl"][:, 3, :].mean(dim=1)
-        measured[layer_index, neurons] = True
-    return kl_disabled, kl_amplified, measured, scale
+def disabled_kl_map(arguments: argparse.Namespace) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    kl_disabled = torch.load(arguments.stage2 / "fisher-map.pt")["coefficients"].double()
+    exact_disabled = torch.full_like(kl_disabled, float("nan"))
+    exact_amplified = torch.full_like(kl_disabled, float("nan"))
+    for layer_index in range(kl_disabled.shape[0]):
+        exact_path = arguments.stage1 / f"exact-layer-{layer_index:02d}.pt"
+        screened_path = arguments.stage2 / f"layer-{layer_index:02d}.pt"
+        if exact_path.exists():
+            kl = torch.load(exact_path)["kl"].mean(dim=2)
+            exact_disabled[layer_index], exact_amplified[layer_index] = kl[:, 0], kl[:, 3]
+        elif screened_path.exists():
+            stored = torch.load(screened_path)
+            kl = stored["kl"].mean(dim=2)
+            deltas = list(stored["deltas"])
+            exact_disabled[layer_index, stored["neurons"]] = kl[:, deltas.index(-1.0)]
+            exact_amplified[layer_index, stored["neurons"]] = kl[:, deltas.index(1.0)]
+    return kl_disabled, exact_disabled, exact_amplified
 
 
 def main() -> None:
@@ -75,12 +75,13 @@ def main() -> None:
     arguments.figures.mkdir(parents=True, exist_ok=True)
     statistics = torch.load(arguments.stage1 / "statistics.pt")
     sources = per_source_mean_absolute(arguments)
-    kl_disabled, kl_amplified, measured, fisher_scale = disabled_kl_map(arguments)
+    kl_disabled, exact_disabled, exact_amplified = disabled_kl_map(arguments)
+    measured = exact_disabled.isfinite()
     mean_absolute = statistics["mean_absolute"]
     median_kl = kl_disabled.median()
     layer_median_activation = mean_absolute.median(dim=1, keepdim=True).values
     code_to_text = sources["code"] / sources["c4"].clamp_min(1e-12)
-    asymmetry = (kl_amplified - kl_disabled).abs() / torch.maximum(kl_amplified, kl_disabled)
+    asymmetry = (exact_amplified - exact_disabled).abs() / torch.maximum(exact_amplified, exact_disabled)
     labels = {
         "martwy": mean_absolute < arguments.dead_relative * layer_median_activation,
         "zbędny": kl_disabled < arguments.redundant_relative * median_kl,
@@ -96,7 +97,6 @@ def main() -> None:
     summary = {
         "thresholds": {key: value for key, value in vars(arguments).items() if isinstance(value, float)},
         "median_kl_disabled": float(median_kl),
-        "fisher_scale_per_layer": fisher_scale.tolist(),
         "measured_share": float(measured.double().mean()),
         "counts_total": {kind: int(mask.sum()) for kind, mask in labels.items()},
         "counts_per_layer": {kind: mask.sum(dim=1).tolist() for kind, mask in labels.items()},

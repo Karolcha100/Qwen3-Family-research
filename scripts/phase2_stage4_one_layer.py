@@ -100,12 +100,7 @@ def collect_pairs(
 def neuron_importance(kind: str, layer_index: int, arguments: argparse.Namespace) -> torch.Tensor:
     if kind == "activation":
         return torch.load(arguments.stage1 / "statistics.pt")["mean_absolute"][layer_index].float()
-    importance = torch.load(arguments.stage1 / "fisher.pt")["coefficients"][layer_index].float()
-    stage2_path = arguments.stage2 / f"layer-{layer_index:02d}.pt"
-    if stage2_path.exists():
-        measured = torch.load(stage2_path)
-        importance[measured["neurons"]] = measured["kl"][:, 0, :].mean(dim=1).float()
-    return importance
+    return torch.load(arguments.stage2 / "fisher-map.pt")["coefficients"][layer_index].float()
 
 
 def train_through_next_layer(

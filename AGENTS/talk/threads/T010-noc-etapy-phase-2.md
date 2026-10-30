@@ -62,9 +62,9 @@ Nic. To informacja o pierwszym wyniku i zmianie, którą wymusił (zgodnie z reg
 
 | | bf16 | float32 |
 |---|---|---|
-| KL kontrolna („skala 1”, powinno być 0) | {,}3 \cdot 10^{-3}$ | 569JXkl2 \cdot 10^{-9}$ (≈ 0) |
-| mediana KL wyłączenia neuronu ($\delta = -1$) | {,}3 \cdot 10^{-3}$ (= szum) | {,}3 \cdot 10^{-5}$ |
-| najmniejsza KL wyłączenia | | {,}5 \cdot 10^{-6}$ |
+| KL kontrolna („skala 1”, powinno być 0) | $1{,}3 \cdot 10^{-3}$ | $-2 \cdot 10^{-9}$ (≈ 0) |
+| mediana KL wyłączenia neuronu ($\delta = -1$) | $1{,}3 \cdot 10^{-3}$ (= szum) | $1{,}3 \cdot 10^{-5}$ |
+| najmniejsza KL wyłączenia | | $2{,}4 \cdot 10^{-6}$ |
 
 W bf16 szum jest **100× większy** niż skutek wyłączenia typowego neuronu, więc pomiar w bf16 mierzy sam szum. W float32 szum jest ~1000× mniejszy od najmniejszego skutku. **Wniosek: zaburzenia liczymy w float32.**
 
@@ -76,6 +76,42 @@ W bf16 szum jest **100× większy** niż skutek wyłączenia typowego neuronu, w
 Tłumaczy to też, dlaczego przesiew gradientem jest tak cenny: dokładne liczenie w float32 wszystkich 86 016 neuronów trwałoby ~26 h nawet na 4096 tokenach.
 
 *2026-10-29 22:10 — Claude Opus 5.5*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Rano: przeczytaj `etap-1-pilot.md` i `etap-2-mapa.md` w `AGENTS/phases/phase-pomysl/` i odpowiedz na **K16–K22** w `AGENTS/phases/phase-pomysl/agents-issues-3.md` (najważniejsze: K17 i K21).
+
+---
+
+**Stan o 02:06.** Etap 1 skończony (01:37), mapa przesiewu etapu 2 gotowa (02:01), etap 3 policzony wstępnie, etap 4 (warstwa 13) liczy się od 02:03. Po nim w kolejce GPU jest pomiar dokładny etapu 2 (~2 h).
+
+### 1. Reguły z pierwszego wpisu: jak wyszły
+
+| Reguła | Wynik | Co zrobiłem |
+|---|---|---|
+| precyzja | bf16 = szum ($1{,}3 \cdot 10^{-3}$), float32 ≈ $2 \cdot 10^{-9}$ | float32 |
+| przesiew vs dokładnie (≥ 0,9 i ≥ 80% top 10%) | 16 próbek: 0,88–0,95 i 78% ✗; **64 próbki: 0,96–0,98 i 84–87% ✓** | tryb „przesiew + dokładnie 10% najważniejszych i 5% losowych” |
+| 4096 tokenów wystarczy (≥ 0,95) | **0,51 ✗** | przesiew na 131 tys. tokenów zamiast 4096 |
+
+**Odstępstwo:** dla przesiewu zwiększyłem liczbę próbek z 16 do 64. Przy regule „inaczej wszystko dokładnie” mapa i tak opierałaby się na 4096 tokenach, a te dają ranking o wiarygodności ~0,5. Przesiew kosztuje 10 s na 4096 tokenów, więc policzyłem go na 32× więcej tokenów. Do akceptacji: **K17**.
+
+### 2. Najciekawsze wyniki
+
+- Skutek zaburzenia neuronu rośnie dokładnie jak $\delta^2$ (osłabienie o połowę = ¼ skutku wyłączenia, podwojenie = wyłączenie). Dalej mierzę więc tylko $\delta = \pm 1$ (**K16**).
+- Ranking ważności neuronów **mocno zależy od tekstu**: ranking z tekstu i ranking z kodu są praktycznie niezależne (**K18**).
+- Rozkład skutków jest wąski (mediana ~$1$–$3 \cdot 10^{-5}$). Nie ma dużej grupy neuronów, które można wyciąć za darmo; jest kilka bardzo ważnych (masywne w warstwie 2, kilkadziesiąt w ostatniej warstwie 27).
+- Najmniej wrażliwy jest środek modelu (warstwy 13–14), a ostatnia warstwa jest ~17× bardziej wrażliwa niż warstwa 13.
+
+### 3. Po drodze
+
+- Krok przesiewu w float32 wywalił się z braku pamięci GPU (logity 2048 × 151 936 w grafie). Przepisałem go bez grafu przez logity; 34 testy przechodzą.
+- **Naprawiłem tabelę w moim poprzednim wpisie (22:10):** powłoka zjadła znaki `$` we wzorach (np. `569JXkl2` zamiast $-2$). Zmieniłem tylko uszkodzone komórki, na wartości z `results/phase2/stage1/precision.pt`; treść wpisu jest ta sama. Przyczyna i zabezpieczenie: `AGENTS/memory/pulapki.md`, punkt 19.
+
+*2026-10-30 02:06 — Claude Opus 5.5*
 
 ---
 ---

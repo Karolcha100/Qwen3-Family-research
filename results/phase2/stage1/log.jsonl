@@ -3,3 +3,12 @@
 {"time": "2026-10-29 22:09:01", "step": "precision", "dtype": "float32", "seconds": 31.531008931000542}
 {"time": "2026-10-29 22:09:03", "step": "statistics", "seconds": 0.7607041329974891}
 {"time": "2026-10-29 22:10:22", "step": "start", "arguments": {"steps": "['data', 'statistics', 'precision', 'exact', 'noise', 'fisher']", "dtype": "float32", "layers": "[2, 13, 25]", "sequence_count": "64", "sequence_length": "2048", "measurement_sequences": "[0, 3]", "second_sequences": "[4, 7]", "statistics_sequences": "8", "batch_size": "8", "chunk_length": "256", "precision_neurons": "64", "noise_neurons": "500", "fisher_samples": "16", "seed": "0", "data_path": "/home/karol/qwen3-checkpoints/phase2/measurement-set.pt", "output": "results/phase2/stage1"}, "torch": "2.15.0+cu134", "transformers": "5.22.0", "sources_measured": ["c4", "code"], "sources_second": ["c4", "code"]}
+{"time": "2026-10-29 23:46:40", "step": "exact", "layer": 2, "seconds": 5777.081358315998}
+{"time": "2026-10-30 00:52:40", "step": "exact", "layer": 13, "seconds": 3960.189901042002}
+{"time": "2026-10-30 01:26:25", "step": "exact", "layer": 25, "seconds": 2024.9584618090012}
+{"time": "2026-10-30 01:31:35", "step": "noise", "layer": 2, "seconds": 310.4228587729958}
+{"time": "2026-10-30 01:35:10", "step": "noise", "layer": 13, "seconds": 214.6698910280029}
+{"time": "2026-10-30 01:37:00", "step": "noise", "layer": 25, "seconds": 109.85854993599787}
+{"time": "2026-10-30 01:38:36", "step": "start", "arguments": {"steps": "['fisher']", "dtype": "float32", "layers": "[2, 13, 25]", "sequence_count": "64", "sequence_length": "2048", "measurement_sequences": "[0, 3]", "second_sequences": "[4, 7]", "statistics_sequences": "8", "batch_size": "8", "chunk_length": "256", "precision_neurons": "64", "noise_neurons": "500", "fisher_samples": "16", "seed": "0", "data_path": "/home/karol/qwen3-checkpoints/phase2/measurement-set.pt", "output": "results/phase2/stage1"}, "torch": "2.15.0+cu134", "transformers": "5.22.0", "sources_measured": ["c4", "code"], "sources_second": ["c4", "code"]}
+{"time": "2026-10-30 01:38:47", "step": "fisher", "seconds": 10.398461463002604}
+{"time": "2026-10-30 01:38:47", "step": "done"}
