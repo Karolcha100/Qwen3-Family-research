@@ -8,7 +8,7 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Teraz
 
-- Nic się nie liczy (GPU wolne od 04:30). **@L13 zrobione** w nocy 29/30.10: raporty `AGENTS/phases/phase-pomysl/etap-1-pilot.md` … `etap-4-jedna-warstwa.md`, wyniki `results/phase2/`, nocny przebieg @T010 (wpisy 22:09, 22:10, 02:06).
+- Nic się nie liczy (GPU wolne od 04:30). **@L13 zrobione** w nocy 29/30.10: raporty `AGENTS/phases/phase-2/etap-1-pilot.md` … `etap-4-jedna-warstwa.md`, wyniki `results/phase2/`, nocny przebieg @T010 (wpisy 22:09, 22:10, 02:06).
 - Dane poza repo: `~/qwen3-checkpoints/phase2/` (`measurement-set.pt`, `training-set.pt`, `layer-13-pairs/` 4 GB).
 - Powtórka etapu 4 dla innej warstwy: `uv run --no-sync python scripts/phase2_stage4_one_layer.py --layer N --measurement-sequences 0 1 2 3 4 5 6 7` (ℓ ≤ 25), wykres: `scripts/phase2_stage4_analysis.py --layer N`.
 
@@ -16,13 +16,13 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 | Czekam na | Odblokuje |
 |---|---|
-| K25–K30 (`AGENTS/phases/phase-pomysl/agents-issues-4.md`): model ma dobrze programować | wybór danych mapy i naprawy (kod/tekst), pomiar programowania, języki, model odniesienia, powtórka etapu 4 pod kod (K30) |
-| K16–K24 (`AGENTS/phases/phase-pomysl/agents-issues-3.md`) | dalsze kroki Phase 2 (K21 warstwy, K23 trening, K19 nazwa folderu, K22 → @L14 GUI) |
+| K25–K30 (`AGENTS/phases/phase-2/agents-issues-4.md`): model ma dobrze programować | wybór danych mapy i naprawy (kod/tekst), pomiar programowania, języki, model odniesienia, powtórka etapu 4 pod kod (K30) |
+| K16–K24 (`AGENTS/phases/phase-2/agents-issues-3.md`) | dalsze kroki Phase 2 (K21 warstwy, K23 trening, K19 nazwa folderu, K22 → @L14 GUI) |
 | opinia o `AGENTS/phases/phase-0/katalog-metod.md` | wybór metod klasycznych |
 
 ## Odłożone pytania
 
-- brak (proporcje tekstu pomiarowego zadane jako @phase-pomysl:K11).
+- brak (proporcje tekstu pomiarowego zadane jako @phase-2:K11).
 
 ## Ostatnia sesja
 

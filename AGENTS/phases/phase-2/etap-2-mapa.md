@@ -6,7 +6,7 @@
 
 ## Co masz zrobić
 
-Przeczytaj i odpowiedz na **K17** i **K18** w `AGENTS/phases/phase-pomysl/agents-issues-3.md` (czy akceptujesz mapę z przesiewu oraz co zrobić z tym, że tekst i kod mają różne ważne neurony). Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”. Uwagi i pytania do raportu możesz pisać w GUI pod tym raportem (Drzewo → Raporty albo „Co czeka na mnie” → Raporty do przeczytania i dyskusji); przyciskiem „🔒 Zakończ dyskusję” zamykasz raport.
+Przeczytaj i odpowiedz na **K17** i **K18** w `AGENTS/phases/phase-2/agents-issues-3.md` (czy akceptujesz mapę z przesiewu oraz co zrobić z tym, że tekst i kod mają różne ważne neurony). Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”. Uwagi i pytania do raportu możesz pisać w GUI pod tym raportem (Drzewo → Raporty albo „Co czeka na mnie” → Raporty do przeczytania i dyskusji); przyciskiem „🔒 Zakończ dyskusję” zamykasz raport.
 
 ---
 
@@ -50,7 +50,7 @@ Na **drugim** zbiorze 4096 tokenów (166 neuronów na warstwę): 0,94 / 0,98 / 0
 
 ## 3. Ile tokenów potrzeba do stabilnego rankingu
 
-![Ile tokenów potrzeba](AGENTS/phases/phase-pomysl/figures/etap2-ile-tokenow.png)
+![Ile tokenów potrzeba](AGENTS/phases/phase-2/figures/etap2-ile-tokenow.png)
 
 Jak powstał wykres: losujemy dwa rozłączne zbiory po $k$ sekwencji, z każdego liczymy ranking neuronów i sprawdzamy, jak bardzo oba rankingi się zgadzają (średnia z 8 losowań). Kolorowe linie to warstwy pilota, kropkowana to średnia z 28 warstw, krzyżyki to pomiar dokładny z pilota (4096 tokenów), a przerywana linia to próg 0,95 z reguł @T010. Co widać: zgodność rośnie z liczbą tokenów i nawet przy 65 tys. tokenów nie dochodzi do 0,95. Pomiar dokładny na 4096 tokenach (krzyżyki) jest tak samo niepewny jak przesiew na tej samej liczbie tokenów.
 
@@ -69,7 +69,7 @@ Dwie połówki pełnej mapy (po 65 536 tokenów) zgadzają się w 0,66–0,93, n
 | ranking z 48 sekwencji C4 vs ranking z 16 sekwencji kodu | od −0,15 do 0,23 |
 | dwie porcje C4 po 16 sekwencji (ta sama wielkość co kod) | 0,74–0,94 |
 
-![Tekst a kod](AGENTS/phases/phase-pomysl/figures/etap2-tekst-kod.png)
+![Tekst a kod](AGENTS/phases/phase-2/figures/etap2-tekst-kod.png)
 
 Dwie górne linie: rankingi z dwóch porcji tego samego rodzaju tekstu zgadzają się w 0,7–0,9 w każdej warstwie. Dolna linia: ranking z tekstu C4 i ranking z kodu zgadzają się prawie wcale (wokół zera).
 
@@ -77,7 +77,7 @@ Gdyby różnica wynikała tylko z szumu, tekst i kod zgadzałyby się mniej wię
 
 ## 5. Mapa: jak wrażliwe są warstwy
 
-![Wrażliwość warstw](AGENTS/phases/phase-pomysl/figures/etap2-wrazliwosc-warstw.png)
+![Wrażliwość warstw](AGENTS/phases/phase-2/figures/etap2-wrazliwosc-warstw.png)
 
 Lewy wykres: dla każdej warstwy mediana (niebieska linia), pasmo, w którym mieści się 80% neuronów (niebieskie tło), i najważniejszy neuron (pomarańczowa linia); oś pionowa jest logarytmiczna. Co widać: typowy neuron ma w każdej warstwie podobny, mały skutek ($1$–$4 \cdot 10^{-5}$), najmniejszy w warstwach 12–15. Różnice między warstwami robią pojedyncze bardzo ważne neurony: w warstwie 2 i w dwóch ostatnich warstwach są 400–1500× ważniejsze od mediany.
 
@@ -121,7 +121,7 @@ Policzony 02:29–04:30 (2 h) w float32 dla 25 warstw (bez 2, 13 i 25, które pi
 
 Mediana stosunku przesiew / dokładnie wynosi 0,95–1,01 w każdej warstwie. Pojedyncze neurony są przeszacowane do 2–5×; to te same, co w pilocie, czyli o bardzo dużym skutku, gdzie przybliżenie kwadratowe słabnie. **Przesiew jest wiarygodny w całym modelu, nie tylko w 3 warstwach pilota.**
 
-![Przesiew a pomiar dokładny w 25 warstwach](AGENTS/phases/phase-pomysl/figures/etap2-przesiew-vs-dokladnie.png)
+![Przesiew a pomiar dokładny w 25 warstwach](AGENTS/phases/phase-2/figures/etap2-przesiew-vs-dokladnie.png)
 
 Lewy wykres: każdy punkt to jeden zmierzony neuron (pomarańczowe: 10% najważniejszych, niebieskie: 5% losowych); im bliżej przekątnej, tym lepiej przesiew przewiduje pomiar dokładny. Prawy wykres: zgodność rankingów osobno w każdej warstwie, od 0,96 do 0,99.
 
@@ -166,7 +166,7 @@ Najbardziej interesuje mnie "4. Tekst a kod: inne ważne neurony", a dokładnie,
 
 ## Co masz zrobić
 
-Odpowiedz na pytania **K25–K30** w `AGENTS/phases/phase-pomysl/agents-issues-4.md`; najważniejsze są K25 (co ma najlepiej przetrwać zmniejszanie) i K26 (na jakich danych liczymy mapę). Jeśli coś tu jest niejasne, napisz pod raportem.
+Odpowiedz na pytania **K25–K30** w `AGENTS/phases/phase-2/agents-issues-4.md`; najważniejsze są K25 (co ma najlepiej przetrwać zmniejszanie) i K26 (na jakich danych liczymy mapę). Jeśli coś tu jest niejasne, napisz pod raportem.
 
 ### 1. Wykresy w sekcji 5
 
@@ -182,7 +182,7 @@ Masz rację. Wykres był jeden, z dwiema połowami: stał w sekcji 3, lewa poło
    - mapa powstaje z połowy sekwencji, a szkodę sprawdzam na drugiej połowie, żeby mapa nie „znała” tekstu, na którym ją oceniam;
    - szkoda to suma przewidywanej KL wyciętych neuronów, podzielona przez najmniejszą możliwą (1 = najlepiej).
 
-![Mapa dla kodu](AGENTS/phases/phase-pomysl/figures/etap2-mapa-dla-kodu.png)
+![Mapa dla kodu](AGENTS/phases/phase-2/figures/etap2-mapa-dla-kodu.png)
 
 Co widać:
 - **obecna mieszanka** (75% tekstu) szkodzi kodowi **1,75–1,8×** bardziej, niż to konieczne, a tekstowi tylko 1,1–1,2×;

@@ -45,6 +45,8 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--stage1", type=Path, default=Path("results/phase2/stage1"))
     parser.add_argument("--stage2", type=Path, default=Path("results/phase2/stage2"))
     parser.add_argument("--output", type=Path, default=Path("results/phase2/stage4"))
+    parser.add_argument("--previous-map", type=Path, default=Path("results/phase2/stage2/fisher-map.pt"))
+    parser.add_argument("--evaluation-set", type=Path, default=None)
     return parser.parse_args()
 
 
@@ -100,6 +102,8 @@ def collect_pairs(
 def neuron_importance(kind: str, layer_index: int, arguments: argparse.Namespace) -> torch.Tensor:
     if kind == "activation":
         return torch.load(arguments.stage1 / "statistics.pt")["mean_absolute"][layer_index].float()
+    if kind == "previous-map":
+        return torch.load(arguments.previous_map)["coefficients"][layer_index].float()
     return torch.load(arguments.stage2 / "fisher-map.pt")["coefficients"][layer_index].float()
 
 
@@ -109,7 +113,7 @@ def train_through_next_layer(
     student_mlp: nn.Module,
     pair_directory: Path,
     arguments: argparse.Namespace,
-) -> dict[str, float]:
+) -> dict[str, float | int | list[float]]:
     layers = decoder_layers(model)
     student_layer = copy.deepcopy(layers[layer_index])
     student_layer.mlp = student_mlp
@@ -138,6 +142,7 @@ def train_through_next_layer(
     before = validation_loss()
     best_loss, best_state, best_epoch = before, copy.deepcopy(student_mlp.state_dict()), 0
     generator = torch.Generator().manual_seed(arguments.seed)
+    epoch_losses = []
     for epoch in range(1, arguments.epochs + 1):
         for shard_index in torch.randperm(len(training_shards), generator=generator).tolist():
             shard = torch.load(training_shards[shard_index])
@@ -149,11 +154,17 @@ def train_through_next_layer(
                 loss.backward()
                 optimizer.step()
         epoch_loss = validation_loss()
+        epoch_losses.append(epoch_loss)
         if epoch_loss < best_loss:
             best_loss, best_state, best_epoch = epoch_loss, copy.deepcopy(student_mlp.state_dict()), epoch
     student_mlp.load_state_dict(best_state)
     student_mlp.requires_grad_(False)
-    return {"window_loss_before": before, "window_loss_after": best_loss, "best_epoch": best_epoch}
+    return {
+        "window_loss_before": before,
+        "window_loss_after": best_loss,
+        "best_epoch": best_epoch,
+        "epoch_losses": epoch_losses,
+    }
 
 
 @torch.no_grad()
@@ -190,8 +201,12 @@ def evaluate(
     measurement_ids: torch.Tensor,
     wikitext_ids: torch.Tensor,
     arguments: argparse.Namespace,
+    evaluation_sets: dict[str, torch.Tensor],
 ) -> dict[str, float]:
     result = kl_to_original(model, layer_index, mlp, measurement_ids, arguments.chunk_length)
+    for source, token_ids in evaluation_sets.items():
+        held_out = kl_to_original(model, layer_index, mlp, token_ids, arguments.chunk_length)
+        result[f"kl_{source}"], result[f"loss_change_{source}"] = held_out["kl"], held_out["loss_change"]
     with replaced_mlp(model, layer_index, mlp):
         result["wikitext2_perplexity"] = wikitext2_perplexity(model, wikitext_ids, arguments.sequence_length)
     return result
@@ -213,6 +228,12 @@ def main() -> None:
     measurement_ids = torch.load(arguments.data_directory / "measurement-set.pt")["token_ids"][
         arguments.measurement_sequences
     ]
+    evaluation_sets: dict[str, torch.Tensor] = {}
+    if arguments.evaluation_set is not None:
+        evaluation = torch.load(arguments.evaluation_set)
+        for source in sorted(set(evaluation["sources"])):
+            rows = [index for index, name in enumerate(evaluation["sources"]) if name == source]
+            evaluation_sets[source] = evaluation["token_ids"][rows]
     wikitext_text = "\n\n".join(load_dataset("Salesforce/wikitext", "wikitext-2-raw-v1", split="test")["text"])
     wikitext_ids = tokenizer(wikitext_text, return_tensors="pt").input_ids
     log_event(output, {"step": "start", "arguments": {key: str(value) for key, value in vars(arguments).items()}})
@@ -257,7 +278,7 @@ def main() -> None:
                 if (importance_kind, removed_fraction, variant) in done:
                     continue
                 start = time.perf_counter()
-                extra: dict[str, float] = {}
+                extra: dict[str, float | int | list[float]] = {}
                 if mlp is None:
                     mlp = copy.deepcopy(fitted)
                     extra = train_through_next_layer(
@@ -272,7 +293,7 @@ def main() -> None:
                     "removed_fraction": removed_fraction,
                     "variant": variant,
                     "kept_neurons": keep.numel(),
-                    **evaluate(model, arguments.layer, mlp, measurement_ids, wikitext_ids, arguments),
+                    **evaluate(model, arguments.layer, mlp, measurement_ids, wikitext_ids, arguments, evaluation_sets),
                     **extra,
                     "seconds": time.perf_counter() - start,
                 }

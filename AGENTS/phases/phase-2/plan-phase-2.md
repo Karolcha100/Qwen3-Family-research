@@ -5,7 +5,7 @@
 **Status planu:** zatwierdzony (2026-10-29 21:36, Autor)
 ## Co masz zrobić
 
-Przeczytaj plan i zatwierdź (✅ Zatwierdzam plan) albo napisz w dyskusji, co zmienić. Plan obejmuje etapy 1–4 z `AGENTS/phases/phase-pomysl/raport-2-opinia.md` (@phase-pomysl:K9). Uwzględnia wszystkie Twoje decyzje K1–K15 (`AGENTS/phases/phase-pomysl/agents-issues-1.md`, `agents-issues-2.md`). **Każdy etap na GPU uruchamiam dopiero po Twoim „uruchom”** (@phase-0:K10).
+Przeczytaj plan i zatwierdź (✅ Zatwierdzam plan) albo napisz w dyskusji, co zmienić. Plan obejmuje etapy 1–4 z `AGENTS/phases/phase-2/raport-2-opinia.md` (@phase-2:K9). Uwzględnia wszystkie Twoje decyzje K1–K15 (`AGENTS/phases/phase-2/agents-issues-1.md`, `agents-issues-2.md`). **Każdy etap na GPU uruchamiam dopiero po Twoim „uruchom”** (@phase-0:K10).
 
 ## Cel
 
@@ -15,7 +15,7 @@ Zmierzyć, jak ważny jest każdy neuron MLP Qwen3-0.6B, opisać rodzaje neuron�
 
 | | |
 |---|---|
-| neuron | jedna z 3072 ścieżek MLP w każdej z 28 warstw, razem 86 016 (@phase-pomysl:K1 = A) |
+| neuron | jedna z 3072 ścieżek MLP w każdej z 28 warstw, razem 86 016 (@phase-2:K1 = A) |
 | zaburzenie | $a \to (1+\delta)\,a$, $\delta \in \{-1, -0{,}5, 0{,}5, 1\}$ (K2 = A) |
 | miara skutku | średnia KL względem oryginału + zmiana straty; generacja i klasyfikator tylko dla ~250 najważniejszych neuronów (K3 = A) |
 | sposób liczenia A | pilot, potem decyzja (K4 = C) |
@@ -34,7 +34,7 @@ Zmierzyć, jak ważny jest każdy neuron MLP Qwen3-0.6B, opisać rodzaje neuron�
 5. **Szum:** dla 500 losowych neuronów powtórka dokładnego pomiaru na drugim, rozłącznym zbiorze tokenów.
 6. Porównanie: korelacja rang (Spearman) przybliżenie ↔ dokładnie, pokrycie „top 10%”, wielkość szumu, wpływ liczby tokenów (4096 vs 16 384).
 
-**Wynik:** raport `AGENTS/phases/phase-pomysl/etap-1-pilot.md` z rekomendacją, jak liczyć etap 2 i na ilu tokenach. Czas GPU: ~1,5–3 h.
+**Wynik:** raport `AGENTS/phases/phase-2/etap-1-pilot.md` z rekomendacją, jak liczyć etap 2 i na ilu tokenach. Czas GPU: ~1,5–3 h.
 
 ### Etap 2 — część A dla całego modelu
 
@@ -127,9 +127,9 @@ Zamknąłem bo chyba z tego nie korzystamy ostatecznie jak coś - jeżeli nie, t
   - `activations.py`: statystyki neuronów;
   - `importance.py`: przesiew gradientem.
 
-  `data.py` i `model_parts.py` to dwa moduły ponad listę z @phase-pomysl:K15, wydzielone dla porządku;
+  `data.py` i `model_parts.py` to dwa moduły ponad listę z @phase-2:K15, wydzielone dla porządku;
 - **28 testów** (na CPU, na małym losowym Qwen3) potwierdza najważniejsze założenia: start od warstwy daje to samo co pełny przebieg; $\delta=-1$ daje dokładnie to samo co usunięcie neuronu z wag; wsad wielu zaburzeń = osobne pomiary; KL i zmiana straty zgadzają się z liczeniem wprost; **przesiew gradientem trafia w ranking dokładnej KL z korelacją 0,994**;
-- **zbiór pomiarowy:** 64 × 2048 tokenów, co czwarta sekwencja to kod (@phase-pomysl:K11 = A). Kod w 7 językach po równo (Python, JavaScript, Java, C++, C, C#, PHP); HTML pominąłem jako język znaczników. Pomiar używa pierwszych 8 sekwencji (16 384 tokenów), a sprawdzenie szumu kolejnych 8;
+- **zbiór pomiarowy:** 64 × 2048 tokenów, co czwarta sekwencja to kod (@phase-2:K11 = A). Kod w 7 językach po równo (Python, JavaScript, Java, C++, C, C#, PHP); HTML pominąłem jako język znaczników. Pomiar używa pierwszych 8 sekwencji (16 384 tokenów), a sprawdzenie szumu kolejnych 8;
 - skrypt `scripts/phase2_stage1_pilot.py`.
 
 **Co zrobi pilot (kolejno, każdy krok zapisuje wynik):**

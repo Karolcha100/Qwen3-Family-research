@@ -4,19 +4,19 @@
 
 ## Co masz zrobić
 
-Pytania wynikają z Twojego wpisu w dyskusji raportu `AGENTS/phases/phase-pomysl/etap-2-mapa.md` (najbardziej zależy Ci na tym, żeby Qwen dobrze programował) i z mojej odpowiedzi tamże. Najważniejsze są **K25** (co ma najlepiej przetrwać zmniejszanie) i **K26** (na jakich danych liczymy mapę i naprawę). Odpowiedź na K26 rozstrzyga też wcześniejsze **K18** (`agents-issues-3.md`): możesz tam wpisać „patrz K26”. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek” albo litera.
+Pytania wynikają z Twojego wpisu w dyskusji raportu `AGENTS/phases/phase-2/etap-2-mapa.md` (najbardziej zależy Ci na tym, żeby Qwen dobrze programował) i z mojej odpowiedzi tamże. Najważniejsze są **K25** (co ma najlepiej przetrwać zmniejszanie) i **K26** (na jakich danych liczymy mapę i naprawę). Odpowiedź na K26 rozstrzyga też wcześniejsze **K18** (`agents-issues-3.md`): możesz tam wpisać „patrz K26”. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek” albo litera.
 
 ---
 
 ### K25. 🔴 Co ma najlepiej przetrwać zmniejszanie
 
-- **Problem:** do tej pory chroniliśmy „sens modelu” mierzony na mieszance 75% zwykłego tekstu i 25% kodu (@phase-pomysl:K11). Neurony ważne dla kodu to jednak w dużej mierze inne neurony niż ważne dla tekstu. Każdy wybór proporcji jest więc wyborem, co model straci mniej.
+- **Problem:** do tej pory chroniliśmy „sens modelu” mierzony na mieszance 75% zwykłego tekstu i 25% kodu (@phase-2:K11). Neurony ważne dla kodu to jednak w dużej mierze inne neurony niż ważne dla tekstu. Każdy wybór proporcji jest więc wyborem, co model straci mniej.
 - **Opcje:**
   - **A** — przede wszystkim programowanie; zwykły tekst tylko w takim stopniu, żeby model rozumiał polecenia, komentarze i opisy w kodzie;
   - **B** — programowanie i zwykły tekst po równo;
   - **C** — jak dotąd: model ogólny, głównie zwykły tekst.
 - **Rekomendacja:** A, jeśli dobrze rozumiem Twój wpis. To Twój cel, więc decyzja jest Twoja.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K26. 🔴 Na jakich danych liczymy mapę ważności i naprawę warstw
 
@@ -36,7 +36,7 @@ Pytania wynikają z Twojego wpisu w dyskusji raportu `AGENTS/phases/phase-pomysl
   - **C** — tylko kod;
   - **D** — dwie osobne mapy, a chronimy neurony ważne dla **którejkolwiek** z nich (K18 B); tego jeszcze nie policzyłem, wymaga tylko analizy na CPU.
 - **Rekomendacja:** A, jeśli w K25 wybierzesz A. Sam kod (C) uszkadza zwykły tekst prawie 4×, a model do programowania musi rozumieć polecenia napisane zwykłym językiem.
-- **Decyzja:**
+- **Decyzja:** Może być A, chyba wcześniej gdzieś było podobne pytanie na które odpowiedziałem żeby zrobić tylko mapę kodu, zróbmy faktycznie 75% kodu i 25% tekstu
 
 ### K27. 🟡 Jak mierzymy, czy model dalej dobrze programuje
 
@@ -46,7 +46,7 @@ Pytania wynikają z Twojego wpisu w dyskusji raportu `AGENTS/phases/phase-pomysl
   - **B** — tylko KL i perpleksja na kodzie;
   - **C** — tylko HumanEval i MBPP.
 - **Rekomendacja:** A. KL jest czuła i tania, a zestawy zadań mówią, co naprawdę zostało z umiejętności. Model 0,6B rozwiązuje tylko część zadań, więc małe różnice w tych zestawach będą szumem. Dlatego oba sposoby razem.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K28. 🟡 Które języki programowania
 
@@ -56,7 +56,7 @@ Pytania wynikają z Twojego wpisu w dyskusji raportu `AGENTS/phases/phase-pomysl
   - **B** — tylko Python (HumanEval i MBPP też są w Pythonie);
   - **C** — wybrane języki (wpisz, w czym programujesz).
 - **Rekomendacja:** C: napisz, w czym programujesz. Bez tego A.
-- **Decyzja:**
+- **Decyzja:** B
 
 ### K29. 🟢 Model, który zmniejszamy
 
@@ -66,7 +66,7 @@ Pytania wynikają z Twojego wpisu w dyskusji raportu `AGENTS/phases/phase-pomysl
   - **B** — zostajemy przy Qwen3-0.6B-Base, a model do kodu ~0,5B mierzymy tylko jako punkt odniesienia (te same testy z K27, bez zmniejszania; pobranie ~1 GB);
   - **C** — przechodzimy na model do kodu i powtarzamy na nim etapy.
 - **Rekomendacja:** B. Metoda i wyniki zostają, a porównanie pokaże, czy zmniejszony Qwen3 dorównuje modelowi zrobionemu od początku do kodu.
-- **Decyzja:**
+- **Decyzja:** B
 
 ### K30. 🔴 Następny krok na GPU w sprawie kodu
 
@@ -76,4 +76,4 @@ Pytania wynikają z Twojego wpisu w dyskusji raportu `AGENTS/phases/phase-pomysl
   - **B** — tylko krok (3) ze starą mapą: osobna ocena na kodzie i tekście istniejących wariantów etapu 4 (~30 min GPU); pokaże, ile kod traci dziś;
   - **C** — poczekać, aż rozstrzygniemy K16–K24.
 - **Rekomendacja:** A, po Twoim „uruchom”. Część CPU (wybór danych, kod skryptów) mogę przygotować od razu po decyzjach.
-- **Decyzja:**
+- **Decyzja:** A

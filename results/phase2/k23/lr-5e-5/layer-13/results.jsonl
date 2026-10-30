@@ -1,0 +1,3 @@
+{"importance": "original", "removed_fraction": 0.0, "variant": "original", "kl": 0.0, "loss_change": 0.0, "wikitext2_perplexity": 12.66009202072348}
+{"importance": "perturbation", "removed_fraction": 0.2, "variant": "sliced", "kept_neurons": 2458, "kl": 0.004051979078212753, "loss_change": 0.004202060226816684, "wikitext2_perplexity": 12.711689907235746, "seconds": 37.89410050600418}
+{"importance": "perturbation", "removed_fraction": 0.2, "variant": "least_squares", "kept_neurons": 2458, "kl": 0.0026588164473650977, "loss_change": 0.002127177529473556, "wikitext2_perplexity": 12.68715724604793, "seconds": 38.05981387299835}

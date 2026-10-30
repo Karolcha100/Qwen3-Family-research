@@ -14,7 +14,7 @@ DELTAS = (-1.0, -0.5, 0.5, 1.0)
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--results", type=Path, default=Path("results/phase2/stage1"))
-    parser.add_argument("--figures", type=Path, default=Path("AGENTS/phases/phase-pomysl/figures"))
+    parser.add_argument("--figures", type=Path, default=Path("AGENTS/phases/phase-2/figures"))
     parser.add_argument("--layers", type=int, nargs="+", default=[2, 13, 25])
     return parser.parse_args()
 

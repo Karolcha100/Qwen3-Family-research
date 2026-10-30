@@ -6,13 +6,13 @@
 
 ## Co masz zrobić
 
-Przeczytaj, a potem odpowiedz na pytania **K16–K18** w `AGENTS/phases/phase-pomysl/agents-issues-3.md`. Dotyczą tego raportu: dalsze pomiary tylko dla $\delta = \pm 1$, odstępstwo od nocnych reguł, liczba tokenów. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”. Uwagi i pytania do raportu możesz pisać w GUI pod tym raportem (Drzewo → Raporty albo „Co czeka na mnie” → Raporty do przeczytania i dyskusji); przyciskiem „🔒 Zakończ dyskusję” zamykasz raport.
+Przeczytaj, a potem odpowiedz na pytania **K16–K18** w `AGENTS/phases/phase-2/agents-issues-3.md`. Dotyczą tego raportu: dalsze pomiary tylko dla $\delta = \pm 1$, odstępstwo od nocnych reguł, liczba tokenów. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”. Uwagi i pytania do raportu możesz pisać w GUI pod tym raportem (Drzewo → Raporty albo „Co czeka na mnie” → Raporty do przeczytania i dyskusji); przyciskiem „🔒 Zakończ dyskusję” zamykasz raport.
 
 ---
 
 ## 1. Co policzono
 
-Model Qwen3-0.6B-Base w **float32** (bez TF32). Warstwy 2, 13 i 25 (@phase-pomysl:K12). Dla **każdego** z 3072 neuronów MLP w tych warstwach i każdego $\delta \in \{-1; -0{,}5; +0{,}5; +1\}$ zmieniamy aktywację neuronu na $(1+\delta)\,a$ i mierzymy:
+Model Qwen3-0.6B-Base w **float32** (bez TF32). Warstwy 2, 13 i 25 (@phase-2:K12). Dla **każdego** z 3072 neuronów MLP w tych warstwach i każdego $\delta \in \{-1; -0{,}5; +0{,}5; +1\}$ zmieniamy aktywację neuronu na $(1+\delta)\,a$ i mierzymy:
 
 $$
 \mathrm{KL}_j(\delta) = \frac{1}{T}\sum_{t=1}^{T} \sum_{v} p_t(v)\,\log\frac{p_t(v)}{\tilde p_t(v)},
@@ -48,7 +48,7 @@ W bf16 szum numeryczny jest 100× większy niż skutek wyłączenia typowego neu
 | 13 | $1{,}1 \cdot 10^{-5}$ | $3{,}3 \cdot 10^{-5}$ | $3{,}8 \cdot 10^{-4}$ | #37, #183, #65 (zwykłe, $\max \lvert a \rvert \approx 5$) |
 | 25 | $1{,}1 \cdot 10^{-5}$ | $5{,}0 \cdot 10^{-5}$ | $1{,}8 \cdot 10^{-3}$ | #2953, #1638, #1499 ($\max \lvert a \rvert \approx 50$–$80$) |
 
-![Rozkład KL](AGENTS/phases/phase-pomysl/figures/etap1-rozklad-kl.png)
+![Rozkład KL](AGENTS/phases/phase-2/figures/etap1-rozklad-kl.png)
 
 - Rozkład jest **wąski**: między 10. a 90. percentylem jest tylko 5× (warstwa 2), 6× (warstwa 13) i 19× (warstwa 25). Nie ma dużej grupy neuronów „za darmo” (KL ≈ 0). Najmniejszy skutek to ~$10^{-6}$, czyli ~10× mniej niż mediana.
 - Odstają pojedyncze neurony, np. trzy masywne w warstwie 2 mają skutek ~700× większy niż mediana. W warstwie 13 najważniejsze neurony nie mają wcale dużych aktywacji.
@@ -72,7 +72,7 @@ $$
 
 gdzie $F_j$ (informacja Fishera neuronu $j$) to jedna liczba na neuron.
 
-![Skutek rośnie jak delta do kwadratu](AGENTS/phases/phase-pomysl/figures/etap1-delta-kwadrat.png)
+![Skutek rośnie jak delta do kwadratu](AGENTS/phases/phase-2/figures/etap1-delta-kwadrat.png)
 
 Każdy punkt to jeden neuron. Lewy wykres: skutek osłabienia o połowę leży dokładnie na linii „¼ × wyłączenie”. Prawy wykres: skutek podwojenia leży wokół linii „tyle samo co wyłączenie”, ale z rozrzutem; punkty daleko od linii to neurony asymetryczne (więcej w etapie 3).
 
@@ -82,7 +82,7 @@ Wniosek praktyczny: **$\delta = \pm 0{,}5$ nie wnoszą nowej informacji**, a $\d
 
 $F_j$ można oszacować z gradientu jednym przebiegiem wstecz dla wszystkich neuronów naraz (wzór w `raport-1-opis-matematyczny.md`). Wynik dla 16 losowanych odpowiedzi na token:
 
-![Przesiew vs dokładnie](AGENTS/phases/phase-pomysl/figures/etap1-przesiew-vs-dokladnie.png)
+![Przesiew vs dokładnie](AGENTS/phases/phase-2/figures/etap1-przesiew-vs-dokladnie.png)
 
 | Warstwa | Spearman | wspólne „top 10%” | suma przesiew / suma dokładnie |
 |---|---|---|---|
@@ -102,7 +102,7 @@ Ten sam pomiar dokładny na **innych** 4096 tokenach (166 losowych neuronów na 
 | 13 | 0,52 | 36% |
 | 25 | 0,51 | 61% |
 
-![Dwa teksty a przesiew](AGENTS/phases/phase-pomysl/figures/etap1-dwa-teksty.png)
+![Dwa teksty a przesiew](AGENTS/phases/phase-2/figures/etap1-dwa-teksty.png)
 
 Lewy wykres: ten sam pomiar dokładny na dwóch różnych tekstach. Gdyby ranking nie zależał od tekstu, punkty leżałyby na przekątnej; leżą w szerokiej chmurze. Prawy wykres dla porównania: przesiew i pomiar dokładny na **tym samym** tekście leżą prawie idealnie na przekątnej. Rozrzut bierze się więc z tekstu, a nie z metody.
 

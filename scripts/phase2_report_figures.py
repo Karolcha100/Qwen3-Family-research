@@ -22,7 +22,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--stage1", type=Path, default=Path("results/phase2/stage1"))
     parser.add_argument("--stage2", type=Path, default=Path("results/phase2/stage2"))
     parser.add_argument("--stage4", type=Path, default=Path("results/phase2/stage4"))
-    parser.add_argument("--figures", type=Path, default=Path("AGENTS/phases/phase-pomysl/figures"))
+    parser.add_argument("--figures", type=Path, default=Path("AGENTS/phases/phase-2/figures"))
     parser.add_argument("--layer", type=int, default=13)
     parser.add_argument("--removed-fraction", type=float, default=0.2)
     return parser.parse_args()

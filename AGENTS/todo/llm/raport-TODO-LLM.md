@@ -101,3 +101,31 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 - sprawdzone: 19 testów GUI, ruff, pyright; zrzut ekranu GUI (Firefox bez okna); parser GUI na 4 raportach: 99 wzorów, 0 luźnych `$`, 17 tabel bez przesunięć.
 
 *2026-10-30 09:43 — Claude Opus 5.5*
+
+---
+
+### [L14] GUI: wpis w dyskusji planu trafił do innego planu
+
+- przebieg z plików: 21:36 zatwierdzony plan Phase 2, 21:37 plan metryk, 21:38 wpis w planie Phase 2; autor: „chyba B” (pisał pod planem metryk) (@phase-2:K22);
+- w kodzie nie ma ścieżki, w której formularz zapisuje do innego pliku niż pozycja w oknie głównym. Najbardziej prawdopodobne: okno główne wróciło do planu Phase 2 (◀ / boczny przycisk myszy) albo plan metryk był tylko przypięty obok, a pole „Wpis w dyskusji planu” nie mówiło, do którego planu pisze;
+- poprawka w `agents_board/static/index.html`: etykieta pola podaje tytuł planu lub raportu, a komunikat po zapisie podaje plik, do którego trafił wpis.
+
+*2026-10-30 11:12 — Claude Opus 5.5*
+
+---
+
+### [L16] Folder `phase-pomysl` → `phase-2`
+
+- `git mv`; odwołania zmienione w plikach fazy, planie faz, zadaniach, pamięci i skryptach. Stare wpisy (wątki, briefingi, Koniec, raporty-logi) bez zmian;
+- GUI: alias `phase-pomysl` → `phase-2` dla wzmianek `@phase-pomysl:K…`, ścieżek i obrazków w starych wpisach.
+
+*2026-10-30 11:12 — Claude Opus 5.5*
+
+---
+
+### [L17] Raport: jak oceniać kod
+
+- `AGENTS/phases/phase-2/raport-3-ocena-kodu.md`: testy (HumanEval, MBPP, EvalPlus; odniesienie z raportu Qwen3: EvalPlus 36,23, MBPP 36,60), klasyfikatory (AceCodeRM-7B, model-sędzia), analiza statyczna, sprawność (model i kod, Mercury), bezpieczeństwo uruchamiania;
+- pytania K31–K36: `AGENTS/phases/phase-2/agents-issues-5.md`.
+
+*2026-10-30 11:12 — Claude Opus 5.5*

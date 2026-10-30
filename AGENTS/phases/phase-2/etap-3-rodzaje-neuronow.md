@@ -6,7 +6,7 @@
 
 ## Co masz zrobić
 
-Przeczytaj. Decyzje dotyczące tego etapu: **K20** (klasyfikator, czyli odłożona część etapu) i **K24** (czy progi rodzajów są sensowne) w `AGENTS/phases/phase-pomysl/agents-issues-3.md`. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”. Uwagi i pytania do raportu możesz pisać w GUI pod tym raportem (Drzewo → Raporty albo „Co czeka na mnie” → Raporty do przeczytania i dyskusji); przyciskiem „🔒 Zakończ dyskusję” zamykasz raport.
+Przeczytaj. Decyzje dotyczące tego etapu: **K20** (klasyfikator, czyli odłożona część etapu) i **K24** (czy progi rodzajów są sensowne) w `AGENTS/phases/phase-2/agents-issues-3.md`. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”. Uwagi i pytania do raportu możesz pisać w GUI pod tym raportem (Drzewo → Raporty albo „Co czeka na mnie” → Raporty do przeczytania i dyskusji); przyciskiem „🔒 Zakończ dyskusję” zamykasz raport.
 
 ---
 
@@ -32,7 +32,7 @@ Mediana globalna $\mathrm{KL}_j$ = $1{,}8 \cdot 10^{-5}$ nat na token.
 
 ## 3. Wyniki
 
-![Rodzaje neuronów](AGENTS/phases/phase-pomysl/figures/etap3-rodzaje-neuronow.png)
+![Rodzaje neuronów](AGENTS/phases/phase-2/figures/etap3-rodzaje-neuronow.png)
 
 | Rodzaj | Razem | Gdzie |
 |---|---|---|
@@ -44,7 +44,7 @@ Mediana globalna $\mathrm{KL}_j$ = $1{,}8 \cdot 10^{-5}$ nat na token.
 | kodowy | 6446 (7,5%) | rośnie z głębokością: 28 w warstwie 0 → 599 w warstwie 27 |
 | tekstowy | 5818 (6,8%) | podobnie: 12 → 707 w warstwie 26 |
 
-![KL w warstwach](AGENTS/phases/phase-pomysl/figures/etap3-kl-w-warstwach.png)
+![KL w warstwach](AGENTS/phases/phase-2/figures/etap3-kl-w-warstwach.png)
 
 ### Co z tego wynika
 
@@ -80,7 +80,7 @@ Etap 3 przeliczony 04:30 z pomiarem dokładnym etapu 2. Zmienia się tylko liczb
 
 Asymetria dotyczy głównie **ważnych** neuronów: ma ją 5,1% neuronów z „top 10%” i tylko 0,9% losowych. Zwykle wyłączenie szkodzi bardziej niż podwojenie: tak jest u 452 z 571 asymetrycznych (w warstwie 27 u 39 z 54). Liczby na warstwach 2, 13 i 25 obejmują wszystkie neurony, a na pozostałych tylko zmierzone 15%, więc nie są wprost porównywalne.
 
-![Asymetria](AGENTS/phases/phase-pomysl/figures/etap3-asymetria.png)
+![Asymetria](AGENTS/phases/phase-2/figures/etap3-asymetria.png)
 
 Lewy wykres: każdy zmierzony dokładnie neuron; na przekątnej podwojenie szkodzi tyle samo co wyłączenie. Pomarańczowe punkty to asymetryczne, głównie **pod** przekątną (wyłączenie szkodzi bardziej). Prawy wykres: liczba asymetrycznych w warstwach z podziałem na kierunek; najwięcej we wczesnych (0–6) i późnych (17–27) warstwach, prawie wcale w środku.
 

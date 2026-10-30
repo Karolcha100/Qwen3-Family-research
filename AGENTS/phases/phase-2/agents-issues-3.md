@@ -14,9 +14,9 @@ Pytania wynikają z nocnych wyników: raporty `etap-1-pilot.md`, `etap-2-mapa.md
 - **Opcje:**
   - **A** — dalej tylko $\delta = -1$ i $\delta = +1$ (wyłączenie i podwojenie; $+1$ dla nielicznych neuronów asymetrycznych);
   - **B** — tylko $\delta = -1$;
-  - **C** — wszystkie cztery, jak w planie (@phase-pomysl:K2).
+  - **C** — wszystkie cztery, jak w planie (@phase-2:K2).
 - **Rekomendacja:** A. W nocy etap 2 liczę już według A (zmiana względem planu, dlatego pytam).
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K17. 🔴 Etap 2 policzony przesiewem na dużej liczbie tokenów
 
@@ -31,36 +31,36 @@ Pytania wynikają z nocnych wyników: raporty `etap-1-pilot.md`, `etap-2-mapa.md
   - **B** — chcę też pomiaru dokładnego **wszystkich** neuronów, ale na większej liczbie tokenów (np. 32 tys. tokenów i $\delta = \pm 1$ to ~5 dni GPU, więc w praktyce tylko dla kilku warstw);
   - **C** — inaczej (wpisz).
 - **Rekomendacja:** A. Szczegóły w `etap-1-pilot.md` (rozdz. 2.5 i 3) i `etap-2-mapa.md`.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K18. 🟡 Mapa osobno dla tekstu i dla kodu?
 
-- **Problem:** ranking neuronów policzony na samym kodzie i ranking na samym tekście (C4) są **praktycznie niezależne** (Spearman od −0,15 do 0,23 w zależności od warstwy). Dwie porcje samego tekstu tej samej wielkości zgadzają się w 0,74–0,94. Neurony ważne dla kodu to w dużej mierze inne neurony niż ważne dla tekstu. Przy zmniejszaniu warstwy ma to znaczenie: mieszanka 75/25 (@phase-pomysl:K11) to wybór, jaki „sens” modelu chronimy.
+- **Problem:** ranking neuronów policzony na samym kodzie i ranking na samym tekście (C4) są **praktycznie niezależne** (Spearman od −0,15 do 0,23 w zależności od warstwy). Dwie porcje samego tekstu tej samej wielkości zgadzają się w 0,74–0,94. Neurony ważne dla kodu to w dużej mierze inne neurony niż ważne dla tekstu. Przy zmniejszaniu warstwy ma to znaczenie: mieszanka 75/25 (@phase-2:K11) to wybór, jaki „sens” modelu chronimy.
 - **Opcje:**
   - **A** — zostajemy przy jednej mapie z mieszanki 75% tekstu + 25% kodu, a w etapie 4 sprawdzamy osobno, ile model traci na tekście i na kodzie;
   - **B** — dwie mapy (tekst, kod) i przy zmniejszaniu zachowujemy neurony ważne dla **któregokolwiek** z nich;
   - **C** — inne proporcje (wpisz).
 - **Rekomendacja:** A na teraz, a B jako kolejny eksperyment etapu 4, jeśli wyjdzie, że kod traci wyraźnie więcej niż tekst.
-- **Decyzja:**
+- **Decyzja:** C mapa tylko kodu i skupiamy się na zachowaniu jej
 
-### K19. 🟢 Nazwa folderu `phase-pomysl`
+### K19. 🟢 Nazwa folderu `phase-2`
 
-- **Problem:** pisałeś, że nie widzisz planu Phase 2 w GUI (@T010, punkt 5). Plan jest w `AGENTS/phases/phase-pomysl/plan-phase-2.md`; nazwa folderu nie mówi, że to Phase 2.
+- **Problem:** pisałeś, że nie widzisz planu Phase 2 w GUI (@T010, punkt 5). Plan jest w `AGENTS/phases/phase-2/plan-phase-2.md`; nazwa folderu nie mówi, że to Phase 2.
 - **Opcje:**
-  - **A** — przemianować na `phase-2` (zmienię też odwołania `@phase-pomysl:K…` → `@phase-2:K…` w plikach, które je zawierają, oprócz starych wpisów w wątkach, które zostają bez zmian);
-  - **B** — zostawić `phase-pomysl`.
-- **Rekomendacja:** A, ale dopiero gdy nic nie będzie się liczyć (skrypty zapisują wykresy do `AGENTS/phases/phase-pomysl/figures/`).
-- **Decyzja:**
+  - **A** — przemianować na `phase-2` (zmienię też odwołania `@phase-2:K…` → `@phase-2:K…` w plikach, które je zawierają, oprócz starych wpisów w wątkach, które zostają bez zmian);
+  - **B** — zostawić `phase-2`.
+- **Rekomendacja:** A, ale dopiero gdy nic nie będzie się liczyć (skrypty zapisują wykresy do `AGENTS/phases/phase-2/figures/`).
+- **Decyzja:** A
 
 ### K20. 🟡 Klasyfikator do oceny generacji w etapie 3
 
-- **Problem:** plan etapu 3 zakładał generację i ocenę klasyfikatorem dla ~250 najważniejszych neuronów (@phase-pomysl:K3). Klasyfikator (model nagrody, @phase-0:K18) nie jest wybrany, a zestaw pytań (@L7) nie istnieje, więc tę część odłożyłem.
+- **Problem:** plan etapu 3 zakładał generację i ocenę klasyfikatorem dla ~250 najważniejszych neuronów (@phase-2:K3). Klasyfikator (model nagrody, @phase-0:K18) nie jest wybrany, a zestaw pytań (@L7) nie istnieje, więc tę część odłożyłem.
 - **Opcje:**
   - **A** — przygotuję krótki raport z 2–3 kandydatami na model nagrody mieszczącymi się na 12 GB obok Qwen3-0.6B, a Ty wybierzesz;
   - **B** — pomijamy ocenę klasyfikatorem w Phase 2; KL i zmiana straty wystarczą, klasyfikator dopiero w Phase 3;
   - **C** — inaczej (wpisz).
 - **Rekomendacja:** B. W Phase 2 i tak wybieramy neurony po KL, a ocena generacji ma największą wartość dla całego zmniejszonego modelu (Phase 3).
-- **Decyzja:**
+- **Decyzja:** C: Skupiamy się na kodzie, także trzeba zastanowić się w raporcie czy - i jeżeli tak to jakie - klasyfikatory mają sens do tego. Dodatkowo pamiętaj o metrykach mierzących jakość i sprawność kodu (mogą być do tego inne pytania)
 
 ### K21. 🔴 Warstwa do zmniejszania w etapie 4
 
@@ -70,7 +70,7 @@ Pytania wynikają z nocnych wyników: raporty `etap-1-pilot.md`, `etap-2-mapa.md
   - **B** — powtórz dla innej warstwy (wpisz którą; np. wrażliwa warstwa 2 albo 26 dla porównania);
   - **C** — powtórz dla kilku warstw (wpisz które).
 - **Rekomendacja:** C dla jednej wrażliwej warstwy (np. 2) obok 13. Pokaże, czy krzywa „ile wyciąć” bardzo zależy od warstwy, co jest kluczowe dla etapu 5.
-- **Decyzja:**
+- **Decyzja:** C - twoja rekomendacja, wybierz kolejną nie znaczącą wiele warstwe oraz jedną z początku i jedną z końca
 
 ### K22. 🟢 GUI: zatwierdzenie planu a następny plan (@L14)
 
@@ -80,7 +80,7 @@ Pytania wynikają z nocnych wyników: raporty `etap-1-pilot.md`, `etap-2-mapa.md
   - **B** — wpisałem komentarz w polu pod planem metryk, a zapisał się w innym planie;
   - **C** — inaczej (opisz kroki).
 - **Rekomendacja:** brak, to pytanie o fakty. Po odpowiedzi poprawię GUI (np. po zatwierdzeniu planu wybór przechodzi na następny plan albo na listę).
-- **Decyzja:**
+- **Decyzja:** Chyba B, ale możliwe że ze zmęczenia się pomyliłem
 
 ### K23. 🟡 Dłuższy trening zmniejszonej warstwy
 
@@ -90,7 +90,7 @@ Pytania wynikają z nocnych wyników: raporty `etap-1-pilot.md`, `etap-2-mapa.md
   - **B** — zostawić jak jest; trening dopracujemy dopiero przy zmniejszaniu wielu warstw (etap 5);
   - **C** — inaczej (wpisz).
 - **Rekomendacja:** A. Tanie, a pokaże, ile da się wycisnąć z samego treningu warstwy, zanim przejdziemy do wielu warstw.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K24. 🟢 Progi rodzajów neuronów w etapie 3
 
@@ -100,4 +100,4 @@ Pytania wynikają z nocnych wyników: raporty `etap-1-pilot.md`, `etap-2-mapa.md
   - **B** — zmień progi (wpisz, np. „zbędny < 0,2 × mediana”);
   - **C** — zamiast progów chcę ciągłą skalę (np. percentyl ważności w warstwie i w całym modelu).
 - **Rekomendacja:** A na teraz. Do zmniejszania i tak używamy ciągłej mapy KL, a rodzaje służą tylko do opisu.
-- **Decyzja:**
+- **Decyzja:** A

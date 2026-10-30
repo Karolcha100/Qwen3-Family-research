@@ -4,7 +4,7 @@
 
 ## Co masz zrobić
 
-Decyzje potrzebne, żeby z Twojego pomysłu (@T009) zrobić plan. Opis matematyczny: `AGENTS/phases/phase-pomysl/raport-1-opis-matematyczny.md`, moja opinia: `AGENTS/phases/phase-pomysl/raport-2-opinia.md`. Numery K odpowiadają oznaczeniom **[wybór → K…]** w raporcie 1. Każde pytanie ma rekomendację, więc wystarczy „rek” albo litera. Jeśli wolisz najpierw przeczytać raporty i porozmawiać, napisz w @T009.
+Decyzje potrzebne, żeby z Twojego pomysłu (@T009) zrobić plan. Opis matematyczny: `AGENTS/phases/phase-2/raport-1-opis-matematyczny.md`, moja opinia: `AGENTS/phases/phase-2/raport-2-opinia.md`. Numery K odpowiadają oznaczeniom **[wybór → K…]** w raporcie 1. Każde pytanie ma rekomendację, więc wystarczy „rek” albo litera. Jeśli wolisz najpierw przeczytać raporty i porozmawiać, napisz w @T009.
 
 ---
 

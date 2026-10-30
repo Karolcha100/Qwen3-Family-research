@@ -20,14 +20,14 @@ def stream_c4_texts(seed: int) -> Iterator[str]:
             yield row["text"]
 
 
-def stream_code_texts(seed: int) -> Iterator[str]:
+def stream_code_texts(seed: int, languages: tuple[str, ...] = CODE_LANGUAGES) -> Iterator[str]:
     language_streams = [
         iter(
             load_dataset(
                 "parquet", data_files=CODE_PARQUET_URL.format(language=language), split="train", streaming=True
             ).shuffle(seed=seed, buffer_size=2_000)
         )
-        for language in CODE_LANGUAGES
+        for language in languages
     ]
     for language_stream in itertools.cycle(language_streams):
         row = next(language_stream)
@@ -92,3 +92,31 @@ def load_or_build_measurement_set(
     path.parent.mkdir(parents=True, exist_ok=True)
     torch.save({"token_ids": token_ids, "sources": sources, "seed": seed}, path)
     return token_ids, sources
+
+
+def interleave_evenly(sources: dict[str, torch.Tensor]) -> tuple[torch.Tensor, list[str]]:
+    positions = sorted(
+        ((index + 0.5) / rows.shape[0], name, index) for name, rows in sources.items() for index in range(rows.shape[0])
+    )
+    return torch.stack([sources[name][index] for _, name, index in positions]), [name for _, name, _ in positions]
+
+
+def build_disjoint_sets(
+    tokenizer: PreTrainedTokenizerBase,
+    split_counts: dict[str, dict[str, int]],
+    sequence_length: int,
+    seed: int,
+    languages: tuple[str, ...],
+) -> dict[str, tuple[torch.Tensor, list[str]]]:
+    streams = {"code": stream_code_texts(seed, languages), "c4": stream_c4_texts(seed)}
+    totals = {name: sum(counts.get(name, 0) for counts in split_counts.values()) for name in streams}
+    packed = {name: pack_sequences(tokenizer, streams[name], sequence_length, totals[name]) for name in streams}
+    offsets = dict.fromkeys(streams, 0)
+    result = {}
+    for split, counts in split_counts.items():
+        parts = {}
+        for name, count in counts.items():
+            parts[name] = packed[name][offsets[name] : offsets[name] + count]
+            offsets[name] += count
+        result[split] = interleave_evenly(parts)
+    return result

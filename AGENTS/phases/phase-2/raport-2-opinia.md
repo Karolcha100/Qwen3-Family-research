@@ -6,7 +6,7 @@
 
 ## Co masz zrobić
 
-Przeczytaj i odpowiedz w @T009, jeśli masz uwagi. Decyzje są w `AGENTS/phases/phase-pomysl/agents-issues-1.md` (K1–K9). Formalny opis pomysłu: `AGENTS/phases/phase-pomysl/raport-1-opis-matematyczny.md`.
+Przeczytaj i odpowiedz w @T009, jeśli masz uwagi. Decyzje są w `AGENTS/phases/phase-2/agents-issues-1.md` (K1–K9). Formalny opis pomysłu: `AGENTS/phases/phase-2/raport-1-opis-matematyczny.md`.
 
 **Krótko: pomysł jest dobry i wykonalny na Twoim sprzęcie. Polecam go robić, ale etapami i z kilkoma zmianami, które oszczędzą dziesiątki godzin liczenia i pozwolą odróżnić prawdziwe efekty od szumu.** Szacunki czasu opieram na pomiarach z dzisiejszych testów (@L4): Qwen3-0.6B w PyTorchu przetwarza ok. 28 tys. tokenów/s (WikiText-2: 299 tys. tokenów w 10,6 s).
 

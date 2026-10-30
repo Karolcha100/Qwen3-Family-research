@@ -12,7 +12,7 @@ def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--layer", type=int, required=True)
     parser.add_argument("--results", type=Path, default=Path("results/phase2/stage4"))
-    parser.add_argument("--figures", type=Path, default=Path("AGENTS/phases/phase-pomysl/figures"))
+    parser.add_argument("--figures", type=Path, default=Path("AGENTS/phases/phase-2/figures"))
     return parser.parse_args()
 
 

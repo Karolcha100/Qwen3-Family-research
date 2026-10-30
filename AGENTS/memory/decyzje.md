@@ -51,18 +51,33 @@ Wszystkie pytania z `AGENTS/phases/*/agents-issues-*.md` w jednej tabeli: tytuł
 | @phase-0:K41 | 🟡 Skąd wziąć 200 pytań | C |
 | @phase-0:K42 | 🟢 Druga tura pytań MT-Bench | B |
 | @phase-0:K43 | 🟢 Polecenia agenta: notatki czy mały skrypt | C |
-| @phase-pomysl:K1 | 🔴 Co nazywamy neuronem | A |
-| @phase-pomysl:K2 | 🟡 Jak zaburzamy neuron (wartości −1, −0,5, 0,5, 1) | A |
-| @phase-pomysl:K3 | 🟡 Jak mierzymy „sensowność” w części A | ✅ Okej, to odpowiedź A, ale generalnie zamiast 100 neuronów o największym wpływie, widziałbym jakieś 250. (po @A11) |
-| @phase-pomysl:K4 | 🟡 Jak liczyć część A: wszystko czy z przesiewem | C |
-| @phase-pomysl:K5 | 🟡 Cel treningu zmniejszonej warstwy (C2–C3) | wolę B |
-| @phase-pomysl:K6 | 🟢 Dane do treningu warstwy: zapis na dysk czy w locie | Zapis na dysk, ewentualnie zmniejszymy liczbę N_{tokens} |
-| @phase-pomysl:K7 | 🟢 Start zmniejszonej warstwy | A |
-| @phase-pomysl:K8 | 🟡 Dotrenowanie całego modelu (C4) | D |
-| @phase-pomysl:K9 | 🟡 Plan faz z pomysłu | Podane przez ciebie propozycje etapów Phase 1 są dobre, aczkolwiek chciałbym w phase 1 realizować tylko etapy 1, 2, 3, 4. |
-| @phase-pomysl:K10 | 🟢 Numer fazy | A, wcześniej się pomyliłem z numerami sorry xD |
-| @phase-pomysl:K11 | 🟡 Tekst, na którym mierzymy zaburzenia | A |
-| @phase-pomysl:K12 | 🟢 Które warstwy w pilocie (etap 1) | A |
-| @phase-pomysl:K13 | 🟢 Ile tokenów zapisać do treningu warstwy (etap 4) | A |
-| @phase-pomysl:K14 | 🟡 Jak mocno zmniejszamy warstwę w etapie 4 | B aczkolwiek proponuje -5%, -10%, -20%, -40% |
-| @phase-pomysl:K15 | 🟢 Układ kodu | A |
+| @phase-2:K1 | 🔴 Co nazywamy neuronem | A |
+| @phase-2:K2 | 🟡 Jak zaburzamy neuron (wartości −1, −0,5, 0,5, 1) | A |
+| @phase-2:K3 | 🟡 Jak mierzymy „sensowność” w części A | ✅ Okej, to odpowiedź A, ale generalnie zamiast 100 neuronów o największym wpływie, widziałbym jakieś 250. (po @A11) |
+| @phase-2:K4 | 🟡 Jak liczyć część A: wszystko czy z przesiewem | C |
+| @phase-2:K5 | 🟡 Cel treningu zmniejszonej warstwy (C2–C3) | wolę B |
+| @phase-2:K6 | 🟢 Dane do treningu warstwy: zapis na dysk czy w locie | Zapis na dysk, ewentualnie zmniejszymy liczbę N_{tokens} |
+| @phase-2:K7 | 🟢 Start zmniejszonej warstwy | A |
+| @phase-2:K8 | 🟡 Dotrenowanie całego modelu (C4) | D |
+| @phase-2:K9 | 🟡 Plan faz z pomysłu | Podane przez ciebie propozycje etapów Phase 1 są dobre, aczkolwiek chciałbym w phase 1 realizować tylko etapy 1, 2, 3, 4. |
+| @phase-2:K10 | 🟢 Numer fazy | A, wcześniej się pomyliłem z numerami sorry xD |
+| @phase-2:K11 | 🟡 Tekst, na którym mierzymy zaburzenia | A |
+| @phase-2:K12 | 🟢 Które warstwy w pilocie (etap 1) | A |
+| @phase-2:K13 | 🟢 Ile tokenów zapisać do treningu warstwy (etap 4) | A |
+| @phase-2:K14 | 🟡 Jak mocno zmniejszamy warstwę w etapie 4 | B aczkolwiek proponuje -5%, -10%, -20%, -40% |
+| @phase-2:K15 | 🟢 Układ kodu | A |
+| @phase-2:K16 | 🟢 Które δ mierzyć dalej | A (tylko δ = ±1) |
+| @phase-2:K17 | 🔴 Etap 2 policzony przesiewem na dużej liczbie tokenów | A (mapa = przesiew, pomiar dokładny do kontroli) |
+| @phase-2:K18 | 🟡 Mapa osobno dla tekstu i dla kodu? | C: mapa tylko kodu — doprecyzowane w K26: 75% kodu + 25% tekstu |
+| @phase-2:K19 | 🟢 Nazwa folderu `phase-pomysl` | A (→ `phase-2`, zrobione 2026-10-30) |
+| @phase-2:K20 | 🟡 Klasyfikator do oceny generacji w etapie 3 | C: skupiamy się na kodzie; raport, czy i jakie klasyfikatory mają sens; pamiętać o metrykach jakości i sprawności kodu → `raport-3-ocena-kodu.md`, K32–K36 |
+| @phase-2:K21 | 🔴 Warstwa do zmniejszania w etapie 4 | C: kolejna mało ważna + jedna z początku + jedna z końca → 14, 2, 26 |
+| @phase-2:K22 | 🟢 GUI: zatwierdzenie planu a następny plan (@L14) | „chyba B” (wpis pod planem metryk zapisał się w innym planie) |
+| @phase-2:K23 | 🟡 Dłuższy trening zmniejszonej warstwy | A (16 epok; lr 5e-5 i 2e-4) |
+| @phase-2:K24 | 🟢 Progi rodzajów neuronów w etapie 3 | A |
+| @phase-2:K25 | 🔴 Co ma najlepiej przetrwać zmniejszanie | A (programowanie) |
+| @phase-2:K26 | 🔴 Na jakich danych liczymy mapę ważności i naprawę warstw | A (75% kodu + 25% tekstu) |
+| @phase-2:K27 | 🟡 Jak mierzymy, czy model dalej dobrze programuje | A (KL/perpleksja na kodzie + HumanEval/MBPP w kluczowych punktach) |
+| @phase-2:K28 | 🟡 Które języki programowania | B (tylko Python) |
+| @phase-2:K29 | 🟢 Model, który zmniejszamy | B (Qwen3-0.6B-Base + model do kodu ~0,5B jako odniesienie) |
+| @phase-2:K30 | 🔴 Następny krok na GPU w sprawie kodu | A (uruchomione 2026-10-30 po zgodzie autora w czacie, @T012) |

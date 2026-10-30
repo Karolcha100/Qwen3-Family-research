@@ -21,8 +21,8 @@ Zakres każdej fazy: cel, co wchodzi, czego nie robimy, kiedy faza jest skończo
 ## Phase 2 — mapa neuronów i zmniejszenie jednej warstwy (główny pomysł, etapy 1–4)
 
 - **Cel:** zmierzyć ważność każdego z 86 016 neuronów MLP Qwen3-0.6B, opisać ich rodzaje w warstwach, sprawdzić zmniejszanie jednej warstwy z rekonstrukcją.
-- **Zakres i koniec fazy:** `AGENTS/phases/phase-pomysl/plan-phase-2.md`. Uzasadnienie: `AGENTS/phases/phase-pomysl/raport-1-opis-matematyczny.md`, `raport-2-opinia.md`.
+- **Zakres i koniec fazy:** `AGENTS/phases/phase-2/plan-phase-2.md`. Uzasadnienie: `AGENTS/phases/phase-2/raport-1-opis-matematyczny.md`, `raport-2-opinia.md`.
 
 ## Phase 3 — wiele warstw, dotrenowanie, ewaluacja (etapy 5–6)
 
-- Do rozpisania po Phase 2. Zmniejszanie wielu warstw, porównanie z prostą ważnością, dotrenowanie (@phase-pomysl:K8 = D), pełna ewaluacja (poziomy 1–3, @T002).
+- Do rozpisania po Phase 2. Zmniejszanie wielu warstw, porównanie z prostą ważnością, dotrenowanie (@phase-2:K8 = D), pełna ewaluacja (poziomy 1–3, @T002).

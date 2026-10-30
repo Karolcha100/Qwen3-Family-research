@@ -6,7 +6,7 @@
 
 ## Co masz zrobić
 
-Przeczytaj i odpowiedz na **K21** (czy warstwa 13 jest w porządku i czy powtórzyć dla innej) oraz **K23** (dłuższy trening) w `AGENTS/phases/phase-pomysl/agents-issues-3.md`. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”. Uwagi i pytania do raportu możesz pisać w GUI pod tym raportem (Drzewo → Raporty albo „Co czeka na mnie” → Raporty do przeczytania i dyskusji); przyciskiem „🔒 Zakończ dyskusję” zamykasz raport.
+Przeczytaj i odpowiedz na **K21** (czy warstwa 13 jest w porządku i czy powtórzyć dla innej) oraz **K23** (dłuższy trening) w `AGENTS/phases/phase-2/agents-issues-3.md`. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”. Uwagi i pytania do raportu możesz pisać w GUI pod tym raportem (Drzewo → Raporty albo „Co czeka na mnie” → Raporty do przeczytania i dyskusji); przyciskiem „🔒 Zakończ dyskusję” zamykasz raport.
 
 ---
 
@@ -14,21 +14,21 @@ Przeczytaj i odpowiedz na **K21** (czy warstwa 13 jest w porządku i czy powtór
 
 **Warstwa 13** (wybór tymczasowy, @T010 punkt 4). Ma najmniejszą sumaryczną wrażliwość w mapie etapu 2 (suma przewidywanej KL 0,045, prawie remis z warstwą 14) i pełny pomiar dokładny z pilota.
 
-Z MLP tej warstwy wycinamy 5%, 10%, 20% i 40% neuronów (@phase-pomysl:K14) z 3072, w kolejności od najmniej ważnych. Ważność liczymy na dwa sposoby:
+Z MLP tej warstwy wycinamy 5%, 10%, 20% i 40% neuronów (@phase-2:K14) z 3072, w kolejności od najmniej ważnych. Ważność liczymy na dwa sposoby:
 - **przesiew KL:** mapa z etapu 2 (przewidywana KL po wyłączeniu neuronu, 131 tys. tokenów);
 - **średnia $\lvert a \rvert$:** średnia wielkość aktywacji neuronu (prosta miara porównawcza z planu).
 
 Dla każdego wyboru trzy warianty:
 
 1. **tylko wycięcie:** usuwamy kolumny $W_{down}$ i wiersze $W_{gate}$, $W_{up}$ wyciętych neuronów, nic więcej;
-2. **+ najmniejsze kwadraty** (@phase-pomysl:K7): nowa macierz $W_{down}$ dla pozostałych $k$ neuronów, tak żeby wyjście MLP jak najlepiej odtwarzało oryginał:
+2. **+ najmniejsze kwadraty** (@phase-2:K7): nowa macierz $W_{down}$ dla pozostałych $k$ neuronów, tak żeby wyjście MLP jak najlepiej odtwarzało oryginał:
 
 $$
 \widehat W_{down} = \arg\min_{W \in \mathbb{R}^{1024 \times k}} \sum_{t} \big\| W\, a_{K,t} - y_t \big\|^2 + \lambda \|W\|^2 ,
 $$
 
-   gdzie $a_{K,t}$ to aktywacje zachowanych neuronów dla tokenu $t$, a $y_t$ to oryginalne wyjście MLP. Słownie: pozostałe neurony przejmują pracę wyciętych tak dobrze, jak to możliwe liniowo. Liczone na 1 mln tokenów (488 sekwencji × 2048, mieszanka 75/25 jak w @phase-pomysl:K11), $\lambda$ = $10^{-6}$ × średnia przekątnej;
-3. **+ trening przez następną warstwę** (@phase-pomysl:K5 = B, K8): start z wariantu 2, trenujemy wszystkie wagi zmniejszonego MLP. Wejście to stan przed warstwą 13, cel to oryginalny stan po warstwie 14 (warstwa 14 zamrożona):
+   gdzie $a_{K,t}$ to aktywacje zachowanych neuronów dla tokenu $t$, a $y_t$ to oryginalne wyjście MLP. Słownie: pozostałe neurony przejmują pracę wyciętych tak dobrze, jak to możliwe liniowo. Liczone na 1 mln tokenów (488 sekwencji × 2048, mieszanka 75/25 jak w @phase-2:K11), $\lambda$ = $10^{-6}$ × średnia przekątnej;
+3. **+ trening przez następną warstwę** (@phase-2:K5 = B, K8): start z wariantu 2, trenujemy wszystkie wagi zmniejszonego MLP. Wejście to stan przed warstwą 13, cel to oryginalny stan po warstwie 14 (warstwa 14 zamrożona):
 
 $$
 \mathcal{L} = \frac{\big\| f_{14}\big(f_{13}^{\text{mniejsza}}(h^{(12)})\big) - h^{(14)} \big\|^2}{\operatorname{Var}\big(h^{(14)}\big)} .
@@ -42,7 +42,7 @@ $$
 
 ## 2. Wyniki
 
-![Krzywe etapu 4](AGENTS/phases/phase-pomysl/figures/etap4-warstwa-13.png)
+![Krzywe etapu 4](AGENTS/phases/phase-2/figures/etap4-warstwa-13.png)
 
 Oryginał: perpleksja WikiText-2 **12,660**.
 
@@ -67,7 +67,7 @@ Oryginał: perpleksja WikiText-2 **12,660**.
 4. **Trening dokłada mniej, 10–20%,** a w 6 z 8 przebiegów najlepsza była ostatnia, 4. epoka. Trening był więc za krótki albo z za małym krokiem, i tu jest zapas (pytanie **K23**).
 5. Krzywa jest **gładka, bez „pęknięcia”** do 40%. Skutek rośnie nieco szybciej niż liniowo (KL przy 40% to ~2,6× KL przy 20%).
 
-![Wybór neuronów i naprawa](AGENTS/phases/phase-pomysl/figures/etap4-wybor-i-naprawa-13.png)
+![Wybór neuronów i naprawa](AGENTS/phases/phase-2/figures/etap4-wybor-i-naprawa-13.png)
 
 Lewy wykres: każdy punkt to neuron warstwy 13 (oś pozioma: średnia aktywacja, pionowa: przewidywana KL po wyłączeniu). Przy wycinaniu 20% oba sposoby wybierają wspólnie 337 neuronów (zielone). Różnią się 277 neuronami: przesiew wycina neurony o średniej aktywacji, ale małym skutku (niebieskie), a „średnia $\lvert a \rvert$” wycina neurony słabe, ale ważne (pomarańczowe). Stąd przewaga przesiewu.
 

@@ -4,7 +4,7 @@
 
 ## Co masz zrobić
 
-Szczegóły potrzebne do planu `AGENTS/phases/phase-pomysl/plan-phase-2.md` (etapy 1–4, @phase-pomysl:K9). Plan działa z rekomendacjami; jeśli się zgadzasz, wystarczy „rek” albo litera.
+Szczegóły potrzebne do planu `AGENTS/phases/phase-2/plan-phase-2.md` (etapy 1–4, @phase-2:K9). Plan działa z rekomendacjami; jeśli się zgadzasz, wystarczy „rek” albo litera.
 
 ---
 
@@ -39,7 +39,7 @@ Szczegóły potrzebne do planu `AGENTS/phases/phase-pomysl/plan-phase-2.md` (eta
 
 ### K13. 🟢 Ile tokenów zapisać do treningu warstwy (etap 4)
 
-- **Problem:** wybrałeś zapis na dysk (@phase-pomysl:K6). W wariancie „przez następną warstwę” (K5 = B) zapisujemy wejście $h^{(\ell-1)}$ i cel $h^{(\ell+1)}$, czyli 2 × 1024 liczb BF16 = 4 KB na token.
+- **Problem:** wybrałeś zapis na dysk (@phase-2:K6). W wariancie „przez następną warstwę” (K5 = B) zapisujemy wejście $h^{(\ell-1)}$ i cel $h^{(\ell+1)}$, czyli 2 × 1024 liczb BF16 = 4 KB na token.
 - **Opcje:**
   - **A** — 1 mln tokenów (~4 GB na warstwę);
   - **B** — 250 tys. (~1 GB);

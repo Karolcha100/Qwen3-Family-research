@@ -6,7 +6,7 @@ from transformers import AutoTokenizer, Qwen3Config, Qwen3ForCausalLM
 
 from qwen_compression.activations import collect_neuron_statistics
 from qwen_compression.analysis import spearman, top_overlap
-from qwen_compression.data import interleave_sources, pack_sequences
+from qwen_compression.data import interleave_evenly, interleave_sources, pack_sequences
 from qwen_compression.importance import fisher_kl_coefficients
 from qwen_compression.metrics import kl_and_loss_change, reference_log_probabilities
 from qwen_compression.model_parts import (
@@ -170,6 +170,13 @@ def test_measurement_set_packing_and_interleaving() -> None:
     interleaved, sources = interleave_sources(sequences, sequences[:2] + 1, text_per_code=3)
     assert sources == ["c4", "c4", "c4", "code", "c4", "c4", "c4", "code"]
     torch.testing.assert_close(interleaved[3], sequences[0] + 1)
+
+
+def test_interleave_evenly_keeps_proportions() -> None:
+    code_rows, text_rows = torch.arange(6).view(6, 1), torch.arange(100, 102).view(2, 1)
+    interleaved, sources = interleave_evenly({"code": code_rows, "c4": text_rows})
+    assert sources == ["code", "c4", "code", "code", "code", "c4", "code", "code"]
+    assert interleaved.flatten().tolist() == [0, 100, 1, 2, 3, 101, 4, 5]
 
 
 def test_measure_perturbations_matches_single_measurements(model: Qwen3ForCausalLM, token_ids: torch.Tensor) -> None:
