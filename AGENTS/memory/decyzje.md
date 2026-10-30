@@ -81,3 +81,11 @@ Wszystkie pytania z `AGENTS/phases/*/agents-issues-*.md` w jednej tabeli: tytuł
 | @phase-2:K28 | 🟡 Które języki programowania | B (tylko Python) |
 | @phase-2:K29 | 🟢 Model, który zmniejszamy | B (Qwen3-0.6B-Base + model do kodu ~0,5B jako odniesienie) |
 | @phase-2:K30 | 🔴 Następny krok na GPU w sprawie kodu | A (uruchomione 2026-10-30 po zgodzie autora w czacie, @T012) |
+| @phase-2:K31 | 🔴 Czy punkt startu zmniejszonej warstwy ma znaczenie po treningu | A (mapa / średnia aktywacja / losowy / połączone neurony, długi trening) |
+| @phase-2:K32 | 🔴 Główny test poprawności kodu | A (HumanEval, MBPP, HumanEval+, MBPP+ przez EvalPlus, pass@1 zachłannie) |
+| @phase-2:K33 | 🟡 Klasyfikator (model oceniający kod) | A (na razie bez; klasyfikator może pójść do „future research”) |
+| @phase-2:K34 | 🟢 Jakość kodu bez uruchamiania | A (ruff, pyright, złożoność, długość) |
+| @phase-2:K35 | 🟡 Sprawność | A (sprawność modelu zawsze; Mercury później) |
+| @phase-2:K36 | 🔴 Zgoda na uruchamianie kodu napisanego przez model | A (podman bez sieci, tylko do odczytu, limity) |
+| @phase-2:K37 | 🔴 Co trenować, żeby trening odrobił więcej | A (cel na wyjściu modelu) |
+| @phase-2:K38 | 🟡 Waga kodu w mapie | A (sprawdzić mapę 100% kod na warstwie 13) |

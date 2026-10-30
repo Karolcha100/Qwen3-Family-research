@@ -9,6 +9,7 @@ import torch
 from datasets import load_dataset
 from torch import nn
 from transformers import AutoModelForCausalLM, AutoTokenizer, PreTrainedModel
+from transformers.models.qwen3.modeling_qwen3 import Qwen3MLP
 
 from qwen_compression.data import load_or_build_measurement_set
 from qwen_compression.metrics import kl_and_loss_change, reference_log_probabilities
@@ -21,7 +22,15 @@ from qwen_compression.model_parts import (
     replaced_mlp,
     run_layer_window,
 )
-from qwen_compression.reconstruction import LeastSquaresStatistics, pruned_mlp
+from qwen_compression.reconstruction import (
+    LeastSquaresStatistics,
+    linear_from_weight,
+    merged_mlp,
+    mlp_activations,
+    neuron_clusters,
+    pruned_mlp,
+)
+from qwen_compression.training import output_kl
 
 MODEL_NAME = "Qwen/Qwen3-0.6B-Base"
 SHARD_SEQUENCES = 32
@@ -47,6 +56,9 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--output", type=Path, default=Path("results/phase2/stage4"))
     parser.add_argument("--previous-map", type=Path, default=Path("results/phase2/stage2/fisher-map.pt"))
     parser.add_argument("--evaluation-set", type=Path, default=None)
+    parser.add_argument("--objective", choices=["window", "output"], default="window")
+    parser.add_argument("--cluster-iterations", type=int, default=20)
+    parser.add_argument("--save-mlps", type=Path, default=None)
     return parser.parse_args()
 
 
@@ -109,12 +121,70 @@ def collect_pairs(
     return statistics
 
 
-def neuron_importance(kind: str, layer_index: int, arguments: argparse.Namespace) -> torch.Tensor:
+def neuron_importance(
+    kind: str, layer_index: int, statistics: LeastSquaresStatistics, arguments: argparse.Namespace
+) -> torch.Tensor:
     if kind == "activation":
         return torch.load(arguments.stage1 / "statistics.pt")["mean_absolute"][layer_index].float()
+    if kind == "activation-rms":
+        return (statistics.gram.diagonal() / statistics.token_count).sqrt().float()
+    if kind == "random":
+        return torch.rand(
+            statistics.width, generator=torch.Generator().manual_seed(arguments.seed * 1000 + layer_index)
+        )
     if kind == "previous-map":
         return torch.load(arguments.previous_map)["coefficients"][layer_index].float()
+    if kind == "code-only":
+        return torch.load(arguments.stage2 / "fisher-map.pt")["code"][layer_index].float()
     return torch.load(arguments.stage2 / "fisher-map.pt")["coefficients"][layer_index].float()
+
+
+@torch.no_grad()
+def refit_down_projection(
+    model: PreTrainedModel, layer_index: int, student_mlp: Qwen3MLP, pair_directory: Path, relative_ridge: float
+) -> torch.Tensor:
+    width = student_mlp.down_proj.in_features
+    statistics = LeastSquaresStatistics(width, model.config.hidden_size)
+    original_mlp = mlp_of(model, layer_index)
+
+    def record(module: nn.Module, arguments: tuple[torch.Tensor, ...], output: torch.Tensor) -> None:
+        statistics.add(mlp_activations(student_mlp, arguments[0]), output)
+
+    handle = original_mlp.register_forward_hook(record)
+    try:
+        for shard_path in sorted(pair_directory.glob("shard-*.pt")):
+            inputs = torch.load(shard_path)["inputs"]
+            for sequence_input in inputs:
+                run_layer_window(
+                    model, sequence_input.unsqueeze(0).to(model.device).float(), [decoder_layers(model)[layer_index]]
+                )
+    finally:
+        handle.remove()
+    return statistics.down_weight(torch.arange(width), relative_ridge).float()
+
+
+def starting_mlps(
+    kind: str,
+    model: PreTrainedModel,
+    importance: torch.Tensor,
+    keep_count: int,
+    statistics: LeastSquaresStatistics,
+    arguments: argparse.Namespace,
+) -> tuple[nn.Module, nn.Module, int]:
+    original_mlp = mlp_of(model, arguments.layer)
+    if kind == "merged":
+        features = torch.cat([original_mlp.gate_proj.weight, original_mlp.up_proj.weight], dim=1).double()
+        initial_centers = importance.topk(keep_count).indices.sort().values.to(features.device)
+        merged = merged_mlp(original_mlp, neuron_clusters(features, initial_centers, arguments.cluster_iterations))
+        pair_directory = arguments.data_directory / f"layer-{arguments.layer:02d}-pairs"
+        down_weight = refit_down_projection(model, arguments.layer, merged, pair_directory, arguments.relative_ridge)
+        fitted = copy.deepcopy(merged)
+        fitted.down_proj = linear_from_weight(down_weight.to(merged.down_proj.weight))
+        return merged, fitted, merged.intermediate_size
+    keep = importance.topk(keep_count).indices.sort().values
+    sliced = pruned_mlp(original_mlp, keep)
+    fitted = pruned_mlp(original_mlp, keep, statistics.down_weight(keep, arguments.relative_ridge).float())
+    return sliced, fitted, keep.numel()
 
 
 def train_through_next_layer(
@@ -172,6 +242,60 @@ def train_through_next_layer(
     return {
         "window_loss_before": before,
         "window_loss_after": best_loss,
+        "best_epoch": best_epoch,
+        "epoch_losses": epoch_losses,
+    }
+
+
+def train_on_output(
+    model: PreTrainedModel,
+    layer_index: int,
+    student_mlp: nn.Module,
+    pair_directory: Path,
+    arguments: argparse.Namespace,
+) -> dict[str, float | int | list[float]]:
+    student_mlp.requires_grad_(True)
+    optimizer = torch.optim.Adam(student_mlp.parameters(), lr=arguments.learning_rate)
+    shards = sorted(pair_directory.glob("shard-*.pt"))
+    training_shards, validation_shard = shards[:-1], shards[-1]
+
+    def sequence_kl(sequence_input: torch.Tensor, gradient_scale: float | None) -> float:
+        return output_kl(
+            model,
+            layer_index,
+            student_mlp,
+            sequence_input.unsqueeze(0).to(model.device).float(),
+            arguments.chunk_length,
+            gradient_scale,
+        )
+
+    def validation_kl() -> float:
+        inputs = torch.load(validation_shard)["inputs"]
+        return sum(sequence_kl(sequence_input, None) for sequence_input in inputs) / inputs.shape[0]
+
+    before = validation_kl()
+    best_kl, best_state, best_epoch = before, copy.deepcopy(student_mlp.state_dict()), 0
+    generator = torch.Generator().manual_seed(arguments.seed)
+    epoch_losses = []
+    for epoch in range(1, arguments.epochs + 1):
+        for shard_index in torch.randperm(len(training_shards), generator=generator).tolist():
+            inputs = torch.load(training_shards[shard_index])["inputs"]
+            order = torch.randperm(inputs.shape[0], generator=generator)
+            for start in range(0, order.numel(), arguments.batch_sequences):
+                batch = order[start : start + arguments.batch_sequences]
+                optimizer.zero_grad()
+                for sequence_index in batch.tolist():
+                    sequence_kl(inputs[sequence_index], 1.0 / batch.numel())
+                optimizer.step()
+        epoch_kl = validation_kl()
+        epoch_losses.append(epoch_kl)
+        if epoch_kl < best_kl:
+            best_kl, best_state, best_epoch = epoch_kl, copy.deepcopy(student_mlp.state_dict()), epoch
+    student_mlp.load_state_dict(best_state)
+    student_mlp.requires_grad_(False)
+    return {
+        "output_kl_before": before,
+        "output_kl_after": best_kl,
         "best_epoch": best_epoch,
         "epoch_losses": epoch_losses,
     }
@@ -276,22 +400,26 @@ def main() -> None:
         model, training_ids, arguments.layer, arguments.data_directory / f"layer-{arguments.layer:02d}-pairs"
     )
     log_event(output, {"step": "pairs", "tokens": statistics.token_count, "seconds": time.perf_counter() - start})
-    original_mlp = mlp_of(model, arguments.layer)
     width = model.config.intermediate_size
+    trained_variant = "trained" if arguments.objective == "window" else "trained_output"
+    train = train_through_next_layer if arguments.objective == "window" else train_on_output
     for importance_kind in arguments.importances:
-        importance = neuron_importance(importance_kind, arguments.layer, arguments)
+        importance = neuron_importance(
+            "perturbation" if importance_kind == "merged" else importance_kind, arguments.layer, statistics, arguments
+        )
         for removed_fraction in arguments.removed_fractions:
-            keep = importance.topk(width - round(removed_fraction * width)).indices.sort().values
-            sliced = pruned_mlp(original_mlp, keep)
-            fitted = pruned_mlp(original_mlp, keep, statistics.down_weight(keep, arguments.relative_ridge).float())
-            for variant, mlp in (("sliced", sliced), ("least_squares", fitted), ("trained", None)):
+            keep_count = width - round(removed_fraction * width)
+            sliced, fitted, kept_neurons = starting_mlps(
+                importance_kind, model, importance, keep_count, statistics, arguments
+            )
+            for variant, mlp in (("sliced", sliced), ("least_squares", fitted), (trained_variant, None)):
                 if (importance_kind, removed_fraction, variant) in done:
                     continue
                 start = time.perf_counter()
                 extra: dict[str, float | int | list[float]] = {}
                 if mlp is None:
                     mlp = copy.deepcopy(fitted)
-                    extra = train_through_next_layer(
+                    extra = train(
                         model,
                         arguments.layer,
                         mlp,
@@ -302,7 +430,7 @@ def main() -> None:
                     "importance": importance_kind,
                     "removed_fraction": removed_fraction,
                     "variant": variant,
-                    "kept_neurons": keep.numel(),
+                    "kept_neurons": kept_neurons,
                     **evaluate(model, arguments.layer, mlp, measurement_ids, wikitext_ids, arguments, evaluation_sets),
                     **extra,
                     "seconds": time.perf_counter() - start,
@@ -310,6 +438,17 @@ def main() -> None:
                 with results_path.open("a") as results_file:
                     results_file.write(json.dumps(row) + "\n")
                 log_event(output, {"step": "variant", **row})
+                if arguments.save_mlps is not None and variant == trained_variant:
+                    arguments.save_mlps.mkdir(parents=True, exist_ok=True)
+                    torch.save(
+                        {
+                            "layer": arguments.layer,
+                            **{key: row[key] for key in ("importance", "removed_fraction", "variant")},
+                            "mlp": mlp,
+                        },
+                        arguments.save_mlps
+                        / f"layer-{arguments.layer:02d}-{importance_kind}-{round(100 * removed_fraction)}-{variant}.pt",
+                    )
     log_event(output, {"step": "done"})
 
 

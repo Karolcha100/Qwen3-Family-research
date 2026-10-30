@@ -19,7 +19,14 @@ from qwen_compression.model_parts import (
     run_layer_window,
 )
 from qwen_compression.perturbation import measure_perturbations, scaled_neurons
-from qwen_compression.reconstruction import LeastSquaresStatistics, pruned_mlp
+from qwen_compression.reconstruction import (
+    LeastSquaresStatistics,
+    merged_mlp,
+    mlp_activations,
+    neuron_clusters,
+    pruned_mlp,
+)
+from qwen_compression.training import output_kl
 
 SEQUENCE_LENGTH = 16
 CHUNK_LENGTH = 5
@@ -261,3 +268,51 @@ def test_least_squares_beats_plain_pruning(model: Qwen3ForCausalLM, token_ids: t
     plain_error = (activations[:, keep] @ projection.weight[:, keep].T - targets).square().sum()
     fitted_error = (activations[:, keep] @ statistics.down_weight(keep, 1e-9).T - targets).square().sum()
     assert fitted_error < plain_error
+
+
+def test_merged_mlp_with_one_neuron_per_cluster_is_identical(model: Qwen3ForCausalLM, token_ids: torch.Tensor) -> None:
+    with replaced_mlp(model, 1, merged_mlp(mlp_of(model, 1), torch.arange(48))):
+        merged_logits = full_logits(model, token_ids)
+    torch.testing.assert_close(merged_logits, full_logits(model, token_ids))
+
+
+def test_merging_identical_neurons_keeps_output(model: Qwen3ForCausalLM) -> None:
+    mlp = copy.deepcopy(mlp_of(model, 1)).double()
+    mlp.gate_proj.weight[1] = mlp.gate_proj.weight[0]
+    mlp.up_proj.weight[1] = mlp.up_proj.weight[0]
+    assignment = torch.tensor([0, *range(47)])
+    mlp_input = torch.randn(7, 32, dtype=torch.float64, generator=torch.Generator().manual_seed(4))
+    merged = merged_mlp(mlp, assignment)
+    assert merged.down_proj.weight.shape == (32, 47)
+    torch.testing.assert_close(merged(mlp_input), mlp(mlp_input))
+    torch.testing.assert_close(
+        mlp_activations(mlp, mlp_input), mlp.act_fn(mlp.gate_proj(mlp_input)) * mlp.up_proj(mlp_input)
+    )
+
+
+def test_neuron_clusters_group_duplicates_and_number_clusters_contiguously() -> None:
+    base = torch.randn(5, 6, generator=torch.Generator().manual_seed(5)) * 10
+    features = torch.cat([base, base + 1e-3])
+    assignment = neuron_clusters(features, torch.arange(5), 10)
+    assert torch.equal(assignment[:5], assignment[5:])
+    assert torch.equal(torch.unique(assignment), torch.arange(5))
+
+
+def test_output_kl_matches_direct_computation_and_gradient(model: Qwen3ForCausalLM, token_ids: torch.Tensor) -> None:
+    double_model = copy.deepcopy(model).double()
+    layer_input = hidden_states_before_layer(double_model, token_ids[:1], 2)
+    student = pruned_mlp(mlp_of(double_model, 2), torch.arange(0, 48, 2))
+    direct_student = copy.deepcopy(student)
+    student.requires_grad_(True)
+    direct_student.requires_grad_(True)
+    value = output_kl(double_model, 2, student, layer_input, CHUNK_LENGTH, gradient_scale=0.5)
+    with torch.no_grad():
+        reference = torch.log_softmax(double_model.lm_head(final_hidden_states(double_model, layer_input, 2)), dim=-1)
+    with replaced_mlp(double_model, 2, direct_student):
+        perturbed = torch.log_softmax(double_model.lm_head(final_hidden_states(double_model, layer_input, 2)), dim=-1)
+    direct = (reference.exp() * (reference - perturbed)).sum(dim=-1).mean()
+    (0.5 * direct).backward()
+    assert value == pytest.approx(direct.item(), rel=1e-9)
+    for parameter, direct_parameter in zip(student.parameters(), direct_student.parameters(), strict=True):
+        torch.testing.assert_close(parameter.grad, direct_parameter.grad)
+    assert output_kl(double_model, 2, student, layer_input, CHUNK_LENGTH) == pytest.approx(direct.item(), rel=1e-9)

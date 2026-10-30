@@ -8,22 +8,22 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Teraz
 
-- Nic się nie liczy (GPU wolne od 12:59). **@L18 zrobione** (obliczenia pod nieobecność autora, @T012): raport `AGENTS/phases/phase-2/etap-4b-kod.md`, wyniki `results/phase2/code/`, `results/phase2/k23/`.
-- Dane poza repo: `~/qwen3-checkpoints/phase2-code/` (zbiory Python/C4 rozłączne; pary warstw 2, 13, 14, 26 po 4 GB), `~/qwen3-checkpoints/phase2/` (stare, tekst).
-- Etap 4 na danych Python: argumenty jak w `results/phase2/code/rerun-26.sh` (zmień `--layer`); wykresy `scripts/phase2_code_stage4_analysis.py`. Cel treningu przechwytywany hookiem (@pulapki 22).
+- Nic się nie liczy. **@L19 zrobione** (przygotowanie K31–K38, @T013). **Kolejka gotowa, nieuruchomiona:** `results/phase2/code/queue.sh` (czeka na @phase-2:K39 = „uruchom”); stan zapisze w `results/phase2/code/queue-status.txt`.
+- Uruchomienie w tle: `nohup results/phase2/code/queue.sh > results/phase2/code/queue.log 2>&1 &` (zapisz PID; pułapka 18). Po zakończeniu: wykresy/raport dla K31 (`results/phase2/code/k31/`), K37 (`results/phase2/code/k37/`), K38 (wiersze `code-only` w `results/phase2/code/stage4/layer-13/`), testy kodu (`results/phase2/code-eval/*/…-summary.json`, `…-efficiency.json`).
+- Kontener: `podman build -t qwen-code-sandbox sandbox` (zbudowany), wolumen `qwen-evalplus-cache` (zadania i oczekiwane wyniki). Zadania: `results/phase2/code-eval/*-problems.jsonl`.
+- Dane poza repo: `~/qwen3-checkpoints/phase2-code/` (zbiory, pary warstw 2/13/14/26, `mlps/` po kolejce).
 
 ## Na co czekam (co odblokuje pracę)
 
 | Czekam na | Odblokuje |
 |---|---|
-| K37–K38 (`AGENTS/phases/phase-2/agents-issues-6.md`) | cel treningu na wyjściu modelu; mapa 100% kod |
-| K31–K36 (`AGENTS/phases/phase-2/agents-issues-5.md`) | eksperyment ze startem (mapa / losowy / łączenie), testy HumanEval/MBPP/EvalPlus, uruchamianie kodu w podman |
+| K39 (`AGENTS/phases/phase-2/agents-issues-7.md`) | kolejka K31, K37, K38 + HumanEval/MBPP (~3–3,5 h GPU) |
 | opinia o `AGENTS/phases/phase-0/katalog-metod.md` | wybór metod klasycznych |
 
 ## Odłożone pytania
 
-- brak.
+- klasyfikator kodu: „future research” (@phase-2:K33).
 
 ## Ostatnia sesja
 
-2026-10-30 13:01: decyzje K16–K30 wprowadzone (folder `phase-pomysl` → `phase-2`, @L14 etykiety formularzy, raport 3 o ocenie kodu, K31–K36). Pod nieobecność autora (zgoda na GPU ~2 h): K23 (długi trening daje ~5%), dane i mapa kodu, etap 4 dla warstw 13/2/14/26, poprawiony błąd celu dla warstwy 26; pytania K37–K38.
+2026-10-30 14:14: decyzje K31–K38 (wszystkie A). Przygotowany kod i kontener (bez GPU), sprawdzenia na CPU i na rozwiązaniach wzorcowych; pytanie K39 o uruchomienie; opis @T013.

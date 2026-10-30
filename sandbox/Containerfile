@@ -1,0 +1,9 @@
+FROM docker.io/library/python:3.12-slim
+ENV XDG_CACHE_HOME=/cache PYTHONDONTWRITEBYTECODE=1 PIP_NO_CACHE_DIR=1
+RUN pip install evalplus==0.3.1 \
+    && python -c "from evalplus.data import get_human_eval_plus, get_mbpp_plus; get_human_eval_plus(); get_mbpp_plus()" \
+    && useradd --create-home runner \
+    && chown -R runner /cache
+COPY export_problems.py /opt/export_problems.py
+USER runner
+WORKDIR /work

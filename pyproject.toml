@@ -12,6 +12,7 @@ dependencies = [
     "lm-eval",
     "scipy",
     "matplotlib",
+    "radon>=6.0.1",
 ]
 
 [dependency-groups]

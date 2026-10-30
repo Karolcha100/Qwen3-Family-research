@@ -16,7 +16,7 @@
   - **B** — jak A, ale bez łączenia neuronów (prostsze, ~45 min);
   - **C** — nie badamy; zostajemy przy starcie z mapy.
 - **Rekomendacja:** A. To bezpośrednio sprawdza Twoją uwagę z @T011: ile daje start, a ile trening. Łączenie neuronów to najprostszy sposób, żeby zmniejszona warstwa zaczynała od całej wiedzy oryginału, a nie od jej części.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K32. 🔴 Główny test poprawności kodu
 
@@ -26,7 +26,7 @@
   - **B** — tylko HumanEval i MBPP;
   - **C** — A plus trudniejsze zestawy (np. LiveCodeBench).
 - **Rekomendacja:** A. Te zestawy pozwalają porównać się z liczbami Qwen, a wersje „+” utrudniają przypadkowe zaliczenie.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K33. 🟡 Klasyfikator (model oceniający kod)
 
@@ -36,7 +36,7 @@
   - **B** — model nagrody do kodu AceCodeRM-7B (w 8 lub 4 bitach, żeby zmieścić się w 12 GB);
   - **C** — model-sędzia (np. Qwen2.5-Coder-7B-Instruct w GGUF przez llama.cpp) z listą kryteriów czytelności.
 - **Rekomendacja:** A teraz. C dodać, jeśli zmniejszony model zacznie pisać kod „działający, ale gorszy”.
-- **Decyzja:**
+- **Decyzja:** A, przy czym faktycznie klasyfikatora można dać nawet do future research
 
 ### K34. 🟢 Jakość kodu bez uruchamiania
 
@@ -45,7 +45,7 @@
   - **A** — tak, dla każdego rozwiązania z K32 (prawie darmowe);
   - **B** — nie.
 - **Rekomendacja:** A.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K35. 🟡 Sprawność
 
@@ -55,7 +55,7 @@
   - **B** — od razu obie;
   - **C** — tylko sprawność modelu.
 - **Rekomendacja:** A.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K36. 🔴 Zgoda na uruchamianie kodu napisanego przez model
 
@@ -65,4 +65,4 @@
   - **B** — zgoda, ale tylko po Twoim przejrzeniu konfiguracji kontenera;
   - **C** — nie uruchamiamy; zostaje KL i analiza statyczna.
 - **Rekomendacja:** A.
-- **Decyzja:**
+- **Decyzja:** A

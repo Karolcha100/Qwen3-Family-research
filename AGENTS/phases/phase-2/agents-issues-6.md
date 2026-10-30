@@ -17,7 +17,7 @@ Oba pytania wynikają z obliczeń, które zrobiłem pod Twoją nieobecność (@T
   - **C** — A i B porównane na warstwie 13 przy 40%;
   - **D** — zostajemy przy obecnym celu.
 - **Rekomendacja:** A. Cel na wyjściu modelu jest zgodny z tym, co mierzymy, i nie rusza innych warstw. Jeśli A da dużo więcej niż obecny cel, wiemy, że to droga dla Phase 3.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K38. 🟡 Waga kodu w mapie
 
@@ -27,6 +27,6 @@ Oba pytania wynikają z obliczeń, które zrobiłem pod Twoją nieobecność (@T
   - **B** — zostajemy przy 75/25;
   - **C** — przechodzimy na 100% kod bez sprawdzania.
 - **Rekomendacja:** A. Koszt jest mały, a pokaże, ile tekstu „kosztuje” każdy punkt kodu.
-- **Decyzja:**
+- **Decyzja:** A
 
 *2026-10-30 12:48 — Claude Opus 5.5*

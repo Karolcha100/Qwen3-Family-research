@@ -138,3 +138,12 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 - pytania K37 (cel treningu) i K38 (waga kodu w mapie): `AGENTS/phases/phase-2/agents-issues-6.md`.
 
 *2026-10-30 13:01 — Claude Opus 5.5*
+
+### [L19] Przygotowanie obliczeń K31–K38
+
+- starty: `activation-rms`, `random`, `merged` (k-średnie na wagach + nowe $W_{down}$), `code-only` (K38); cel na wyjściu modelu `--objective output` (`src/qwen_compression/training.py`); testy (40 przechodzi);
+- aktywacje neuronów warstwy 13 prawie niezależne (mediana największego podobieństwa 0,13), stąd łączenie przez wagi;
+- kontener `qwen-code-sandbox` (EvalPlus 0.3.1), rozwiązania wzorcowe: HumanEval 163/164, MBPP 99,7% / 99,5%;
+- pytanie K39 (uruchomienie kolejki): `AGENTS/phases/phase-2/agents-issues-7.md`; opis: @T013.
+
+*2026-10-30 14:14 — Claude Opus 5.5*
