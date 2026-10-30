@@ -4,7 +4,7 @@
 
 ## Co masz zrobić
 
-Pytania wynikają z nocnych wyników: raporty `etap-1-pilot.md`, `etap-2-mapa.md`, `etap-3-rodzaje-neuronow.md`, `etap-4-jedna-warstwa.md` w tym folderze. Najważniejsze są **K17** (czy akceptujesz, jak policzyłem etap 2) i **K21** (warstwa w etapie 4). Jeśli zgadzasz się z rekomendacjami, wystarczy „rek” albo litera.
+Pytania wynikają z nocnych wyników: raporty `etap-1-pilot.md`, `etap-2-mapa.md`, `etap-3-rodzaje-neuronow.md`, `etap-4-jedna-warstwa.md` w tym folderze. Najważniejsze są **K17** (czy akceptujesz, jak policzyłem etap 2) i **K21** (warstwa w etapie 4). K23 dotyczy dłuższego treningu w etapie 4. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek” albo litera.
 
 ---
 
@@ -80,4 +80,14 @@ Pytania wynikają z nocnych wyników: raporty `etap-1-pilot.md`, `etap-2-mapa.md
   - **B** — wpisałem komentarz w polu pod planem metryk, a zapisał się w innym planie;
   - **C** — inaczej (opisz kroki).
 - **Rekomendacja:** brak, to pytanie o fakty. Po odpowiedzi poprawię GUI (np. po zatwierdzeniu planu wybór przechodzi na następny plan albo na listę).
+- **Decyzja:**
+
+### K23. 🟡 Dłuższy trening zmniejszonej warstwy
+
+- **Problem:** w etapie 4 trening „przez następną warstwę” poprawia wynik najmniejszych kwadratów tylko o 12–19%, a w 6 z 8 przebiegów najlepsza była ostatnia (4.) epoka. Trening był więc za krótki albo z za małym krokiem. Jeden przebieg trwa ~95 s.
+- **Opcje:**
+  - **A** — dla warstwy 13 i stopni 20% / 40% sprawdzić: 16 epok, oraz lr $2 \cdot 10^{-4}$ (~15 min GPU);
+  - **B** — zostawić jak jest; trening dopracujemy dopiero przy zmniejszaniu wielu warstw (etap 5);
+  - **C** — inaczej (wpisz).
+- **Rekomendacja:** A. Tanie, a pokaże, ile da się wycisnąć z samego treningu warstwy, zanim przejdziemy do wielu warstw.
 - **Decyzja:**
