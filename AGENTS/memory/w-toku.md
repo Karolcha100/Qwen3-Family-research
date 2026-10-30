@@ -8,22 +8,22 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Teraz
 
-- Nic się nie liczy (GPU wolne od 04:30). **@L13 zrobione** w nocy 29/30.10: raporty `AGENTS/phases/phase-2/etap-1-pilot.md` … `etap-4-jedna-warstwa.md`, wyniki `results/phase2/`, nocny przebieg @T010 (wpisy 22:09, 22:10, 02:06).
-- Dane poza repo: `~/qwen3-checkpoints/phase2/` (`measurement-set.pt`, `training-set.pt`, `layer-13-pairs/` 4 GB).
-- Powtórka etapu 4 dla innej warstwy: `uv run --no-sync python scripts/phase2_stage4_one_layer.py --layer N --measurement-sequences 0 1 2 3 4 5 6 7` (ℓ ≤ 25), wykres: `scripts/phase2_stage4_analysis.py --layer N`.
+- Nic się nie liczy (GPU wolne od 12:59). **@L18 zrobione** (obliczenia pod nieobecność autora, @T012): raport `AGENTS/phases/phase-2/etap-4b-kod.md`, wyniki `results/phase2/code/`, `results/phase2/k23/`.
+- Dane poza repo: `~/qwen3-checkpoints/phase2-code/` (zbiory Python/C4 rozłączne; pary warstw 2, 13, 14, 26 po 4 GB), `~/qwen3-checkpoints/phase2/` (stare, tekst).
+- Etap 4 na danych Python: argumenty jak w `results/phase2/code/rerun-26.sh` (zmień `--layer`); wykresy `scripts/phase2_code_stage4_analysis.py`. Cel treningu przechwytywany hookiem (@pulapki 22).
 
 ## Na co czekam (co odblokuje pracę)
 
 | Czekam na | Odblokuje |
 |---|---|
-| K25–K30 (`AGENTS/phases/phase-2/agents-issues-4.md`): model ma dobrze programować | wybór danych mapy i naprawy (kod/tekst), pomiar programowania, języki, model odniesienia, powtórka etapu 4 pod kod (K30) |
-| K16–K24 (`AGENTS/phases/phase-2/agents-issues-3.md`) | dalsze kroki Phase 2 (K21 warstwy, K23 trening, K19 nazwa folderu, K22 → @L14 GUI) |
+| K37–K38 (`AGENTS/phases/phase-2/agents-issues-6.md`) | cel treningu na wyjściu modelu; mapa 100% kod |
+| K31–K36 (`AGENTS/phases/phase-2/agents-issues-5.md`) | eksperyment ze startem (mapa / losowy / łączenie), testy HumanEval/MBPP/EvalPlus, uruchamianie kodu w podman |
 | opinia o `AGENTS/phases/phase-0/katalog-metod.md` | wybór metod klasycznych |
 
 ## Odłożone pytania
 
-- brak (proporcje tekstu pomiarowego zadane jako @phase-2:K11).
+- brak.
 
 ## Ostatnia sesja
 
-2026-10-30 10:43: odpowiedź w dyskusji `etap-2-mapa.md` (autor: wykresy w sekcji 5; „żeby Qwen jak najlepiej programował”). Sekcja 3 i 5 z osobnymi wykresami; analiza CPU `scripts/phase2_code_text_maps.py`: obecna mapa 75/25 szkodzi kodowi ~1,75× bardziej niż mapa pod kod (na odłożonych sekwencjach); pytania K25–K30. Starsze `raport-1`, `raport-2` w zakładce Raporty (@T010: „tak”). Autor jeszcze czyta raporty.
+2026-10-30 13:01: decyzje K16–K30 wprowadzone (folder `phase-pomysl` → `phase-2`, @L14 etykiety formularzy, raport 3 o ocenie kodu, K31–K36). Pod nieobecność autora (zgoda na GPU ~2 h): K23 (długi trening daje ~5%), dane i mapa kodu, etap 4 dla warstw 13/2/14/26, poprawiony błąd celu dla warstwy 26; pytania K37–K38.

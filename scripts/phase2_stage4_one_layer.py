@@ -79,22 +79,32 @@ def collect_pairs(
     def record(module: nn.Module, arguments: tuple[torch.Tensor, ...], output: torch.Tensor) -> None:
         statistics.add(arguments[0], output)
 
+    next_layer_outputs: list[torch.Tensor] = []
+
+    def record_next_layer(
+        module: nn.Module, arguments: tuple[torch.Tensor, ...], output: torch.Tensor | tuple[torch.Tensor, ...]
+    ) -> None:
+        next_layer_outputs.append(output[0] if isinstance(output, tuple) else output)
+
     handle = down_projection(model, layer_index).register_forward_hook(record)
+    next_layer_handle = decoder_layers(model)[layer_index + 1].register_forward_hook(record_next_layer)
     try:
         for shard_index, start in enumerate(range(0, token_ids.shape[0], SHARD_SEQUENCES)):
             inputs, targets = [], []
             for sequence in token_ids[start : start + SHARD_SEQUENCES]:
+                next_layer_outputs.clear()
                 hidden = model.model(
                     input_ids=sequence.unsqueeze(0).to(model.device), output_hidden_states=True, use_cache=False
                 ).hidden_states
                 inputs.append(hidden[layer_index].bfloat16().cpu())
-                targets.append(hidden[layer_index + 2].bfloat16().cpu())
+                targets.append(next_layer_outputs[0].bfloat16().cpu())
             torch.save(
                 {"inputs": torch.cat(inputs), "targets": torch.cat(targets)},
                 pair_directory / f"shard-{shard_index:03d}.pt",
             )
     finally:
         handle.remove()
+        next_layer_handle.remove()
     torch.save(statistics, statistics_path)
     return statistics
 

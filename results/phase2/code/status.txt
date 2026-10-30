@@ -1,0 +1,10 @@
+k23 finished 11:30
+fisher exit 0 11:51
+code map exit 0 11:51
+learning rate 5e-5
+layer 13 exit 0 12:11
+layer 2 exit 0 12:22
+layer 26 exit 0 12:34
+layer 14 exit 0 12:45
+all done 12:45
+layer 26 rerun (fixed target) exit 0 12:59

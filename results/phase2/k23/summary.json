@@ -1,0 +1,44 @@
+[
+  {
+    "removed_fraction": 0.2,
+    "setting": "4 epoki, lr 5e-5 (noc)",
+    "kl": 0.0021613656281260774,
+    "wikitext2_perplexity": 12.679160447680749,
+    "best_epoch": 4
+  },
+  {
+    "removed_fraction": 0.2,
+    "setting": "16 epok, lr 2e-4",
+    "kl": 0.002181546326028183,
+    "wikitext2_perplexity": 12.685675195592214,
+    "best_epoch": 12
+  },
+  {
+    "removed_fraction": 0.2,
+    "setting": "16 epok, lr 5e-5",
+    "kl": 0.00204348232364282,
+    "wikitext2_perplexity": 12.68002439821684,
+    "best_epoch": 16
+  },
+  {
+    "removed_fraction": 0.4,
+    "setting": "4 epoki, lr 5e-5 (noc)",
+    "kl": 0.005744191235862672,
+    "wikitext2_perplexity": 12.724607396005572,
+    "best_epoch": 4
+  },
+  {
+    "removed_fraction": 0.4,
+    "setting": "16 epok, lr 2e-4",
+    "kl": 0.00553462453535758,
+    "wikitext2_perplexity": 12.721356105364354,
+    "best_epoch": 8
+  },
+  {
+    "removed_fraction": 0.4,
+    "setting": "16 epok, lr 5e-5",
+    "kl": 0.0054328702099155635,
+    "wikitext2_perplexity": 12.721009910948778,
+    "best_epoch": 16
+  }
+]

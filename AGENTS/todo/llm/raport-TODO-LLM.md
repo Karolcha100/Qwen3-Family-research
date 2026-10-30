@@ -129,3 +129,12 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 - pytania K31–K36: `AGENTS/phases/phase-2/agents-issues-5.md`.
 
 *2026-10-30 11:12 — Claude Opus 5.5*
+
+### [L18] Obliczenia pod nieobecność autora (Python)
+
+- @phase-2:K23: 16 epok zamiast 4 zmniejsza KL warstwy 13 tylko o ~5% (wpis 11:30 w @T012, wykres `AGENTS/phases/phase-2/figures/k23-dlugi-trening-13.png`);
+- dane Python + C4 (75/25, rozłączne), mapa kodu, etap 4 dla warstw 13 (start z mapy kodu i ze starej mapy), 2, 14, 26: raport `AGENTS/phases/phase-2/etap-4b-kod.md`;
+- poprawiony błąd celu treningu dla warstwy 26 (końcowa normalizacja w `hidden_states`), warstwa 26 policzona ponownie;
+- pytania K37 (cel treningu) i K38 (waga kodu w mapie): `AGENTS/phases/phase-2/agents-issues-6.md`.
+
+*2026-10-30 13:01 — Claude Opus 5.5*
