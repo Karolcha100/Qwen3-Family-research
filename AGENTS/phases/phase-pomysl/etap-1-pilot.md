@@ -2,9 +2,11 @@
 
 *2026-10-30 02:03 — Claude Opus 5.5*
 
+**Status raportu:** do przeczytania
+
 ## Co masz zrobić
 
-Przeczytaj, a potem odpowiedz na pytania **K16–K18** w `AGENTS/phases/phase-pomysl/agents-issues-3.md`. Dotyczą tego raportu: dalsze pomiary tylko dla $\delta = \pm 1$, odstępstwo od nocnych reguł, liczba tokenów. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”.
+Przeczytaj, a potem odpowiedz na pytania **K16–K18** w `AGENTS/phases/phase-pomysl/agents-issues-3.md`. Dotyczą tego raportu: dalsze pomiary tylko dla $\delta = \pm 1$, odstępstwo od nocnych reguł, liczba tokenów. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”. Uwagi i pytania do raportu możesz pisać w GUI pod tym raportem (Drzewo → Raporty albo „Co czeka na mnie” → Raporty do przeczytania i dyskusji); przyciskiem „🔒 Zakończ dyskusję” zamykasz raport.
 
 ---
 
@@ -42,11 +44,11 @@ W bf16 szum numeryczny jest 100× większy niż skutek wyłączenia typowego neu
 
 | Warstwa | mediana KL | 90. percentyl | maksimum | najważniejsze neurony |
 |---|---|---|---|---|
-| 2 | $1{,}4 \cdot 10^{-5}$ | $4{,}3 \cdot 10^{-5}$ | $9{,}2 \cdot 10^{-3}$ | #128, #55, #1489 (masywne, $\max|a| \approx 3000$) |
-| 13 | $1{,}1 \cdot 10^{-5}$ | $3{,}3 \cdot 10^{-5}$ | $3{,}8 \cdot 10^{-4}$ | #37, #183, #65 (zwykłe, $\max|a| \approx 5$) |
-| 25 | $1{,}1 \cdot 10^{-5}$ | $5{,}0 \cdot 10^{-5}$ | $1{,}8 \cdot 10^{-3}$ | #2953, #1638, #1499 ($\max|a| \approx 50$–$80$) |
+| 2 | $1{,}4 \cdot 10^{-5}$ | $4{,}3 \cdot 10^{-5}$ | $9{,}2 \cdot 10^{-3}$ | #128, #55, #1489 (masywne, $\max \lvert a \rvert \approx 3000$) |
+| 13 | $1{,}1 \cdot 10^{-5}$ | $3{,}3 \cdot 10^{-5}$ | $3{,}8 \cdot 10^{-4}$ | #37, #183, #65 (zwykłe, $\max \lvert a \rvert \approx 5$) |
+| 25 | $1{,}1 \cdot 10^{-5}$ | $5{,}0 \cdot 10^{-5}$ | $1{,}8 \cdot 10^{-3}$ | #2953, #1638, #1499 ($\max \lvert a \rvert \approx 50$–$80$) |
 
-![Rozkład KL](figures/etap1-rozklad-kl.png)
+![Rozkład KL](AGENTS/phases/phase-pomysl/figures/etap1-rozklad-kl.png)
 
 - Rozkład jest **wąski**: między 10. a 90. percentylem jest tylko 5× (warstwa 2), 6× (warstwa 13) i 19× (warstwa 25). Nie ma dużej grupy neuronów „za darmo” (KL ≈ 0). Najmniejszy skutek to ~$10^{-6}$, czyli ~10× mniej niż mediana.
 - Odstają pojedyncze neurony, np. trzy masywne w warstwie 2 mają skutek ~700× większy niż mediana. W warstwie 13 najważniejsze neurony nie mają wcale dużych aktywacji.
@@ -68,13 +70,19 @@ $$
 \mathrm{KL}_j(\delta) \approx \tfrac{1}{2}\,\delta^2\, F_j,
 $$
 
-gdzie $F_j$ (informacja Fishera neuronu $j$) to jedna liczba na neuron. Wniosek praktyczny: **$\delta = \pm 0{,}5$ nie wnoszą nowej informacji**, a $\delta = +1$ wnosi tylko asymetrię, i to dla nielicznych neuronów (pytanie K16).
+gdzie $F_j$ (informacja Fishera neuronu $j$) to jedna liczba na neuron.
+
+![Skutek rośnie jak delta do kwadratu](AGENTS/phases/phase-pomysl/figures/etap1-delta-kwadrat.png)
+
+Każdy punkt to jeden neuron. Lewy wykres: skutek osłabienia o połowę leży dokładnie na linii „¼ × wyłączenie”. Prawy wykres: skutek podwojenia leży wokół linii „tyle samo co wyłączenie”, ale z rozrzutem; punkty daleko od linii to neurony asymetryczne (więcej w etapie 3).
+
+Wniosek praktyczny: **$\delta = \pm 0{,}5$ nie wnoszą nowej informacji**, a $\delta = +1$ wnosi tylko asymetrię, i to dla nielicznych neuronów (pytanie K16).
 
 ### 2.4. Przesiew gradientem a pomiar dokładny (te same tokeny)
 
 $F_j$ można oszacować z gradientu jednym przebiegiem wstecz dla wszystkich neuronów naraz (wzór w `raport-1-opis-matematyczny.md`). Wynik dla 16 losowanych odpowiedzi na token:
 
-![Przesiew vs dokładnie](figures/etap1-przesiew-vs-dokladnie.png)
+![Przesiew vs dokładnie](AGENTS/phases/phase-pomysl/figures/etap1-przesiew-vs-dokladnie.png)
 
 | Warstwa | Spearman | wspólne „top 10%” | suma przesiew / suma dokładnie |
 |---|---|---|---|
@@ -93,6 +101,10 @@ Ten sam pomiar dokładny na **innych** 4096 tokenach (166 losowych neuronów na 
 | 2 | 0,51 | 31% |
 | 13 | 0,52 | 36% |
 | 25 | 0,51 | 61% |
+
+![Dwa teksty a przesiew](AGENTS/phases/phase-pomysl/figures/etap1-dwa-teksty.png)
+
+Lewy wykres: ten sam pomiar dokładny na dwóch różnych tekstach. Gdyby ranking nie zależał od tekstu, punkty leżałyby na przekątnej; leżą w szerokiej chmurze. Prawy wykres dla porównania: przesiew i pomiar dokładny na **tym samym** tekście leżą prawie idealnie na przekątnej. Rozrzut bierze się więc z tekstu, a nie z metody.
 
 Reguła wymagała ≥ 0,95. Ranking neuronów z 4096 tokenów **w połowie zależy od tego, jaki to był tekst**. Pomiar nie jest niedokładny numerycznie (float32). Skutek wyłączenia neuronu po prostu naprawdę zależy od tekstu, a neurony w środku rozkładu różnią się między sobą mniej, niż wynosi ta zmienność.
 

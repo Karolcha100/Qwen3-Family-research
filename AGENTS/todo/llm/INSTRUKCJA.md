@@ -50,6 +50,7 @@ Autor pisze **tylko przez GUI** (albo w czacie). Prosząc go o odpowiedź, zawsz
 | Wpis w raporcie + status zadania A | `AGENTS/todo/author/raport-TODO-autora.md`, `AGENTS/todo/author/*-TODO-dla-autora.md` | Twoje zadania (otwarte) |
 | Wątek: odpowiedź, nowy, 🔒 | `AGENTS/talk/threads/T…md` | Wątki — agent odpowiedział; ➕ Nowy wątek |
 | Dyskusja i zatwierdzenie planu | plik z linią `**Status planu:**` | Plany do zatwierdzenia i opinii (też Drzewo → Plany) |
+| Dyskusja o raporcie z wynikami, 🔒 | plik z linią `**Status raportu:**` | Raporty do przeczytania i dyskusji (też Drzewo → Raporty) |
 | Uwaga dla agentów | `AGENTS/talk/od-autora-dla-llmow.md` | Uwagi dla LLM |
 | Koniec + uwaga | `AGENTS/talk/koniec/…md` | przycisk ✅ Koniec |
 
@@ -116,6 +117,13 @@ Odpowiedź na pytanie przeniesione do raportu ma identyfikator pytania, np. `###
 - **Status `zatwierdzony (…)`** ustawia autor przyciskiem ✅ Zatwierdzam plan. Agent go nie ustawia. Po zatwierdzeniu agent wykonuje plan.
 - Plan do zatwierdzenia nie potrzebuje osobnego zadania A.
 
+## Raporty z wynikami
+
+- **Raport** (wyniki etapu, eksperymentu, analizy) to plik w `AGENTS/` (poza `talk/` i `todo/`) z linią `**Status raportu:** do przeczytania` pod nagłówkiem i podpisem. GUI pokazuje go w „Raporty do przeczytania i dyskusji” oraz w Drzewo → Raporty.
+- **Rozmowa** jak w planie: sekcja `## Dyskusja` na końcu, wpisy jak w wątkach. Raport czeka na autora, gdy ostatni wpis jest od agenta (albo dyskusji jeszcze nie ma).
+- **Status `zamknięty (…)`** ustawia autor przyciskiem 🔒 Zakończ dyskusję. Agent go nie ustawia.
+- **Wykresy:** raport z liczbami ma wykresy pokazujące główne wyniki, każdy z 1–2 zdaniami „co widać”.
+
 ## Pytania do autora (`AGENTS/phases/<faza>/agents-issues-N.md`)
 
 - Sekcja `### K1. 🔴 tytuł` z **Problemem**, **Opcjami**, **Rekomendacją** i pustym polem `- **Decyzja:**`. Przykład: `AGENTS/phases/README.md`.
@@ -131,6 +139,7 @@ Nie zmieniaj ich bez zmiany `agents_board/model.py` i testów `tests/test_agents
 - raport autora: wpisy `### [A13] tytuł`;
 - wątek: `# T001 · tytuł`, wpisy oddzielone `---` ×3, podpis jako ostatnia linia wpisu;
 - plan: linia `**Status planu:** …` i sekcja `## Dyskusja`;
+- raport z wynikami: linia `**Status raportu:** …` i sekcja `## Dyskusja`;
 - briefing i Koniec: `AGENTS/talk/briefings/RRRR-MM-DD-GGMM.md`, `AGENTS/talk/koniec/RRRR-MM-DD-GGMM.md`.
 
 ## Ustalenia, które obowiązują zawsze
@@ -140,8 +149,8 @@ Nie zmieniaj ich bez zmiany `agents_board/model.py` i testów `tests/test_agents
 - **Każdy plik dla autora zaczyna się od sekcji `## Co masz zrobić`:** jednym-dwoma zdaniami problem prostymi słowami, potem pytanie albo decyzja z gotowymi opcjami (np. „wystarczy: tak, B”). Szczegóły techniczne dopiero niżej. To samo w blokach odpowiedzi.
 - **Jeden plik na zadanie:** plan, raport albo propozycja dla konkretnego zadania lub pytania to osobny plik w folderze fazy, podlinkowany w zadaniu. Plik zbiorczy tylko jako spis z linkami.
 - **Ścieżki plików** zawsze w backtickach i pełne od katalogu projektu (np. `AGENTS/phases/phase-1/plan.md`) — GUI robi z nich linki; w czacie jako linki markdown `[nazwa](ścieżka)`.
-- **Obrazki i wykresy:** plik `.png`/`.svg` w `AGENTS/`, w tekście `![opis](AGENTS/…/x.png)` — GUI go pokazuje. Sprawdź wykres (otwórz plik), zanim go wstawisz.
-- **Wzory w TeX:** w tekście `$…$`, osobno `$$…$$`, nie w blokach kodu. GUI je składa (KaTeX). Kwoty pisz ze spacją przed `$` („0,5 $”).
+- **Obrazki i wykresy:** plik `.png`/`.svg` w `AGENTS/`, w tekście `![opis](AGENTS/…/x.png)` — GUI go pokazuje. **Ścieżka zawsze pełna od `AGENTS/`**; względna (`figures/x.png`) się nie wyświetla. Sprawdź wykres (otwórz plik), zanim go wstawisz.
+- **Wzory w TeX:** w tekście `$…$`, osobno `$$…$$`, nie w blokach kodu. GUI je składa (KaTeX). Kwoty pisz ze spacją przed `$` („0,5 $”). **W tabelach nie używaj `|` we wzorach** (`\lvert a \rvert` zamiast `|a|`, `\Vert` zamiast `\|`), a `$$…$$` pisz bez wcięcia, poza listą, z pustą linią przed i po.
 - **Dopisywanie do pliku:** najpierw `s = open(p).read()`, potem osobno `open(p, "w").write(…)`. Nigdy `open(p, "w").write(open(p).read() …)` — tryb `"w"` czyści plik przed odczytem. Po zapisie `git diff --stat`.
 - **Heredoki z `$`** (TeX, kwoty) zawsze w formie `<<'EOF'`.
 - **Pliki tymczasowe** tylko w katalogu tymczasowym sesji, nigdy w repozytorium.

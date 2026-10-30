@@ -333,6 +333,41 @@ def test_plans_discussion_and_approval(root):
         b.append_plan_entry("phases/phase-x/notes.md", "x", file_version(root / "phases" / "phase-x" / "notes.md"))
 
 
+REPORT = """# Etap 1 — wyniki
+
+*2026-10-30 10:00 — Claude Opus 5.5*
+
+**Status raportu:** do przeczytania
+
+## Co masz zrobić
+
+Przeczytaj.
+"""
+
+
+def test_reports_discussion_and_closing(root):
+    path = root / "phases" / "phase-x" / "etap-1.md"
+    path.write_text(REPORT)
+    (root / "phases" / "phase-x" / "plan.md").write_text(PLAN)
+    b = Board(root)
+    report, = b.reports()
+    assert (report.kind, report.status, report.owner, report.title) == ("report", "open", "llm", "Etap 1 — wyniki")
+    assert [p.path for p in b.plans()] == ["phases/phase-x/plan.md"]   # a report is not a plan
+    assert b.state()["waiting"]["reports"] == [report.key]
+    b.append_plan_entry("phases/phase-x/etap-1.md", "Pytanie do raportu", file_version(path))
+    report, = b.reports()
+    assert report.owner == "author" and b.state()["waiting"]["reports"] == []
+    assert "Etap 1 — wyniki — wpis w dyskusji raportu" in b.activity(since="2000-01-01 00:00")
+    with pytest.raises(BoardError, match="nie jest raportem"):
+        b.close_report("phases/phase-x/plan.md", file_version(root / "phases" / "phase-x" / "plan.md"))
+    b.close_report("phases/phase-x/etap-1.md", file_version(path), "Jasne.")
+    report, = b.reports()
+    assert report.status == "closed" and report.extra["plan_status"].startswith("zamknięty (")
+    assert report.extra["entries"][-1]["text"].startswith("🔒 Dyskusja zakończona. Jasne.")
+    assert "Etap 1 — wyniki — raport zamknięty" in b.activity(since="2000-01-01 00:00")
+    assert b.state()["waiting"]["reports"] == []
+
+
 def test_images_are_embedded(root):
     (root / "phases" / "phase-x" / "chart.svg").write_text('<svg xmlns="http://www.w3.org/2000/svg"/>')
     images = Board(root).state()["images"]

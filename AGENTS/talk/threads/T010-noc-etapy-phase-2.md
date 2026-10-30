@@ -139,3 +139,56 @@ Odłożona została tylko ocena klasyfikatorem (punkt 3 pierwszego wpisu, **K20*
 ---
 ---
 ---
+
+Dobra, sprawdź te raporty które napisałeś bo psują się w nich wzory oraz tabele, dodatkowo chciałbym zobaczyć w nich jakieś wykresy (łatwiej coś zobaczyć graficznie). W Agents Board w Drzewie "Co czeka na mnie" przydałaby się oddzielna zakładka z raportami w której jak będę chciał mogę o takim raporcie z tobą dyskutować, oraz zakończyć dyskusję (przyciskiem) (wtedy raport znika jak zamknięty wątek).
+
+*2026-10-30 09:33 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+1. **Uruchom GUI ponownie** (Ctrl+C w terminalie, potem znów `python3 -m agents_board`), bo zmienił się kod serwera.
+2. Przeczytaj raporty w nowym miejscu: **„Co czeka na mnie” → Raporty do przeczytania i dyskusji** (są tam 4 raporty etapów).
+3. Odpowiedz krótko tutaj: czy dodać do zakładki też starsze raporty Phase 2 (`raport-1-opis-matematyczny.md`, `raport-2-opinia.md`)? Wystarczy „tak” albo „nie”.
+
+### 1. Co psuło raporty
+
+- **Wykresy:** wstawiłem je ze ścieżką względną (`figures/…png`), a GUI pokazuje tylko obrazki ze ścieżką od `AGENTS/`. Dlatego nie widziałeś żadnego z 6 wykresów, choć były w raportach.
+- **Tabele:** wzory z kreską `|` (np. średnia $\lvert a \rvert$) rozcinały komórkę w połowie wzoru. Stąd przesunięte kolumny i surowy TeX w etapach 1, 3 i 4.
+- **Wzory w etapie 4:** wzory w osobnej linii (`$$`) były wcięte w listę i GUI sklejał je z tekstem.
+
+### 2. Co poprawiłem
+
+- **Raporty etapów 1–4:** pełne ścieżki obrazków, wzory bez `|` w tabelach, wzory etapu 4 przeniesione poza listę.
+- **GUI** (żeby to się nie powtórzyło): `|` wewnątrz wzoru i `\|` nie rozcinają już komórki tabeli, a linia `$$` zawsze zaczyna osobny wzór, także w liście. Przy okazji naprawiła się tabela w `AGENTS/phases/phase-1/plan.md`, gdzie `rpm -qa | grep` też rozcinało komórkę.
+- **Sprawdzenie:** zrzut ekranu GUI dla raportu 4 (tabela, wykresy, wzory na miejscu). Parserem GUI przepuściłem wszystkie 4 raporty: 99 wzorów, żaden `$` nie zostaje w tekście, każda z 17 tabel ma równe wiersze.
+
+### 3. Nowe wykresy (6, po 1–2 na raport, każdy z opisem „co widać”)
+
+| Raport | Wykres | Co pokazuje |
+|---|---|---|
+| etap 1 | δ² | osłabienie o połowę daje dokładnie ¼ skutku, podwojenie mniej więcej tyle co wyłączenie |
+| etap 1 | dwa teksty | ten sam pomiar na innym tekście daje chmurę, a przesiew i pomiar dokładny na tym samym tekście leżą na przekątnej |
+| etap 2 | tekst a kod | porcje tekstu zgadzają się w 0,7–0,9, a tekst z kodem wokół zera, w każdej warstwie |
+| etap 2 | przesiew a dokładnie | 11 500 neuronów z 25 warstw na przekątnej; zgodność 0,96–0,99 w każdej warstwie |
+| etap 3 | asymetria | asymetryczne neurony leżą głównie pod przekątną (wyłączenie szkodzi bardziej), we wczesnych i późnych warstwach |
+| etap 4 | wybór i naprawa | których neuronów oba wybory nie wycinają wspólnie; najmniejsze kwadraty zostawiają ~65% KL, a trening ~55% |
+
+Do tego wykresy, które już były, ale się nie wyświetlały: rozkład KL i przesiew vs dokładnie (etap 1), mapa przesiewu (etap 2), rodzaje neuronów i KL w warstwach (etap 3), krzywe zmniejszania (etap 4).
+
+### 4. Zakładka „Raporty”
+
+- Raport to plik z linią `**Status raportu:** do przeczytania`. Widać go w **„Co czeka na mnie” → Raporty do przeczytania i dyskusji** i w nowym widoku **Drzewo → Raporty**.
+- Pod raportem jest pole na uwagi. Wpis trafia do sekcji „Dyskusja” na końcu raportu, a ja odpowiadam tam jak w wątku.
+- Przycisk **🔒 Zakończ dyskusję** zamyka raport: znika z „Co czeka na mnie” i zostaje w Drzewo → Raporty → Zamknięte. Tekst z pola zapisuje się jako uwaga.
+- Na liście „✅ Koniec” wpis i zamknięcie raportu liczą się tak samo jak odpowiedzi w wątkach.
+- Opis dodałem do instrukcji GUI (❓ Instrukcja) i do mojej instrukcji: każdy kolejny raport z wynikami dostaje tę linię i wykresy.
+
+*2026-10-30 09:43 — Claude Opus 5.5*
+
+---
+---
+---

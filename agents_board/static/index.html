@@ -141,6 +141,7 @@ a.mention { color: var(--accent); background: var(--accent-soft); border-radius:
       <option value="waiting">Co czeka na mnie</option>
       <option value="threads">Wymiana zdań (wątki)</option>
       <option value="plans">Plany</option>
+      <option value="reports">Raporty</option>
       <option value="type">Według rodzaju</option>
       <option value="graph">Graf</option>
       <option value="files">Według plików</option>
@@ -231,6 +232,20 @@ function inline(s) {
   s = s.replace(/\u0001(\d+)\u0001/g, (_, n) => `<a class="mention" data-mention="${esc(mentions[+n])}">@${esc(mentions[+n])}</a>`);
   return s.replace(/\u0000(\d+)\u0000/g, (_, n) => codes[+n]);
 }
+// table row → cells; '|' inside $…$ or escaped as '\|' stays in the cell (outside math '\|' becomes '|')
+function tableCells(row) {
+  const out = [];
+  let cell = "", math = false;
+  for (let k = 0; k < row.length; k++) {
+    const c = row[k];
+    if (c === "\\" && row[k + 1] === "|") { cell += math ? "\\|" : "|"; k++; continue; }
+    if (c === "$" && row[k - 1] !== "\\") math = !math;
+    if (c === "|" && !math) { out.push(cell.trim()); cell = ""; continue; }
+    cell += c;
+  }
+  out.push(cell.trim());
+  return out;
+}
 function md(text) {
   const lines = text.replace(/\r/g, "").split("\n"), out = [];
   let i = 0;
@@ -255,7 +270,7 @@ function md(text) {
     if (/^\s*\|.*\|\s*$/.test(line)) {
       closeLists(); const rows = [];
       while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) rows.push(lines[i++]);
-      const cells = r => r.trim().replace(/^\||\|$/g, "").split("|").map(c => c.trim());
+      const cells = r => tableCells(r.trim().replace(/^\||\|$/g, ""));
       let html = "<table>";
       rows.forEach((r, k) => {
         if (/^\s*\|[\s:|-]+\|\s*$/.test(r)) return;
@@ -280,12 +295,12 @@ function md(text) {
       }
       closeLists(depth);
       let content = m[3]; i++;
-      while (i < lines.length && /^\s{2,}\S/.test(lines[i]) && !/^\s*([-*]|\d+\.)\s+/.test(lines[i]) && !/^\s*```/.test(lines[i])) content += " " + lines[i++].trim();
+      while (i < lines.length && /^\s{2,}\S/.test(lines[i]) && !/^\s*([-*]|\d+\.)\s+/.test(lines[i]) && !/^\s*(```|\$\$)/.test(lines[i])) content += " " + lines[i++].trim();
       out.push("<li>" + inline(content) + "</li>"); continue;
     }
     if (!line.trim()) { closeLists(); i++; continue; }
     closeLists(); const buf = [line]; i++;
-    while (i < lines.length && lines[i].trim() && !/^(#{1,4}\s|>|\s*([-*]|\d+\.)\s|\s*```|\s*\|)/.test(lines[i])) buf.push(lines[i++]);
+    while (i < lines.length && lines[i].trim() && !/^(#{1,4}\s|>|\s*([-*]|\d+\.)\s|\s*```|\s*\||\s*\$\$)/.test(lines[i])) buf.push(lines[i++]);
     out.push("<p>" + buf.map(inline).join("<br>") + "</p>");
   }
   closeLists();
@@ -302,7 +317,7 @@ async function load() {
     if (!r.ok) { alert(STATE.error || "Błąd"); return; }
   }
   INDEX = { [NEW_THREAD.key]: NEW_THREAD };
-  for (const k of ["todos", "issues", "threads", "plans", "files"]) for (const it of STATE[k] || []) INDEX[it.key] = it;
+  for (const k of ["todos", "issues", "threads", "plans", "reports", "files"]) for (const it of STATE[k] || []) INDEX[it.key] = it;
   MENTIONS = [
     ...STATE.threads.filter(t => !t.extra.archive).map(t => ({ token: t.extra.id, label: t.title, key: t.key, open: !t.extra.closed, kind: "wątek" })),
     ...STATE.todos.map(t => ({ token: t.extra.id, label: t.title.replace(/`/g, ""), key: t.key, open: [" ", "~", "?"].includes(t.status), kind: t.owner === "author" ? "zadanie autora" : "zadanie agenta" })),
@@ -340,6 +355,7 @@ function badgeOf(it) {
   if (it.kind === "issue") return ISSUE_BADGE[it.status] || "·";
   if (it.kind === "thread") return it.extra.archive ? "🗄️" : it.extra.closed ? "🔒" : (it.owner === "llm" ? "🤖" : "💬");
   if (it.kind === "plan") return it.status !== "open" ? "✅" : (it.owner === "llm" ? "📐" : "💬");
+  if (it.kind === "report") return it.status !== "open" ? "🔒" : (it.owner === "llm" ? "📊" : "💬");
   if (it.kind === "new-thread") return "➕";
   if (it.kind === "entry") return it.owner === "llm" ? "🤖" : "🧑";
   return "📄";
@@ -368,6 +384,7 @@ const PRIO = ["Ważne", "Średnie", "Małe"];
 const todoLabel = t => t.extra.id + ". " + t.title;
 const threadLabel = t => (t.extra.archive ? "" : t.extra.id + " · ") + t.title + (t.extra.parent ? " ↳ od " + t.extra.parent : "");
 const planLabel = p => p.title + " — " + p.path + (p.status === "open" && p.owner === "author" ? " (czeka na agenta)" : "");
+const reportLabel = r => r.title + " — " + r.path + (r.status === "open" && r.owner === "author" ? " (czeka na agenta)" : "");
 const liveThreads = () => STATE.threads.filter(t => !t.extra.archive);
 
 // one structure used by the "type" tree and by the graph: {title, children[] | item}
@@ -380,6 +397,7 @@ function typeHierarchy() {
     node("Zadania agentów", STATE.todos.filter(t => t.owner === "llm").map(t => ({ item: t, label: todoLabel(t) }))),
     node("Wątki", STATE.threads.map(t => ({ item: t, label: threadLabel(t) }))),
     node("Plany", (STATE.plans || []).map(p => ({ item: p }))),
+    node("Raporty", (STATE.reports || []).map(r => ({ item: r }))),
   ]);
 }
 function hierarchyToDom(n, depth = 0) {
@@ -427,6 +445,7 @@ function renderTree() {
       group("Pytania bez decyzji", issueGroups, true),
       group("Pytania w toku (przeniesione do zadań)", movedGroups, moved.some(taskDone)),
       group("Plany do zatwierdzenia i opinii", withDone(items(W.plans || []), "plan").map(p => mark(leaf(p, planLabel(p)), p)), true),
+      group("Raporty do przeczytania i dyskusji", withDone(items(W.reports || []), "report").map(r => mark(leaf(r, reportLabel(r)), r)), true),
       group("Twoje zadania (otwarte)", todoGroups, true),
       group("Wątki — agent odpowiedział", [...withDone(items(W.threads), "thread").map(t => mark(leaf(t, threadLabel(t)), t)), leaf(NEW_THREAD, "Nowy wątek")], true),
       group("Uwagi dla LLM", STATE.files.filter(f => f.path === "talk/od-autora-dla-llmow.md").map(f => leaf(f, "Dodaj uwagę dla agentów"))),
@@ -449,6 +468,11 @@ function renderTree() {
     tree.append(
       group("Do zatwierdzenia i opinii", plans.filter(p => p.status === "open").map(p => leaf(p, planLabel(p))), true),
       group("Zatwierdzone i zamknięte", plans.filter(p => p.status !== "open").map(p => leaf(p, planLabel(p)))));
+  } else if (view === "reports") {
+    const reports = STATE.reports || [];
+    tree.append(
+      group("Otwarte", reports.filter(r => r.status === "open").map(r => leaf(r, reportLabel(r))), true),
+      group("Zamknięte", reports.filter(r => r.status !== "open").map(r => leaf(r, reportLabel(r)))));
   } else if (view === "type") {
     tree.append(...typeHierarchy().children.map(c => hierarchyToDom(c)));
   } else if (view === "graph") {
@@ -650,13 +674,14 @@ function pillOf(it) {
   if (it.kind === "todo") return `<span class="pill ${["x"].includes(it.status) ? "done" : "open"}">${STATE.statuses[it.status] || it.status}</span>`;
   if (it.kind === "issue") return `<span class="pill ${["open", "proposal"].includes(it.status) ? "open" : "done"}">${ISSUE_STATE[it.status] || "pytanie"}</span>`;
   if (it.kind === "plan") return `<span class="pill ${it.status === "open" ? "open" : "done"}">plan: ${esc(it.extra.plan_status)}</span>`;
+  if (it.kind === "report") return `<span class="pill ${it.status === "open" ? "open" : "done"}">raport: ${esc(it.extra.plan_status)}</span>`;
   if (it.kind === "thread") return `<span class="pill ${it.extra.archive || it.extra.closed ? "" : (it.owner === "llm" ? "open" : "done")}">${it.extra.archive ? "archiwum (tylko odczyt)" : it.extra.closed ? "zamknięty" : (it.owner === "llm" ? "agent odpowiedział" : "czeka na agenta")}</span>`;
   return "";
 }
 function contentHtml(it, entryIdx) {
   let html;
   if (it.kind === "thread") html = threadHtml(it, entryIdx);
-  else if (it.kind === "plan") html = `<div class="md">${md(it.text)}</div>` + (it.extra.entries.length
+  else if (it.kind === "plan" || it.kind === "report") html = `<div class="md">${md(it.text)}</div>` + (it.extra.entries.length
       ? `<div class="related"><h3>Dyskusja</h3>` + it.extra.entries.map((e, k) => entryCard(it, e, k, -1, "plan-")).join("") + `</div>` : "");
   else if (it.kind === "new-thread") html = `<div class="md"><p>Nowy temat rozmowy z agentami${it.extra.parent ? ` — odgałęzienie od ${inline("@" + it.extra.parent)}` : ""}. Powstanie plik <code>AGENTS/talk/threads/T…-tytul.md</code>; agent odpowie w tym samym wątku. Wpisz <code>@</code>, żeby wskazać wątek, zadanie albo pytanie.</p></div>`;
   else if (it.kind === "koniec") {
@@ -894,6 +919,11 @@ function renderForm(it) {
              hint: "Trafi na koniec sekcji „## Dyskusja” w " + it.path + "." + (it.status === "open" ? " „✅ Zatwierdzam plan” zmieni status (tekst z pola jako uwaga)." : " Plan jest już zamknięty — możesz dalej komentować."),
              payload: text => ({ path: it.path, text, version: it.version }),
              extra: it.status === "open" ? [{ label: "✅ Zatwierdzam plan", action: "plan-approve", what: "plan zatwierdzony", payload: text => ({ path: it.path, text, version: it.version }) }] : [] };
+  else if (it.kind === "report")
+    spec = { label: `Wpis w dyskusji raportu`, action: "report-entry", button: "Wyślij w dyskusji",
+             hint: "Trafi na koniec sekcji „## Dyskusja” w " + it.path + "." + (it.status === "open" ? " „🔒 Zakończ dyskusję” zamknie raport (tekst z pola jako uwaga); zniknie z „Co czeka na mnie”, zostanie w drzewie „Raporty”." : " Dyskusja jest zakończona — możesz dalej komentować."),
+             payload: text => ({ path: it.path, text, version: it.version }),
+             extra: it.status === "open" ? [{ label: "🔒 Zakończ dyskusję", action: "report-close", what: "raport zamknięty", payload: text => ({ path: it.path, text, version: it.version }) }] : [] };
   else if (it.kind === "new-thread")
     spec = { label: it.extra.parent ? `Nowy wątek od ${it.extra.parent}` : "Nowy wątek", action: "new-thread", button: "Utwórz wątek", title: "",
              hint: "Tytuł = temat wątku.",
@@ -948,7 +978,8 @@ function renderForm(it) {
     const ok = await post(spec.action, spec.payload(ta.value, ti ? ti.value : ""));
     if (!ok) return;
     const WHAT = { decision: "decyzja", report: "wpis w raporcie", thread: "odpowiedź w wątku", note: "uwaga dla agentów",
-                   "issue-final": "odpowiedź końcowa", "issue-proposal": "propozycja zaakceptowana", "plan-entry": "wpis w dyskusji planu" };
+                   "issue-final": "odpowiedź końcowa", "issue-proposal": "propozycja zaakceptowana", "plan-entry": "wpis w dyskusji planu",
+                   "report-entry": "wpis w dyskusji raportu" };
     if (WHAT[spec.action]) recordDone(it.key, WHAT[spec.action]);
     if (spec.action === "new-thread" && ok.path) { await load(); recordDone("thread:" + ok.path, "nowy wątek"); }
     if (spec.action === "new-thread" && ok.path) SELECTED = "thread:" + ok.path;

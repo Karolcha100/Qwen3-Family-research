@@ -8,7 +8,8 @@ Wszystko, co tu piszesz, trafia do zwykłych plików `.md` w `AGENTS/`, więc da
 
 - **Drzewo** wybiera, co widać w menu po lewej:
   - **Plany**: plany do zatwierdzenia i opiniowania (📐 czeka na Ciebie, 💬 czeka na agenta) oraz zatwierdzone (✅). W planie piszesz w sekcji „Dyskusja”, a przycisk **✅ Zatwierdzam plan** zmienia jego status;
-  - **Co czeka na mnie**: pytania bez decyzji, **plany do zatwierdzenia i opinii**, **pytania w toku** (🔄, przeniesione do zadań; dopisek „zadanie zamknięte, zapisz odpowiedź końcową”, gdy zadanie ma `[x]`), Twoje otwarte zadania, wątki z odpowiedzią agenta, ➕ Nowy wątek, uwagi dla agentów;
+  - **Raporty**: raporty agenta z wynikami (📊 czeka na Ciebie, 💬 czeka na agenta, 🔒 zamknięte). Pod raportem piszesz uwagi i pytania (trafiają do jego sekcji „Dyskusja”), a przycisk **🔒 Zakończ dyskusję** zamyka raport: znika z „Co czeka na mnie”, zostaje w grupie „Zamknięte”;
+  - **Co czeka na mnie**: pytania bez decyzji, **plany do zatwierdzenia i opinii**, **raporty do przeczytania i dyskusji**, **pytania w toku** (🔄, przeniesione do zadań; dopisek „zadanie zamknięte, zapisz odpowiedź końcową”, gdy zadanie ma `[x]`), Twoje otwarte zadania, wątki z odpowiedzią agenta, ➕ Nowy wątek, uwagi dla agentów;
   - **Wymiana zdań (wątki)**: wszystkie wątki z wpisami (🧑 Ty, 🤖 agent), odgałęzienia pod rodzicem, grupy „Zamknięte” i „Archiwum”;
   - **Według rodzaju**: pytania (fazy → pliki), zadania autora (Ważne / Średnie / Małe), zadania agentów, wątki;
   - **Według plików**: wszystkie pliki `AGENTS/`;

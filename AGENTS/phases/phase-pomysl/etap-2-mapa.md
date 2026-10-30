@@ -2,9 +2,11 @@
 
 *2026-10-30 02:05 — Claude Opus 5.5*
 
+**Status raportu:** do przeczytania
+
 ## Co masz zrobić
 
-Przeczytaj i odpowiedz na **K17** i **K18** w `AGENTS/phases/phase-pomysl/agents-issues-3.md` (czy akceptujesz mapę z przesiewu oraz co zrobić z tym, że tekst i kod mają różne ważne neurony). Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”.
+Przeczytaj i odpowiedz na **K17** i **K18** w `AGENTS/phases/phase-pomysl/agents-issues-3.md` (czy akceptujesz mapę z przesiewu oraz co zrobić z tym, że tekst i kod mają różne ważne neurony). Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”. Uwagi i pytania do raportu możesz pisać w GUI pod tym raportem (Drzewo → Raporty albo „Co czeka na mnie” → Raporty do przeczytania i dyskusji); przyciskiem „🔒 Zakończ dyskusję” zamykasz raport.
 
 ---
 
@@ -48,7 +50,7 @@ Na **drugim** zbiorze 4096 tokenów (166 neuronów na warstwę): 0,94 / 0,98 / 0
 
 ## 3. Ile tokenów potrzeba do stabilnego rankingu
 
-![Mapa przesiewu](figures/etap2-mapa-przesiewu.png)
+![Mapa przesiewu](AGENTS/phases/phase-pomysl/figures/etap2-mapa-przesiewu.png)
 
 Lewy wykres: losujemy dwa rozłączne zbiory po $k$ sekwencji i porównujemy rankingi neuronów (średnia z 8 losowań). Krzyżyki to pomiar dokładny z pilota.
 
@@ -66,6 +68,10 @@ Dwie połówki pełnej mapy (po 65 536 tokenów) zgadzają się w 0,66–0,93, n
 |---|---|
 | ranking z 48 sekwencji C4 vs ranking z 16 sekwencji kodu | od −0,15 do 0,23 |
 | dwie porcje C4 po 16 sekwencji (ta sama wielkość co kod) | 0,74–0,94 |
+
+![Tekst a kod](AGENTS/phases/phase-pomysl/figures/etap2-tekst-kod.png)
+
+Dwie górne linie: rankingi z dwóch porcji tego samego rodzaju tekstu zgadzają się w 0,7–0,9 w każdej warstwie. Dolna linia: ranking z tekstu C4 i ranking z kodu zgadzają się prawie wcale (wokół zera).
 
 Gdyby różnica wynikała tylko z szumu, tekst i kod zgadzałyby się mniej więcej tak jak dwie porcje tekstu. Zgadzają się jednak **prawie wcale**. Neurony ważne dla kodu to w dużej mierze inne neurony niż ważne dla tekstu. Mapa z mieszanki 75/25 jest kompromisem; pytanie **K18**.
 
@@ -108,6 +114,10 @@ Policzony 02:29–04:30 (2 h) w float32 dla 25 warstw (bez 2, 13 i 25, które pi
 | tylko 5% losowych | 0,95–0,99 | 0,971 |
 
 Mediana stosunku przesiew / dokładnie wynosi 0,95–1,01 w każdej warstwie. Pojedyncze neurony są przeszacowane do 2–5×; to te same, co w pilocie, czyli o bardzo dużym skutku, gdzie przybliżenie kwadratowe słabnie. **Przesiew jest wiarygodny w całym modelu, nie tylko w 3 warstwach pilota.**
+
+![Przesiew a pomiar dokładny w 25 warstwach](AGENTS/phases/phase-pomysl/figures/etap2-przesiew-vs-dokladnie.png)
+
+Lewy wykres: każdy punkt to jeden zmierzony neuron (pomarańczowe: 10% najważniejszych, niebieskie: 5% losowych); im bliżej przekątnej, tym lepiej przesiew przewiduje pomiar dokładny. Prawy wykres: zgodność rankingów osobno w każdej warstwie, od 0,96 do 0,99.
 
 **Neurony krytyczne potwierdzone dokładnie.** Wyłączenie jednego neuronu ostatniej warstwy daje:
 

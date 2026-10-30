@@ -33,6 +33,8 @@ def make_handler(board: Board, token: str, read_only: bool):
         "close-thread": lambda d: board.close_thread(d["path"], d["version"], d.get("text", "")),
         "plan-entry": lambda d: board.append_plan_entry(d["path"], d["text"], d["version"]),
         "plan-approve": lambda d: board.approve_plan(d["path"], d["version"], d.get("text", "")),
+        "report-entry": lambda d: board.append_plan_entry(d["path"], d["text"], d["version"]),
+        "report-close": lambda d: board.close_report(d["path"], d["version"], d.get("text", "")),
         "note": lambda d: board.append_note(d["text"], d["version"]),
         "koniec": lambda d: board.write_koniec(list(d.get("answered", [])), d.get("note", "")),
         "issue-move": lambda d: board.move_issue(d["path"], d["id"], d["version"], d.get("text", ""),

@@ -16,6 +16,7 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 | Czekam na | Odblokuje |
 |---|---|
+| odpowiedź w @T010 (starsze raporty do zakładki?) | dopisanie linii `**Status raportu:**` w `raport-1`, `raport-2` |
 | K16–K24 (`AGENTS/phases/phase-pomysl/agents-issues-3.md`) | dalsze kroki Phase 2 (K21 warstwy, K23 trening, K19 nazwa folderu, K22 → @L14 GUI) |
 | opinia o `AGENTS/phases/phase-0/katalog-metod.md` | wybór metod klasycznych |
 
@@ -25,4 +26,4 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Ostatnia sesja
 
-2026-10-30 04:32: noc z etapami 1–4 Phase 2 (prompt autora 22:07 „uruchom wszystkie etapy”). Wszystko policzone, raporty i pytania K16–K24 gotowe.
+2026-10-30 09:43: @L15 (prośba autora w @T010 09:33): naprawione raporty etapów 1–4 (ścieżki obrazków, `|` we wzorach w tabelach, `$$` w liście), 6 nowych wykresów (`scripts/phase2_report_figures.py`), w GUI raporty z dyskusją (`**Status raportu:**`, przycisk 🔒 Zakończ dyskusję). Pytanie w @T010: czy dodać `raport-1`/`raport-2` do zakładki.

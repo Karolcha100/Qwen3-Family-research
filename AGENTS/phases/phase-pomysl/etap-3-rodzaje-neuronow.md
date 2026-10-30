@@ -2,9 +2,11 @@
 
 *2026-10-30 02:31 — Claude Opus 5.5*
 
+**Status raportu:** do przeczytania
+
 ## Co masz zrobić
 
-Przeczytaj. Decyzje dotyczące tego etapu: **K20** (klasyfikator, czyli odłożona część etapu) i **K24** (czy progi rodzajów są sensowne) w `AGENTS/phases/phase-pomysl/agents-issues-3.md`. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”.
+Przeczytaj. Decyzje dotyczące tego etapu: **K20** (klasyfikator, czyli odłożona część etapu) i **K24** (czy progi rodzajów są sensowne) w `AGENTS/phases/phase-pomysl/agents-issues-3.md`. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”. Uwagi i pytania do raportu możesz pisać w GUI pod tym raportem (Drzewo → Raporty albo „Co czeka na mnie” → Raporty do przeczytania i dyskusji); przyciskiem „🔒 Zakończ dyskusję” zamykasz raport.
 
 ---
 
@@ -19,18 +21,18 @@ Przeczytaj. Decyzje dotyczące tego etapu: **K20** (klasyfikator, czyli odłożo
 
 | Rodzaj | Warunek | Słownie |
 |---|---|---|
-| martwy | $\overline{|a_j|} < 0{,}05 \cdot$ mediana warstwy | prawie się nie aktywuje |
+| martwy | $\overline{\lvert a_j \rvert} < 0{,}05 \cdot$ mediana warstwy | prawie się nie aktywuje |
 | zbędny | $\mathrm{KL}_j < 0{,}1 \cdot$ mediana globalna | wyłączenie prawie nic nie zmienia |
 | krytyczny | $\mathrm{KL}_j > 100 \cdot$ mediana globalna | wyłączenie zmienia bardzo dużo |
-| masywny | $\max |a_j| \,/\, \overline{|a_j|} > 300$ | zwykle cichy, rzadko ogromny |
-| asymetryczny | $\frac{|\mathrm{KL}_j(+1) - \mathrm{KL}_j(-1)|}{\max} > 0{,}5$ | podwojenie działa inaczej niż wyłączenie |
-| kodowy / tekstowy | $\overline{|a_j|}_{\text{kod}} / \overline{|a_j|}_{\text{C4}} > 2$ (lub $< 0{,}5$) | dużo silniej aktywny na kodzie (tekście) |
+| masywny | $\max \lvert a_j \rvert \,/\, \overline{\lvert a_j \rvert} > 300$ | zwykle cichy, rzadko ogromny |
+| asymetryczny | $\frac{\lvert \mathrm{KL}_j(+1) - \mathrm{KL}_j(-1) \rvert}{\max} > 0{,}5$ | podwojenie działa inaczej niż wyłączenie |
+| kodowy / tekstowy | $\overline{\lvert a_j \rvert}_{\text{kod}} / \overline{\lvert a_j \rvert}_{\text{C4}} > 2$ (lub $< 0{,}5$) | dużo silniej aktywny na kodzie (tekście) |
 
 Mediana globalna $\mathrm{KL}_j$ = $1{,}8 \cdot 10^{-5}$ nat na token.
 
 ## 3. Wyniki
 
-![Rodzaje neuronów](figures/etap3-rodzaje-neuronow.png)
+![Rodzaje neuronów](AGENTS/phases/phase-pomysl/figures/etap3-rodzaje-neuronow.png)
 
 | Rodzaj | Razem | Gdzie |
 |---|---|---|
@@ -42,7 +44,7 @@ Mediana globalna $\mathrm{KL}_j$ = $1{,}8 \cdot 10^{-5}$ nat na token.
 | kodowy | 6446 (7,5%) | rośnie z głębokością: 28 w warstwie 0 → 599 w warstwie 27 |
 | tekstowy | 5818 (6,8%) | podobnie: 12 → 707 w warstwie 26 |
 
-![KL w warstwach](figures/etap3-kl-w-warstwach.png)
+![KL w warstwach](AGENTS/phases/phase-pomysl/figures/etap3-kl-w-warstwach.png)
 
 ### Co z tego wynika
 
@@ -77,5 +79,9 @@ Etap 3 przeliczony 04:30 z pomiarem dokładnym etapu 2. Zmienia się tylko liczb
 | 17–27 | 14–74 na warstwę (najwięcej warstwa 25: 74, warstwa 27: 54) |
 
 Asymetria dotyczy głównie **ważnych** neuronów: ma ją 5,1% neuronów z „top 10%” i tylko 0,9% losowych. Zwykle wyłączenie szkodzi bardziej niż podwojenie: tak jest u 452 z 571 asymetrycznych (w warstwie 27 u 39 z 54). Liczby na warstwach 2, 13 i 25 obejmują wszystkie neurony, a na pozostałych tylko zmierzone 15%, więc nie są wprost porównywalne.
+
+![Asymetria](AGENTS/phases/phase-pomysl/figures/etap3-asymetria.png)
+
+Lewy wykres: każdy zmierzony dokładnie neuron; na przekątnej podwojenie szkodzi tyle samo co wyłączenie. Pomarańczowe punkty to asymetryczne, głównie **pod** przekątną (wyłączenie szkodzi bardziej). Prawy wykres: liczba asymetrycznych w warstwach z podziałem na kierunek; najwięcej we wczesnych (0–6) i późnych (17–27) warstwach, prawie wcale w środku.
 
 *2026-10-30 04:30 — Claude Opus 5.5*

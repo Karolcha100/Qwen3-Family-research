@@ -90,3 +90,14 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 - zostało: ocena klasyfikatorem (@phase-pomysl:K20), decyzje K16–K24 (`agents-issues-3.md`).
 
 *2026-10-30 04:32 — Claude Opus 5.5*
+
+---
+
+### [L15] Raporty Phase 2: wzory, tabele, wykresy, zakładka „Raporty” w GUI
+
+- przyczyny: obrazki miały ścieżki względne (`figures/…`), więc GUI nie pokazywał żadnego wykresu; `|` we wzorach w tabelach dzielił komórki; `$$` wcięte w liście sklejały się z tekstem;
+- raporty `AGENTS/phases/phase-pomysl/etap-1…4`: poprawione ścieżki i wzory, 6 nowych wykresów (`scripts/phase2_report_figures.py`, z gotowych wyników, bez GPU), linia `**Status raportu:** do przeczytania`;
+- GUI: raporty z dyskusją i przyciskiem „🔒 Zakończ dyskusję” (`agents_board/model.py`, `server.py`, `static/index.html`), test `test_reports_discussion_and_closing`; komórki tabel nie dzielą się już na `|` we wzorach ani na `\|`; `$$` przerywa listę i akapit;
+- sprawdzone: 19 testów GUI, ruff, pyright; zrzut ekranu GUI (Firefox bez okna); parser GUI na 4 raportach: 99 wzorów, 0 luźnych `$`, 17 tabel bez przesunięć.
+
+*2026-10-30 09:43 — Claude Opus 5.5*

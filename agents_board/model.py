@@ -16,6 +16,9 @@ The .md files stay the source of truth; this module only relies on their convent
     plan            any AGENTS/**/*.md (outside talk/ and todo/) with a line '**Status planu:** …' (T025):
                     'do zatwierdzenia' / 'do opiniowania' = waits for the author; 'zatwierdzony …' / 'odrzucony …'
                     = closed. Author and agents write in its last section '## Dyskusja' (entries like a thread)
+    report          any AGENTS/**/*.md (outside talk/ and todo/) with a line '**Status raportu:** …': an agent's
+                    results report; 'do przeczytania' = open, 'zamknięty …' = the author ended its discussion
+                    (button). Discussion in '## Dyskusja' as in a plan
     mention         @T002, @A12, @L3, @phase-2:R1 — links to threads, tasks and questions
 Every write checks a content hash taken when the page was rendered, so an answer never
 overwrites a file that changed in the meantime (e.g. edited in VS Code).
@@ -57,6 +60,8 @@ ITEM_ID_RE = re.compile(r"^(?P<id>[A-Z][A-Za-z-]*\d+)\b")
 PLAN_STATUS_RE = re.compile(r"^\*\*Status planu:\*\*\s*(?P<status>.+?)\s*$", re.MULTILINE)
 PLAN_OPEN = ("do zatwierdzenia", "do opiniowania")
 PLAN_DISCUSSION = "## Dyskusja"
+REPORT_STATUS_RE = re.compile(r"^\*\*Status raportu:\*\*\s*(?P<status>.+?)\s*$", re.MULTILINE)
+REPORT_OPEN = ("do przeczytania",)
 HELP = Path(__file__).parent / "HELP.md"
 IMAGE_TYPES = {".svg": "image/svg+xml", ".png": "image/png"}
 MAX_IMAGE_BYTES = 3_000_000   # bigger files are not embedded
@@ -310,13 +315,20 @@ class Board:
 
     def plans(self) -> list[Item]:
         """Plans to approve or discuss (T025): files with a '**Status planu:**' line and a '## Dyskusja' section."""
+        return self._discussions("plan", PLAN_STATUS_RE, PLAN_OPEN)
+
+    def reports(self) -> list[Item]:
+        """Results reports to read and discuss: files with a '**Status raportu:**' line and a '## Dyskusja' section."""
+        return self._discussions("report", REPORT_STATUS_RE, REPORT_OPEN)
+
+    def _discussions(self, kind: str, status_re: re.Pattern, open_statuses: tuple[str, ...]) -> list[Item]:
         items = []
         for path in sorted(self.root.rglob("*.md")):
             rel = self.rel(path)
             if rel.startswith(("talk/", "todo/")):
                 continue
             text = path.read_text(encoding="utf-8")
-            m = PLAN_STATUS_RE.search(text)
+            m = status_re.search(text)
             if not m:
                 continue
             body, _, discussion = text.partition("\n" + PLAN_DISCUSSION)
@@ -327,9 +339,9 @@ class Board:
                                 "signature": last.strip("* ") if SIGNATURE_RE.match(last.strip()) else ""})
             title = next((line[2:].strip() for line in text.splitlines() if line.startswith("# ")), rel)
             status = m["status"]
-            is_open = status.lower().startswith(PLAN_OPEN)
+            is_open = status.lower().startswith(open_statuses)
             items.append(Item(
-                key=f"plan:{rel}", kind="plan", title=title, path=rel, line=text[:m.start()].count("\n") + 1,
+                key=f"{kind}:{rel}", kind=kind, title=title, path=rel, line=text[:m.start()].count("\n") + 1,
                 text=body.rstrip(), status="open" if is_open else "closed",
                 owner=entries[-1]["owner"] if entries else "llm", group=path.parent.relative_to(self.root).as_posix(),
                 version=file_version(path), extra={"plan_status": status, "entries": entries},
@@ -385,6 +397,11 @@ class Board:
                 # same wording as the GUI's own record of the action, so Koniec lists it once
                 what = "plan zatwierdzony" if any(e["text"].lstrip().startswith("✅") for e in new) else "wpis w dyskusji planu"
                 out.append(f"{p.title} — {what}")
+        for r in self.reports():
+            new = [e for e in r.extra["entries"] if e["owner"] == "author" and e["signature"][:16] > since]
+            if new:
+                what = "raport zamknięty" if any(e["text"].lstrip().startswith(CLOSED_MARK) for e in new) else "wpis w dyskusji raportu"
+                out.append(f"{r.title} — {what}")
         report = self.root / "todo" / "author" / "raport-TODO-autora.md"
         if report.exists():
             for body in re.split(r"\n---[ \t]*\n", report.read_text(encoding="utf-8")):
@@ -404,7 +421,7 @@ class Board:
         ]
 
     def state(self) -> dict:
-        todos, issues, threads, plans = self.todos(), self.issues(), self.threads(), self.plans()
+        todos, issues, threads, plans, reports = self.todos(), self.issues(), self.threads(), self.plans(), self.reports()
         waiting_threads = [t for t in threads if not t.extra["closed"] and t.owner == "llm"]
         notes_path = self.root / "talk" / "od-autora-dla-llmow.md"
         return {
@@ -414,6 +431,7 @@ class Board:
             "issues": [asdict(i) for i in issues],
             "threads": [asdict(t) for t in threads],
             "plans": [asdict(p) for p in plans],
+            "reports": [asdict(r) for r in reports],
             "files": [asdict(f) for f in self.files()],
             "briefings": self.briefings(),
             "images": self.images(),
@@ -423,6 +441,7 @@ class Board:
                 "todos": [t.key for t in todos if t.owner == "author" and t.status in OPEN_STATUSES],
                 "threads": [t.key for t in waiting_threads],
                 "plans": [p.key for p in plans if p.status == "open" and p.owner == "llm"],
+                "reports": [r.key for r in reports if r.status == "open" and r.owner == "llm"],
             },
             "versions": {
                 "report": file_version(self.root / "todo" / "author" / "raport-TODO-autora.md"),
@@ -494,9 +513,14 @@ class Board:
         content += f"\n\n{text}\n\n*{now()} — Autor*\n\n{SEPARATOR}\n"
         _write_atomic(path, content)
 
-    def _plan_path(self, rel: str) -> Path:
+    def _plan_path(self, rel: str, status_re: re.Pattern | None = None) -> Path:
+        """A plan or a report (any file with a discussion); status_re narrows it to one kind."""
         path = self.resolve(rel)
-        if rel.startswith(("talk/", "todo/")) or not PLAN_STATUS_RE.search(path.read_text(encoding="utf-8")):
+        text = path.read_text(encoding="utf-8")
+        found = status_re.search(text) if status_re else PLAN_STATUS_RE.search(text) or REPORT_STATUS_RE.search(text)
+        if rel.startswith(("talk/", "todo/")) or not found:
+            if status_re is REPORT_STATUS_RE:
+                raise BoardError(f"{rel} nie jest raportem (brak linii **Status raportu:**).")
             raise BoardError(f"{rel} nie jest planem (brak linii **Status planu:**).")
         return path
 
@@ -516,11 +540,20 @@ class Board:
 
     def approve_plan(self, rel: str, version: str, note: str = "") -> None:
         """The author approves a plan: status line 'zatwierdzony (date)' + an entry starting with ✅."""
-        path = self._plan_path(rel)
+        path = self._plan_path(rel, PLAN_STATUS_RE)
         content = _check_version(path, version)
         content = PLAN_STATUS_RE.sub(f"**Status planu:** zatwierdzony ({now()}, Autor)", content, count=1)
         _write_atomic(path, content)
         self.append_plan_entry(rel, "✅ Plan zatwierdzony." + (f" {note.strip()}" if note.strip() else ""),
+                               file_version(path))
+
+    def close_report(self, rel: str, version: str, note: str = "") -> None:
+        """The author ends a report's discussion: status line 'zamknięty (date)' + an entry starting with 🔒."""
+        path = self._plan_path(rel, REPORT_STATUS_RE)
+        content = _check_version(path, version)
+        content = REPORT_STATUS_RE.sub(f"**Status raportu:** zamknięty ({now()}, Autor)", content, count=1)
+        _write_atomic(path, content)
+        self.append_plan_entry(rel, f"{CLOSED_MARK} Dyskusja zakończona." + (f" {note.strip()}" if note.strip() else ""),
                                file_version(path))
 
     def close_thread(self, rel: str, version: str, note: str = "") -> None:
