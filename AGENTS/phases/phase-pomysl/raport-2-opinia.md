@@ -2,6 +2,8 @@
 
 *2026-10-29 20:47 — Claude Opus 5.5*
 
+**Status raportu:** do przeczytania
+
 ## Co masz zrobić
 
 Przeczytaj i odpowiedz w @T009, jeśli masz uwagi. Decyzje są w `AGENTS/phases/phase-pomysl/agents-issues-1.md` (K1–K9). Formalny opis pomysłu: `AGENTS/phases/phase-pomysl/raport-1-opis-matematyczny.md`.

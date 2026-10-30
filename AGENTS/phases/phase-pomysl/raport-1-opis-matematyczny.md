@@ -2,6 +2,8 @@
 
 *2026-10-29 20:45 — Claude Opus 5.5*
 
+**Status raportu:** do przeczytania
+
 ## Co masz zrobić
 
 Sprawdź, czy dobrze zrozumiałem Twój pomysł (@T009). To **zapis Twojego pomysłu językiem matematyki**, bez oceny; ocena jest w `AGENTS/phases/phase-pomysl/raport-2-opinia.md`. Miejsca, w których pomysł dopuszcza kilka odczytań, oznaczyłem **[wybór → K…]**. Decyzje są w `AGENTS/phases/phase-pomysl/agents-issues-1.md`. Jeśli coś zrozumiałem źle, napisz w @T009.

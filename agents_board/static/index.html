@@ -295,7 +295,7 @@ function md(text) {
       }
       closeLists(depth);
       let content = m[3]; i++;
-      while (i < lines.length && /^\s{2,}\S/.test(lines[i]) && !/^\s*([-*]|\d+\.)\s+/.test(lines[i]) && !/^\s*(```|\$\$)/.test(lines[i])) content += " " + lines[i++].trim();
+      while (i < lines.length && /^\s{2,}\S/.test(lines[i]) && !/^\s*([-*]|\d+\.)\s+/.test(lines[i]) && !/^\s*(```|\$\$|\|)/.test(lines[i])) content += " " + lines[i++].trim();
       out.push("<li>" + inline(content) + "</li>"); continue;
     }
     if (!line.trim()) { closeLists(); i++; continue; }

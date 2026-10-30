@@ -16,7 +16,7 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 | Czekam na | Odblokuje |
 |---|---|
-| odpowiedź w @T010 (starsze raporty do zakładki?) | dopisanie linii `**Status raportu:**` w `raport-1`, `raport-2` |
+| K25–K30 (`AGENTS/phases/phase-pomysl/agents-issues-4.md`): model ma dobrze programować | wybór danych mapy i naprawy (kod/tekst), pomiar programowania, języki, model odniesienia, powtórka etapu 4 pod kod (K30) |
 | K16–K24 (`AGENTS/phases/phase-pomysl/agents-issues-3.md`) | dalsze kroki Phase 2 (K21 warstwy, K23 trening, K19 nazwa folderu, K22 → @L14 GUI) |
 | opinia o `AGENTS/phases/phase-0/katalog-metod.md` | wybór metod klasycznych |
 
@@ -26,4 +26,4 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Ostatnia sesja
 
-2026-10-30 09:43: @L15 (prośba autora w @T010 09:33): naprawione raporty etapów 1–4 (ścieżki obrazków, `|` we wzorach w tabelach, `$$` w liście), 6 nowych wykresów (`scripts/phase2_report_figures.py`), w GUI raporty z dyskusją (`**Status raportu:**`, przycisk 🔒 Zakończ dyskusję). Pytanie w @T010: czy dodać `raport-1`/`raport-2` do zakładki.
+2026-10-30 10:43: odpowiedź w dyskusji `etap-2-mapa.md` (autor: wykresy w sekcji 5; „żeby Qwen jak najlepiej programował”). Sekcja 3 i 5 z osobnymi wykresami; analiza CPU `scripts/phase2_code_text_maps.py`: obecna mapa 75/25 szkodzi kodowi ~1,75× bardziej niż mapa pod kod (na odłożonych sekwencjach); pytania K25–K30. Starsze `raport-1`, `raport-2` w zakładce Raporty (@T010: „tak”). Autor jeszcze czyta raporty.

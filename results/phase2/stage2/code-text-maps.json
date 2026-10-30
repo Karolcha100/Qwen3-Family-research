@@ -1,0 +1,54 @@
+{
+  "0.2": {
+    "tylko tekst": {
+      "code_damage_relative": 5.767061944905353,
+      "text_damage_relative": 1.0
+    },
+    "mieszanka 75% tekst / 25% kod (obecna)": {
+      "code_damage_relative": 1.7468873352907361,
+      "text_damage_relative": 1.2279524588260409
+    },
+    "pół na pół": {
+      "code_damage_relative": 1.233326153440784,
+      "text_damage_relative": 1.476935119515851
+    },
+    "75% kod / 25% tekst": {
+      "code_damage_relative": 1.0744093462092656,
+      "text_damage_relative": 1.7867267793013104
+    },
+    "tylko kod": {
+      "code_damage_relative": 1.0,
+      "text_damage_relative": 3.892966918708091
+    },
+    "średnia |a| (bez KL)": {
+      "code_damage_relative": 2.8849008991650416,
+      "text_damage_relative": 2.0378000989352754
+    }
+  },
+  "0.4": {
+    "tylko tekst": {
+      "code_damage_relative": 3.819162213020689,
+      "text_damage_relative": 1.0
+    },
+    "mieszanka 75% tekst / 25% kod (obecna)": {
+      "code_damage_relative": 1.7940454618113864,
+      "text_damage_relative": 1.1392499076325697
+    },
+    "pół na pół": {
+      "code_damage_relative": 1.2551215981035173,
+      "text_damage_relative": 1.3634238046695795
+    },
+    "75% kod / 25% tekst": {
+      "code_damage_relative": 1.0770115913781417,
+      "text_damage_relative": 1.6147746077260483
+    },
+    "tylko kod": {
+      "code_damage_relative": 1.0,
+      "text_damage_relative": 2.6903634175133155
+    },
+    "średnia |a| (bez KL)": {
+      "code_damage_relative": 2.606657089660735,
+      "text_damage_relative": 1.7450017819995391
+    }
+  }
+}

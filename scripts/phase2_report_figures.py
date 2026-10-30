@@ -14,6 +14,7 @@ PILOT_SEQUENCES = [0, 3]
 LAYER_COUNT = 28
 TOP_FRACTION = 0.10
 ASYMMETRY_THRESHOLD = 0.5
+SEQUENCE_LENGTH = 2048
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -295,11 +296,105 @@ def neuron_choice_figure(arguments: argparse.Namespace) -> None:
     )
 
 
+def token_count_figure(arguments: argparse.Namespace) -> None:
+    summary = json.loads((arguments.stage2 / "fisher-summary.json").read_text())
+    agreement = summary["disjoint_set_agreement_per_layer"]
+    set_sizes = sorted(int(size) for size in agreement)
+    tokens = [size * SEQUENCE_LENGTH for size in set_sizes]
+    figure, axes = new_figure(1, width_per_panel=6.4, height=3.8)
+    axis = axes[0]
+    for position, layer_index in enumerate(PILOT_LAYERS):
+        axis.plot(
+            tokens,
+            [agreement[str(size)][layer_index] for size in set_sizes],
+            color=SERIES_COLORS[position],
+            linewidth=2,
+            marker="o",
+            markersize=4,
+            label=f"przesiew, warstwa {layer_index}",
+        )
+    axis.plot(
+        tokens,
+        [sum(agreement[str(size)]) / LAYER_COUNT for size in set_sizes],
+        color=SECONDARY_INK,
+        linewidth=1.5,
+        linestyle=":",
+        label="przesiew, średnia z 28 warstw",
+    )
+    axis.scatter(
+        [2 * SEQUENCE_LENGTH] * len(PILOT_LAYERS),
+        [summary["pilot_layers"][str(layer_index)]["exact_first_vs_second_tokens"] for layer_index in PILOT_LAYERS],
+        color=PRIMARY_INK,
+        marker="x",
+        s=40,
+        zorder=3,
+        label="pomiar dokładny (3 warstwy)",
+    )
+    axis.axhline(0.95, color=SECONDARY_INK, linewidth=1, linestyle="--")
+    axis.set_xscale("log", base=2)
+    axis.set_xlabel("tokenów w każdym z dwóch rozłącznych zbiorów")
+    axis.set_ylabel("zgodność rankingów (Spearman)")
+    axis.set_ylim(0, 1)
+    axis.legend(frameon=False, fontsize=8, labelcolor=PRIMARY_INK, loc="lower right")
+    save_figure(
+        figure,
+        str(arguments.figures / "etap2-ile-tokenow.png"),
+        "Etap 2: ile tokenów potrzeba do stabilnego rankingu neuronów",
+    )
+
+
+def layer_sensitivity_figure(arguments: argparse.Namespace) -> None:
+    summary = json.loads((arguments.stage2 / "fisher-summary.json").read_text())
+    per_layer = summary["kl_disabled_per_layer"]
+    stored = torch.load(arguments.stage2 / "fisher-per-sequence-64.pt")
+    coefficients, sources = stored["coefficients"].double(), stored["sources"]
+    text_map = coefficients[[index for index, source in enumerate(sources) if source == "c4"]].mean(dim=0)
+    code_map = coefficients[[index for index, source in enumerate(sources) if source == "code"]].mean(dim=0)
+    layers = list(range(LAYER_COUNT))
+    figure, axes = new_figure(2, width_per_panel=5.0, height=3.8)
+    axis = axes[0]
+    axis.fill_between(layers, per_layer["p10"], per_layer["p90"], color=SERIES_COLORS[0], alpha=0.18, linewidth=0)
+    axis.plot(layers, per_layer["median"], color=SERIES_COLORS[0], linewidth=2, label="mediana")
+    axis.plot(layers, per_layer["max"], color=SERIES_COLORS[1], linewidth=1.5, label="najważniejszy neuron")
+    axis.fill_between([], [], [], color=SERIES_COLORS[0], alpha=0.18, linewidth=0, label="pasmo 10–90% neuronów")
+    axis.set_yscale("log")
+    axis.set_xlabel("warstwa")
+    axis.set_ylabel("przewidywana KL po wyłączeniu neuronu")
+    axis.set_title("Pojedyncze neurony w warstwie", fontsize=10, loc="left")
+    axis.legend(frameon=False, fontsize=8, labelcolor=PRIMARY_INK, loc="upper center")
+    axis = axes[1]
+    bar_width = 0.4
+    for offset, (values, label, color) in enumerate(
+        (
+            (text_map.sum(dim=1), "tekst C4", SERIES_COLORS[0]),
+            (code_map.sum(dim=1), "kod", SERIES_COLORS[2]),
+        )
+    ):
+        axis.bar(
+            [layer + (offset - 0.5) * bar_width for layer in layers],
+            values.tolist(),
+            width=bar_width - 0.04,
+            color=color,
+            label=label,
+        )
+    axis.set_xlabel("warstwa")
+    axis.set_ylabel("suma przewidywanej KL po neuronach warstwy")
+    axis.set_title("Cała warstwa: tekst i kod osobno", fontsize=10, loc="left")
+    axis.legend(frameon=False, fontsize=8, labelcolor=PRIMARY_INK, loc="upper left")
+    save_figure(
+        figure,
+        str(arguments.figures / "etap2-wrazliwosc-warstw.png"),
+        "Etap 2: jak wrażliwe są warstwy (mapa przesiewu, 131 tys. tokenów)",
+    )
+
+
 def main() -> None:
     arguments = parse_arguments()
     delta_squared_figure(arguments)
     two_texts_figure(arguments)
     text_code_figure(arguments)
+    token_count_figure(arguments)
+    layer_sensitivity_figure(arguments)
     layers = screened_layers(arguments)
     screening_check_figure(arguments, layers)
     asymmetry_figure(arguments, layers)

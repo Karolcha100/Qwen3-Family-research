@@ -50,9 +50,9 @@ Na **drugim** zbiorze 4096 tokenów (166 neuronów na warstwę): 0,94 / 0,98 / 0
 
 ## 3. Ile tokenów potrzeba do stabilnego rankingu
 
-![Mapa przesiewu](AGENTS/phases/phase-pomysl/figures/etap2-mapa-przesiewu.png)
+![Ile tokenów potrzeba](AGENTS/phases/phase-pomysl/figures/etap2-ile-tokenow.png)
 
-Lewy wykres: losujemy dwa rozłączne zbiory po $k$ sekwencji i porównujemy rankingi neuronów (średnia z 8 losowań). Krzyżyki to pomiar dokładny z pilota.
+Jak powstał wykres: losujemy dwa rozłączne zbiory po $k$ sekwencji, z każdego liczymy ranking neuronów i sprawdzamy, jak bardzo oba rankingi się zgadzają (średnia z 8 losowań). Kolorowe linie to warstwy pilota, kropkowana to średnia z 28 warstw, krzyżyki to pomiar dokładny z pilota (4096 tokenów), a przerywana linia to próg 0,95 z reguł @T010. Co widać: zgodność rośnie z liczbą tokenów i nawet przy 65 tys. tokenów nie dochodzi do 0,95. Pomiar dokładny na 4096 tokenach (krzyżyki) jest tak samo niepewny jak przesiew na tej samej liczbie tokenów.
 
 | Tokenów w każdym zbiorze | 2048 | 4096 | 8192 | 16 384 | 32 768 | 65 536 |
 |---|---|---|---|---|---|---|
@@ -77,7 +77,13 @@ Gdyby różnica wynikała tylko z szumu, tekst i kod zgadzałyby się mniej wię
 
 ## 5. Mapa: jak wrażliwe są warstwy
 
-Prawy wykres: mediana, pasmo 10–90% i maksimum przewidywanej KL po wyłączeniu jednego neuronu.
+![Wrażliwość warstw](AGENTS/phases/phase-pomysl/figures/etap2-wrazliwosc-warstw.png)
+
+Lewy wykres: dla każdej warstwy mediana (niebieska linia), pasmo, w którym mieści się 80% neuronów (niebieskie tło), i najważniejszy neuron (pomarańczowa linia); oś pionowa jest logarytmiczna. Co widać: typowy neuron ma w każdej warstwie podobny, mały skutek ($1$–$4 \cdot 10^{-5}$), najmniejszy w warstwach 12–15. Różnice między warstwami robią pojedyncze bardzo ważne neurony: w warstwie 2 i w dwóch ostatnich warstwach są 400–1500× ważniejsze od mediany.
+
+Prawy wykres: suma przewidywanej KL wszystkich neuronów warstwy, osobno z tekstu (48 sekwencji C4) i z kodu (16 sekwencji). Co widać: ostatnia warstwa 27 odstaje dla obu rodzajów tekstu. W warstwach 0–8 suma dla kodu jest najwyżej o 1/5 mniejsza niż dla tekstu, w warstwach 9–18 około 1,3× mniejsza, a w warstwach 19–26 1,6–2,3× mniejsza. Nie znaczy to, że te warstwy są dla kodu nieważne. Kod jest dla modelu łatwiej przewidywalny (pewniejsze przewidywania), więc pojedynczy neuron mniej zmienia rozkład następnego tokenu. Liczy się to, **które** neurony są ważne, a to dla tekstu i kodu są różne neurony (sekcja 4).
+
+Liczby w tabeli dotyczą mapy z całej mieszanki.
 
 | Warstwy | mediana KL | suma KL po neuronach | uwagi |
 |---|---|---|---|
@@ -135,3 +141,78 @@ To ~2000× więcej niż mediana ($1{,}8 \cdot 10^{-5}$). Dla porównania: wycię
 Wyniki: `results/phase2/stage2/layer-XX.pt` (neurony, KL i zmiana straty dla $\delta = \pm 1$, osobno dla 2 sekwencji).
 
 *2026-10-30 04:30 — Claude Opus 5.5*
+
+## Dyskusja
+
+---
+---
+---
+
+Nie widzę w "5. Mapa: jak wrażliwe są warstwy" wykresów (ani opisu lewego wykresu, jeżeli był)
+
+*2026-10-30 10:22 — Autor*
+
+---
+---
+---
+
+Najbardziej interesuje mnie "4. Tekst a kod: inne ważne neurony", a dokładnie, to żeby qwen jak najlepiej programował, co możesz na ten temat powiedzieć?
+
+*2026-10-30 10:25 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Odpowiedz na pytania **K25–K30** w `AGENTS/phases/phase-pomysl/agents-issues-4.md`; najważniejsze są K25 (co ma najlepiej przetrwać zmniejszanie) i K26 (na jakich danych liczymy mapę). Jeśli coś tu jest niejasne, napisz pod raportem.
+
+### 1. Wykresy w sekcji 5
+
+Masz rację. Wykres był jeden, z dwiema połowami: stał w sekcji 3, lewa połowa była opisana tam, a prawą opisywała sekcja 5, w której nie było obrazka. Rozdzieliłem go:
+- **sekcja 3:** własny wykres „ile tokenów potrzeba” z opisem, jak powstał i co widać;
+- **sekcja 5:** nowy wykres z dwiema częściami: pojedyncze neurony w każdej warstwie oraz suma dla całej warstwy, osobno dla tekstu i kodu. Pod nim jest opis „co widać”.
+
+### 2. Tekst a kod: co wyniki mówią o programowaniu
+
+1. **Neurony ważne dla kodu to inne neurony niż ważne dla tekstu, i to nie jest szum.** Mapa z samego kodu (16 sekwencji, 32 tys. tokenów, 7 języków z GitHuba) jest stabilna. Dwie połowy kodu zgadzają się średnio w 0,78, a dwie porcje tekstu tej samej wielkości w 0,82. Mimo to ranking z kodu i ranking z tekstu zgadzają się tylko w −0,15…0,23.
+2. **Obecna mapa to w praktyce mapa tekstu.** Zgadza się z mapą z tekstu w 0,87, a z mapą z kodu tylko w 0,37 (średnio po warstwach). Kod to 1/4 danych i do tego daje mniejsze wartości KL (punkt 4), więc ma jeszcze mniejszy wpływ na ranking.
+3. **Ile kosztowałoby to kod.** Sprawdziłem na gotowych wynikach, bez GPU, porównując różne mapy:
+   - mapa powstaje z połowy sekwencji, a szkodę sprawdzam na drugiej połowie, żeby mapa nie „znała” tekstu, na którym ją oceniam;
+   - szkoda to suma przewidywanej KL wyciętych neuronów, podzielona przez najmniejszą możliwą (1 = najlepiej).
+
+![Mapa dla kodu](AGENTS/phases/phase-pomysl/figures/etap2-mapa-dla-kodu.png)
+
+Co widać:
+- **obecna mieszanka** (75% tekstu) szkodzi kodowi **1,75–1,8×** bardziej, niż to konieczne, a tekstowi tylko 1,1–1,2×;
+- mapa z samego tekstu szkodzi kodowi 3,8–5,8×;
+- mapa z samego kodu najlepiej chroni kod, ale tekstowi szkodzi 2,7–3,9×;
+- **75% kodu + 25% tekstu:** kod prawie najlepiej (1,07–1,08×), tekst 1,6–1,8×;
+- pół na pół: kod 1,23–1,26×, tekst 1,36–1,48×;
+- sama średnia aktywacja (bez KL) jest gorsza od obecnej mieszanki dla obu rodzajów (kod 2,6–2,9×, tekst 1,75–2,0×).
+
+4. **Późne warstwy są na kodzie mniej wrażliwe.** W warstwach 19–26 suma przewidywanej KL dla kodu jest 1,6–2,3× mniejsza niż dla tekstu (nowy wykres w sekcji 5). Model jest pewniejszy przy kodzie, więc pojedynczy neuron mniej zmienia jego przewidywania. Hipoteza do sprawdzenia: przy celu „programowanie” późne warstwy (poza ostatnią) da się zmniejszyć mocniej niż przy celu „tekst”.
+5. **Z etapu 3:** 6446 neuronów działa ponad 2× silniej na kodzie niż na tekście. Najwięcej ich jest w późnych warstwach (do 599 w warstwie 27).
+
+**Zastrzeżenia:**
+- To przewidywanie z sumy skutków pojedynczych neuronów. Przy prawdziwym wycinaniu skutki się nie dodają. W etapie 4 przewaga mapy przeniosła się na prawdziwe wycinanie (KL mniejsza o 14–37%), ale dla kodu trzeba to sprawdzić tak samo (K30).
+- Mapy w tym porównaniu powstały z połowy danych (8 sekwencji kodu), więc dokładne liczby są przybliżone; kierunek jest ten sam przy 20% i 40%.
+- Mniejsza KL na kodzie to nie to samo co „dobrze programuje”: tego dotyczy K27.
+
+### 3. Co bym zrobił, żeby Qwen jak najlepiej programował
+
+1. **Cel (K25):** ustalić, co ma przetrwać zmniejszanie. Dziś chronimy głównie zwykły tekst.
+2. **Dane pod cel (K26):** rekomenduję 75% kodu + 25% zwykłego tekstu, i to nie tylko dla mapy. Najmniejsze kwadraty i trening z etapu 4 uczą się teraz na 75% tekstu, więc „naprawiają” głównie tekst; przy celu „programowanie” zbiór do naprawy też powinien być głównie kodem. Zwykłego tekstu nie usuwałbym całkiem, bo polecenia, komentarze, nazwy i opisy funkcji są pisane zwykłym językiem.
+3. **Pomiar programowania (K27):** zadania z testami (HumanEval, MBPP) obok KL.
+4. **Języki (K28):** napisz, w czym programujesz. Mapa chroni to, na czym ją liczymy.
+5. **Punkt odniesienia (K29):** mały model Qwen trenowany od początku na kodzie, żeby wiedzieć, do czego się porównujemy.
+6. **Sprawdzenie na prawdziwym wycinaniu (K30):** powtórka etapu 4 z mapą pod kod i oceną osobno na kodzie i tekście (~1 h GPU po Twoim „uruchom”).
+
+Pliki: `scripts/phase2_code_text_maps.py` (analiza i wykres), `results/phase2/stage2/code-text-maps.json` (liczby).
+
+*2026-10-30 10:42 — Claude Opus 5.5*
+
+---
+---
+---

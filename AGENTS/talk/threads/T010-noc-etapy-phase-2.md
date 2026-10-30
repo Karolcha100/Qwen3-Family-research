@@ -192,3 +192,23 @@ Do tego wykresy, które już były, ale się nie wyświetlały: rozkład KL i pr
 ---
 ---
 ---
+
+Tak, dodaj starsze raporty
+
+*2026-10-30 09:56 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Nic pilnego. Jeśli nie masz pytań do nocy, możesz zamknąć ten wątek (🔒). Dalsza rozmowa o wynikach toczy się pod raportami.
+
+Zrobione: `raport-1-opis-matematyczny.md` i `raport-2-opinia.md` mają linię `**Status raportu:** do przeczytania`. Są w „Co czeka na mnie” → Raporty do przeczytania i dyskusji, razem z czterema raportami etapów (6 raportów). Twoje pytania pod raportem etapu 2 (wykresy w sekcji 5, programowanie) mają odpowiedź w jego dyskusji; wynikające z nich decyzje to @phase-pomysl:K25 … @phase-pomysl:K30.
+
+*2026-10-30 10:43 — Claude Opus 5.5*
+
+---
+---
+---
