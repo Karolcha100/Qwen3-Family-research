@@ -91,3 +91,13 @@ Pytania wynikają z nocnych wyników: raporty `etap-1-pilot.md`, `etap-2-mapa.md
   - **C** — inaczej (wpisz).
 - **Rekomendacja:** A. Tanie, a pokaże, ile da się wycisnąć z samego treningu warstwy, zanim przejdziemy do wielu warstw.
 - **Decyzja:**
+
+### K24. 🟢 Progi rodzajów neuronów w etapie 3
+
+- **Problem:** progi rodzajów ustaliłem sam przed obliczeniem (tabela w `etap-3-rodzaje-neuronow.md`, rozdz. 2). Wyszło 5 martwych, 422 zbędne, 75 krytycznych, 883 masywne, 6446 kodowych i 5818 tekstowych. Progi są argumentami skryptu, więc zmiana to ~1 min liczenia.
+- **Opcje:**
+  - **A** — progi są w porządku;
+  - **B** — zmień progi (wpisz, np. „zbędny < 0,2 × mediana”);
+  - **C** — zamiast progów chcę ciągłą skalę (np. percentyl ważności w warstwie i w całym modelu).
+- **Rekomendacja:** A na teraz. Do zmniejszania i tak używamy ciągłej mapy KL, a rodzaje służą tylko do opisu.
+- **Decyzja:**

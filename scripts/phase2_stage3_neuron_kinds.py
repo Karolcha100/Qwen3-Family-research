@@ -157,10 +157,10 @@ def main() -> None:
     axis.text(
         layers[0],
         summary["kl_disabled_per_layer"]["p90"][0],
-        "pasmo 10–90%  ",
+        " pasmo 10–90% neuronów",
         color=SECONDARY_INK,
         fontsize=8,
-        ha="right",
+        ha="left",
         va="bottom",
     )
     save_figure(
