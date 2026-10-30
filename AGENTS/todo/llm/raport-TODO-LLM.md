@@ -77,3 +77,16 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 *2026-10-29 21:13 — Claude Opus 5.5*
 
 ---
+
+---
+
+### [L13] Phase 2 — etapy 1–4 (noc 29/30.10)
+
+- etap 1 (pilot, float32, warstwy 2/13/25, 4096 tokenów): `AGENTS/phases/phase-pomysl/etap-1-pilot.md`; bf16 = szum, $\mathrm{KL} \propto \delta^2$, 4096 tokenów daje ranking o zgodności tylko 0,51;
+- etap 2 (mapa 86 016 neuronów): przesiew Fishera na 131 tys. tokenów (64 × 64 próbki, 21 min) + pomiar dokładny 15% neuronów w 25 warstwach (2 h); zgodność przesiewu z pomiarem dokładnym 0,96–0,99: `etap-2-mapa.md`;
+- etap 3 (rodzaje neuronów, bez klasyfikatora): `etap-3-rodzaje-neuronow.md`;
+- etap 4 (warstwa 13, −5…−40%): `etap-4-jedna-warstwa.md`; −40% neuronów → perpleksja 12,660 → 12,725, wybór przesiewem lepszy niż po średniej aktywacji;
+- sprawdzone: 34 testy, ruff, pyright; liczby w raportach sprawdzone z plikami `results/phase2/`;
+- zostało: ocena klasyfikatorem (@phase-pomysl:K20), decyzje K16–K24 (`agents-issues-3.md`).
+
+*2026-10-30 04:32 — Claude Opus 5.5*

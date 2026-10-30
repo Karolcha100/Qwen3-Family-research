@@ -116,3 +116,26 @@ Rano: przeczytaj `etap-1-pilot.md` i `etap-2-mapa.md` w `AGENTS/phases/phase-pom
 ---
 ---
 ---
+
+## Co masz zrobić
+
+Odpowiedz na **K16–K24** w `AGENTS/phases/phase-pomysl/agents-issues-3.md` (najważniejsze K17 i K21). Jeśli nie masz pytań do nocy, ten wątek możesz zamknąć.
+
+---
+
+**Noc zakończona (04:30), wszystkie cztery etapy policzone.** Raporty w `AGENTS/phases/phase-pomysl/`:
+
+| Etap | Raport | Najważniejszy wynik |
+|---|---|---|
+| 1 | `etap-1-pilot.md` | 4096 tokenów to za mało (zgodność rankingów 0,51); skutek rośnie jak kwadrat δ |
+| 2 | `etap-2-mapa.md` | mapa 86 016 neuronów z przesiewu na 131 tys. tokenów; z pomiarem dokładnym zgadza się w 0,96–0,99 we wszystkich warstwach |
+| 3 | `etap-3-rodzaje-neuronow.md` | prawie brak martwych i zbędnych neuronów; krytyczne głównie w ostatniej warstwie 27 i w warstwie 2; tekst i kod mają inne ważne neurony |
+| 4 | `etap-4-jedna-warstwa.md` | warstwa 13: −40% neuronów MLP → perpleksja 12,660 → 12,725; wybór przesiewem lepszy niż po średniej aktywacji |
+
+Odłożona została tylko ocena klasyfikatorem (punkt 3 pierwszego wpisu, **K20**). Nic się nie wysypało poza krokiem przesiewu (brak pamięci GPU, naprawione o 01:38).
+
+*2026-10-30 04:32 — Claude Opus 5.5*
+
+---
+---
+---

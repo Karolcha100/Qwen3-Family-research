@@ -63,3 +63,19 @@ Mediana globalna $\mathrm{KL}_j$ = $1{,}8 \cdot 10^{-5}$ nat na token.
 - kod: `scripts/phase2_stage3_neuron_kinds.py` (progi jako argumenty).
 
 *2026-10-30 02:31 — Claude Opus 5.5*
+
+---
+
+## 5. Dopisek: asymetria po pomiarze dokładnym etapu 2
+
+Etap 3 przeliczony 04:30 z pomiarem dokładnym etapu 2. Zmienia się tylko liczba **asymetrycznych**: 571 (zamiast 143), z 20 716 zmierzonych dokładnie (24% wszystkich neuronów). Pozostałe rodzaje bez zmian.
+
+| Warstwy | asymetryczne |
+|---|---|
+| 0–6 | 18–63 na warstwę (najwięcej warstwa 2: 63) |
+| 7–16 | 1–12 na warstwę |
+| 17–27 | 14–74 na warstwę (najwięcej warstwa 25: 74, warstwa 27: 54) |
+
+Asymetria dotyczy głównie **ważnych** neuronów: ma ją 5,1% neuronów z „top 10%” i tylko 0,9% losowych. Zwykle wyłączenie szkodzi bardziej niż podwojenie: tak jest u 452 z 571 asymetrycznych (w warstwie 27 u 39 z 54). Liczby na warstwach 2, 13 i 25 obejmują wszystkie neurony, a na pozostałych tylko zmierzone 15%, więc nie są wprost porównywalne.
+
+*2026-10-30 04:30 — Claude Opus 5.5*

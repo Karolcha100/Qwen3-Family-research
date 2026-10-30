@@ -92,3 +92,36 @@ Liczy się po etapie 4 (kolejka GPU), ~2 h. Wynik dopiszę w tym miejscu jako no
 - kod: `scripts/phase2_stage2_fisher_map.py`, `scripts/phase2_stage2_fisher_analysis.py`, `scripts/phase2_stage2_full_map.py` (pomiar dokładny), `src/qwen_compression/importance.py`.
 
 *2026-10-30 02:05 — Claude Opus 5.5*
+
+---
+
+## 8. Dopisek: pomiar dokładny 10% najważniejszych + 5% losowych (sekcja 6)
+
+Policzony 02:29–04:30 (2 h) w float32 dla 25 warstw (bez 2, 13 i 25, które pilot policzył w całości). W każdej warstwie 307 neuronów najważniejszych według mapy i 153 losowe z reszty, $\delta = \pm 1$ (@K16), na tych samych 4096 tokenach co pilot.
+
+**Przesiew (z tych samych 4096 tokenów, 64 próbki) vs pomiar dokładny:**
+
+| | Spearman | średnio |
+|---|---|---|
+| wszystkie zmierzone neurony, 25 warstw | 0,96–0,99 | 0,978 |
+| tylko 10% najważniejszych | 0,90–0,98 | 0,963 |
+| tylko 5% losowych | 0,95–0,99 | 0,971 |
+
+Mediana stosunku przesiew / dokładnie wynosi 0,95–1,01 w każdej warstwie. Pojedyncze neurony są przeszacowane do 2–5×; to te same, co w pilocie, czyli o bardzo dużym skutku, gdzie przybliżenie kwadratowe słabnie. **Przesiew jest wiarygodny w całym modelu, nie tylko w 3 warstwach pilota.**
+
+**Neurony krytyczne potwierdzone dokładnie.** Wyłączenie jednego neuronu ostatniej warstwy daje:
+
+| Neuron | KL dokładnie | KL przesiew (te same tokeny) |
+|---|---|---|
+| 27 / #39 | 0,043 | 0,040 |
+| 27 / #386 | 0,034 | 0,033 |
+| 27 / #222 | 0,032 | 0,043 |
+| 27 / #81 | 0,028 | 0,034 |
+| 27 / #0 | 0,026 | 0,021 |
+| 27 / #191 | 0,016 | 0,017 |
+
+To ~2000× więcej niż mediana ($1{,}8 \cdot 10^{-5}$). Dla porównania: wycięcie 40% neuronów warstwy 13 z douczeniem dało KL 0,006 (`etap-4-jedna-warstwa.md`).
+
+Wyniki: `results/phase2/stage2/layer-XX.pt` (neurony, KL i zmiana straty dla $\delta = \pm 1$, osobno dla 2 sekwencji).
+
+*2026-10-30 04:30 — Claude Opus 5.5*

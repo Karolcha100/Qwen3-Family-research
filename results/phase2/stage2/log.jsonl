@@ -1,3 +1,29 @@
 {"time": "2026-10-30 01:40:24", "step": "fisher-start", "samples": 64, "sequences": 64}
 {"time": "2026-10-30 02:01:48", "step": "fisher-done", "seconds": 1283.562642514}
 {"time": "2026-10-30 02:29:09", "step": "start", "arguments": {"mode": "screened", "deltas": "[-1.0, 1.0]", "top_fraction": "0.1", "random_fraction": "0.05", "measurement_sequences": "[0, 3]", "batch_size": "8", "chunk_length": "256", "seed": "0", "data_path": "/home/karol/qwen3-checkpoints/phase2/measurement-set.pt", "stage1": "results/phase2/stage1", "output": "results/phase2/stage2"}}
+{"time": "2026-10-30 02:36:43", "step": "layer", "layer": 0, "neurons": 460, "seconds": 453.5641491780043}
+{"time": "2026-10-30 02:44:05", "step": "layer", "layer": 1, "neurons": 460, "seconds": 441.573488875998}
+{"time": "2026-10-30 02:51:03", "step": "layer", "layer": 3, "neurons": 460, "seconds": 417.7725834239973}
+{"time": "2026-10-30 02:57:48", "step": "layer", "layer": 4, "neurons": 460, "seconds": 405.36932384800457}
+{"time": "2026-10-30 03:04:22", "step": "layer", "layer": 5, "neurons": 460, "seconds": 393.5736165080016}
+{"time": "2026-10-30 03:10:43", "step": "layer", "layer": 6, "neurons": 460, "seconds": 381.46099369400326}
+{"time": "2026-10-30 03:16:52", "step": "layer", "layer": 7, "neurons": 460, "seconds": 369.06702013299946}
+{"time": "2026-10-30 03:22:49", "step": "layer", "layer": 8, "neurons": 460, "seconds": 357.1116381640022}
+{"time": "2026-10-30 03:28:34", "step": "layer", "layer": 9, "neurons": 460, "seconds": 345.1248886129979}
+{"time": "2026-10-30 03:34:07", "step": "layer", "layer": 10, "neurons": 460, "seconds": 333.0632851869959}
+{"time": "2026-10-30 03:39:29", "step": "layer", "layer": 11, "neurons": 460, "seconds": 321.3582870879982}
+{"time": "2026-10-30 03:44:38", "step": "layer", "layer": 12, "neurons": 460, "seconds": 308.8114652249933}
+{"time": "2026-10-30 03:49:22", "step": "layer", "layer": 14, "neurons": 460, "seconds": 284.7885085589951}
+{"time": "2026-10-30 03:53:55", "step": "layer", "layer": 15, "neurons": 460, "seconds": 272.61755500199797}
+{"time": "2026-10-30 03:58:16", "step": "layer", "layer": 16, "neurons": 460, "seconds": 260.59357518800243}
+{"time": "2026-10-30 04:02:24", "step": "layer", "layer": 17, "neurons": 460, "seconds": 248.6818474879983}
+{"time": "2026-10-30 04:06:21", "step": "layer", "layer": 18, "neurons": 460, "seconds": 236.58649934800633}
+{"time": "2026-10-30 04:10:06", "step": "layer", "layer": 19, "neurons": 460, "seconds": 224.709551988999}
+{"time": "2026-10-30 04:13:38", "step": "layer", "layer": 20, "neurons": 460, "seconds": 212.54377098800614}
+{"time": "2026-10-30 04:16:59", "step": "layer", "layer": 21, "neurons": 460, "seconds": 200.44609509299335}
+{"time": "2026-10-30 04:20:07", "step": "layer", "layer": 22, "neurons": 460, "seconds": 188.2601739320089}
+{"time": "2026-10-30 04:23:03", "step": "layer", "layer": 23, "neurons": 460, "seconds": 176.12268261800637}
+{"time": "2026-10-30 04:25:47", "step": "layer", "layer": 24, "neurons": 460, "seconds": 164.20778188100667}
+{"time": "2026-10-30 04:28:07", "step": "layer", "layer": 26, "neurons": 460, "seconds": 139.6807845919975}
+{"time": "2026-10-30 04:30:15", "step": "layer", "layer": 27, "neurons": 460, "seconds": 127.89690274500754}
+{"time": "2026-10-30 04:30:15", "step": "done"}

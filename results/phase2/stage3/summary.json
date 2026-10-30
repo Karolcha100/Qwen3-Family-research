@@ -8,13 +8,13 @@
     "source_ratio": 2.0
   },
   "median_kl_disabled": 1.8374227687736758e-05,
-  "measured_share": 0.10714285714285714,
+  "measured_share": 0.2408389136904762,
   "counts_total": {
     "martwy": 5,
     "zbędny": 422,
     "krytyczny": 75,
     "masywny": 883,
-    "asymetryczny": 143,
+    "asymetryczny": 571,
     "kodowy": 6446,
     "tekstowy": 5818
   },
@@ -140,34 +140,34 @@
       414
     ],
     "asymetryczny": [
-      0,
-      0,
+      34,
+      23,
       63,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
+      29,
+      33,
+      18,
+      21,
+      7,
       6,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
+      12,
+      1,
+      2,
+      5,
+      6,
+      3,
+      4,
+      3,
+      14,
+      18,
+      14,
+      15,
+      20,
+      27,
+      20,
+      14,
       74,
-      0,
-      0
+      31,
+      54
     ],
     "kodowy": [
       28,
@@ -358,42 +358,42 @@
       "neuron": 39,
       "kl_disabled": 0.05305211823572767,
       "max_absolute": 380.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 27,
       "neuron": 222,
       "kl_disabled": 0.039255498483137266,
       "max_absolute": 612.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 27,
       "neuron": 386,
       "kl_disabled": 0.033432044347556054,
       "max_absolute": 342.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 27,
       "neuron": 81,
       "kl_disabled": 0.03246415471452822,
       "max_absolute": 442.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 27,
       "neuron": 0,
       "kl_disabled": 0.031847494754904074,
       "max_absolute": 580.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 27,
       "neuron": 191,
       "kl_disabled": 0.01652993467045753,
       "max_absolute": 83.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 2,
@@ -414,21 +414,21 @@
       "neuron": 399,
       "kl_disabled": 0.014255209310268984,
       "max_absolute": 177.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 27,
       "neuron": 47,
       "kl_disabled": 0.01382810917220344,
       "max_absolute": 864.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 26,
       "neuron": 1564,
       "kl_disabled": 0.013088864395190556,
       "max_absolute": 976.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 2,
@@ -442,14 +442,14 @@
       "neuron": 289,
       "kl_disabled": 0.011659510178198322,
       "max_absolute": 95.5,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 26,
       "neuron": 2,
       "kl_disabled": 0.011105693882553603,
       "max_absolute": 108.5,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 2,
@@ -463,42 +463,42 @@
       "neuron": 366,
       "kl_disabled": 0.008688651768924457,
       "max_absolute": 95.5,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 27,
       "neuron": 447,
       "kl_disabled": 0.007626611015479885,
       "max_absolute": 115.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 27,
       "neuron": 456,
       "kl_disabled": 0.007328201618247466,
       "max_absolute": 65.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 27,
       "neuron": 2208,
       "kl_disabled": 0.0067731417261152746,
       "max_absolute": 1272.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 27,
       "neuron": 78,
       "kl_disabled": 0.006650152396951775,
       "max_absolute": 548.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 27,
       "neuron": 26,
       "kl_disabled": 0.006101759934502493,
       "max_absolute": 196.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 2,
@@ -519,14 +519,14 @@
       "neuron": 287,
       "kl_disabled": 0.00537712590226977,
       "max_absolute": 108.0,
-      "measured": false
+      "measured": true
     },
     {
       "layer": 27,
       "neuron": 22,
       "kl_disabled": 0.005348077361826458,
       "max_absolute": 194.0,
-      "measured": false
+      "measured": true
     }
   ]
 }

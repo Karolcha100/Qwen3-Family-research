@@ -8,20 +8,16 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Teraz
 
-**@L13: Phase 2 — autor (22:07): „uruchom wszystkie etapy, idę spać”.** Plan nocy: @T010 (wpisy 22:09, 22:10, 02:06).
-- **Etap 1 gotowy** (01:37): `results/phase2/stage1/`, raport `AGENTS/phases/phase-pomysl/etap-1-pilot.md`. 4096 tokenów → ranking 0,51 (za mało); $\mathrm{KL} \propto \delta^2$.
-- **Etap 2:** mapa przesiewu gotowa (64 sekw. × 64 próbki, 21 min): `results/phase2/stage2/fisher-map.pt`, `fisher-summary.json`, raport `etap-2-mapa.md` (sekcja 6 = pomiar dokładny, do dopisania jako nowy wpis).
-- **Etap 3 policzony wstępnie** (`results/phase2/stage3/`), bez raportu. Po pomiarze dokładnym etapu 2 uruchomić ponownie (`uv run --no-sync python scripts/phase2_stage3_neuron_kinds.py`; `source-statistics.pt` jest już gotowe) → raport `etap-3-rodzaje-neuronow.md`.
-- **Kolejka GPU** `results/phase2/night-chain.sh` (PID 125608, start 02:03): etap 4 `--layer 13 --measurement-sequences 0..7` → potem `phase2_stage2_full_map.py --mode screened` (δ ±1, top 10% + 5% losowych, pomija warstwy 2/13/25). Wyjścia: `results/phase2/night-chain.log`, `stage4/stdout.log`, `stage2/stdout.log`. Oba skrypty wznawiają się same.
-- Pytania K16–K22: `AGENTS/phases/phase-pomysl/agents-issues-3.md` (K19 zmiana nazwy folderu dopiero gdy nic nie liczy).
-- Dalej: raport etapu 4 → dopisek w etap-2 (sekcja 6) → etap 3 ponownie + raport → briefing, commit, push.
+- Nic się nie liczy (GPU wolne od 04:30). **@L13 zrobione** w nocy 29/30.10: raporty `AGENTS/phases/phase-pomysl/etap-1-pilot.md` … `etap-4-jedna-warstwa.md`, wyniki `results/phase2/`, nocny przebieg @T010 (wpisy 22:09, 22:10, 02:06).
+- Dane poza repo: `~/qwen3-checkpoints/phase2/` (`measurement-set.pt`, `training-set.pt`, `layer-13-pairs/` 4 GB).
+- Powtórka etapu 4 dla innej warstwy: `uv run --no-sync python scripts/phase2_stage4_one_layer.py --layer N --measurement-sequences 0 1 2 3 4 5 6 7` (ℓ ≤ 25), wykres: `scripts/phase2_stage4_analysis.py --layer N`.
 
 ## Na co czekam (co odblokuje pracę)
 
 | Czekam na | Odblokuje |
 |---|---|
-| **„uruchom etap 1”** od autora | @L13: pilot (~3 h GPU) |
-| opinia o `AGENTS/phases/phase-0/plan-metryki-oceny.md` | @L7 zestaw pytań (dopiero Phase 3) |
+| K16–K24 (`AGENTS/phases/phase-pomysl/agents-issues-3.md`) | dalsze kroki Phase 2 (K21 warstwy, K23 trening, K19 nazwa folderu, K22 → @L14 GUI) |
+| opinia o `AGENTS/phases/phase-0/katalog-metod.md` | wybór metod klasycznych |
 
 ## Odłożone pytania
 
@@ -29,4 +25,4 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Ostatnia sesja
 
-2026-10-29 21:49: plan Phase 2 zatwierdzony (21:36), plan metryk zatwierdzony (21:37). Napisany kod etapu 1 + testy + zbiór pomiarowy. Czekam na „uruchom etap 1”.
+2026-10-30 04:32: noc z etapami 1–4 Phase 2 (prompt autora 22:07 „uruchom wszystkie etapy”). Wszystko policzone, raporty i pytania K16–K24 gotowe.
