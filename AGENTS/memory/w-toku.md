@@ -8,7 +8,7 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Teraz
 
-- Nic się nie liczy. **@L19, @L21 zrobione** (przygotowanie K31–K38 @T013, pasek postępu @T014). **Kolejka gotowa, nieuruchomiona:** `results/phase2/code/queue.json` (16 kroków, ~167 min według szacunków; czeka na @phase-2:K39 = „uruchom”).
+- **Liczy się kolejka K31–K38 (@L20)**, start 2026-10-30 14:31 (@phase-2:K39 = A): `results/phase2/code/queue.json` (16 kroków, ~167 min według szacunków), postęp w `AGENTS/postep-obliczen.json`, log runnera `results/phase2/code/queue-runner.log`. Jeśli sesja się urwie: sprawdź `postep-obliczen.json` (status kroków); skrypty etapu 4 pomijają gotowe warianty, więc wznowienie = ponowne uruchomienie kolejki bez skończonych kroków.
 - Uruchomienie w tle (Bash `run_in_background`): `uv run --no-sync python scripts/run_queue.py results/phase2/code/queue.json` — postęp w `AGENTS/postep-obliczen.json` (pasek w GUI). Po zakończeniu: wykresy/raport dla K31 (`results/phase2/code/k31/`), K37 (`results/phase2/code/k37/`), K38 (wiersze `code-only` w `results/phase2/code/stage4/layer-13/`), testy kodu (`results/phase2/code-eval/*/…-summary.json`, `…-efficiency.json`). Porównać faktyczne czasy kroków z szacunkami (procedury, sekcja 10).
 - Kontener: `podman build -t qwen-code-sandbox sandbox` (zbudowany), wolumen `qwen-evalplus-cache` (zadania i oczekiwane wyniki). Zadania: `results/phase2/code-eval/*-problems.jsonl`.
 - Dane poza repo: `~/qwen3-checkpoints/phase2-code/` (zbiory, pary warstw 2/13/14/26, `mlps/` po kolejce).

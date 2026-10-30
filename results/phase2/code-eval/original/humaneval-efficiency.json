@@ -1,0 +1,10 @@
+{
+  "dataset": "humaneval",
+  "mlps": [],
+  "parameters": 596049920,
+  "peak_memory_bytes": 3376587776,
+  "generated_tokens": 15914,
+  "seconds": 128.4247664019931,
+  "tokens_per_second": 123.9169082868818,
+  "batch_size": 16
+}

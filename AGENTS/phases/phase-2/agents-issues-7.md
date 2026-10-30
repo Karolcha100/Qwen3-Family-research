@@ -23,6 +23,6 @@ Wszystko z decyzji K31–K38 jest przygotowane i sprawdzone bez GPU (szczegóły
   - **B** — uruchom tylko kroki 1–3 (~1,5 h), krok 4 po obejrzeniu wyników;
   - **C** — jeszcze nie uruchamiaj.
 - **Rekomendacja:** A. Kroki są niezależne, a wyniki trafią do jednego raportu.
-- **Decyzja:**
+- **Decyzja:** A, uruchom teraz
 
 *2026-10-30 14:12 — Claude Opus 5.5*

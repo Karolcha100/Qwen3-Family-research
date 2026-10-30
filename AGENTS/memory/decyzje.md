@@ -89,3 +89,4 @@ Wszystkie pytania z `AGENTS/phases/*/agents-issues-*.md` w jednej tabeli: tytuł
 | @phase-2:K36 | 🔴 Zgoda na uruchamianie kodu napisanego przez model | A (podman bez sieci, tylko do odczytu, limity) |
 | @phase-2:K37 | 🔴 Co trenować, żeby trening odrobił więcej | A (cel na wyjściu modelu) |
 | @phase-2:K38 | 🟡 Waga kodu w mapie | A (sprawdzić mapę 100% kod na warstwie 13) |
+| @phase-2:K39 | 🔴 Uruchomić kolejkę obliczeń K31–K38? | A, uruchom teraz (start 14:31) |

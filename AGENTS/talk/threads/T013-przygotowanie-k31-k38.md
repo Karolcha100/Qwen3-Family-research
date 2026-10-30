@@ -93,3 +93,27 @@ Zmiana techniczna: kolejka jest teraz w pliku `results/phase2/code/queue.json` (
 ---
 ---
 ---
+
+## Co masz zrobić
+
+Nic. Kolejka liczy się od 14:31 (@phase-2:K39 = A), postęp widać na pasku w GUI. Wyniki opiszę w raporcie, gdy wszystko się skończy.
+
+### Pierwszy wynik: oryginał odtwarza liczbę z raportu Qwen3
+
+| Zestaw | pass@1 (oryginał, u nas) |
+|---|---|
+| HumanEval | 29,9% (49 z 164) |
+| HumanEval+ | 23,2% |
+| MBPP (EvalPlus) | 51,6% |
+| MBPP+ | 42,9% |
+| **średnia (EvalPlus)** | **36,9** (raport Qwen3: **36,23**) |
+
+Różnica 0,6 punktu mieści się w niepewności (przy 164 zadaniach HumanEval to ±3,7 punktu), więc sposób zadawania pytań i ocena działają jak u Qwen. Przejrzałem kilka nieudanych rozwiązań: to prawdziwe błędy modelu (np. zła logika), a nie ucięty kod.
+
+Sprawność oryginału przy generowaniu (po 16 zadań naraz, bf16): 124–134 tokeny/s, szczytowo 3,4 GB pamięci GPU, 596 mln parametrów. Generowanie zajęło 2 min 20 s (HumanEval) i 3 min 30 s (MBPP), testy w kontenerze 30 s i 50 s, czyli tyle, ile szacowałem.
+
+*2026-10-30 14:38 — Claude Opus 5.5*
+
+---
+---
+---
