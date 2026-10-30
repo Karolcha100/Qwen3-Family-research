@@ -1,0 +1,12 @@
+{
+  "dataset": "mbpp",
+  "mlps": [
+    "/home/karol/qwen3-checkpoints/phase2-code/mlps/layer-13-code-only-40-trained.pt"
+  ],
+  "parameters": 592274432,
+  "peak_memory_bytes": 3077476352,
+  "generated_tokens": 26556,
+  "seconds": 188.56257213400386,
+  "tokens_per_second": 140.8338871254244,
+  "batch_size": 16
+}

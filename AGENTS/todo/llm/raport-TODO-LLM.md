@@ -155,3 +155,12 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 - kolejka K31–K38 przeniesiona do `results/phase2/code/queue.json` z szacunkami (razem 167 min); szacunki w @T013.
 
 *2026-10-30 14:27 — Claude Opus 5.5*
+
+### [L20] Kolejka obliczeń K31–K38 + dodatkowa kolejka
+
+- kolejka K31–K38 14:31–16:38 (~127 min wobec szacunku 167), dodatkowa 16:38–17:13 (testy kodu dla mapy 100% kod i warstwy 26, cel na wyjściu z krokiem $1 \cdot 10^{-5}$);
+- oryginał EvalPlus 36,9 (raport Qwen3 36,23); warstwa 13 −40% → −2,7 pkt, warstwa 26 −40% → 0 pkt mimo 3× większej KL;
+- start z mapy najlepszy także po 16 epokach (losowy +64% KL), scalanie neuronów gorsze niż usuwanie; cel na wyjściu: warstwa 26 −18% KL, warstwa 13 słabszy od starego celu;
+- raport `AGENTS/phases/phase-2/etap-4c-k31-k38.md`, pytania K40–K43 `AGENTS/phases/phase-2/agents-issues-8.md`; zmierzone czasy w `procedury.md`, sekcja 10.
+
+*2026-10-30 17:13 — Claude Opus 5.5*

@@ -8,16 +8,14 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Teraz
 
-- **Liczy się kolejka K31–K38 (@L20)**, start 2026-10-30 14:31 (@phase-2:K39 = A): `results/phase2/code/queue.json` (16 kroków, ~167 min według szacunków), postęp w `AGENTS/postep-obliczen.json`, log runnera `results/phase2/code/queue-runner.log`. Jeśli sesja się urwie: sprawdź `postep-obliczen.json` (status kroków); skrypty etapu 4 pomijają gotowe warianty, więc wznowienie = ponowne uruchomienie kolejki bez skończonych kroków.
-- Uruchomienie w tle (Bash `run_in_background`): `uv run --no-sync python scripts/run_queue.py results/phase2/code/queue.json` — postęp w `AGENTS/postep-obliczen.json` (pasek w GUI). Po zakończeniu: wykresy/raport dla K31 (`results/phase2/code/k31/`), K37 (`results/phase2/code/k37/`), K38 (wiersze `code-only` w `results/phase2/code/stage4/layer-13/`), testy kodu (`results/phase2/code-eval/*/…-summary.json`, `…-efficiency.json`). Porównać faktyczne czasy kroków z szacunkami (procedury, sekcja 10).
-- Kontener: `podman build -t qwen-code-sandbox sandbox` (zbudowany), wolumen `qwen-evalplus-cache` (zadania i oczekiwane wyniki). Zadania: `results/phase2/code-eval/*-problems.jsonl`.
-- Dane poza repo: `~/qwen3-checkpoints/phase2-code/` (zbiory, pary warstw 2/13/14/26, `mlps/` po kolejce).
+- Nic nie liczy się na GPU. Kolejki K31–K38 i dodatkowa (do 17:13) skończone; raport `AGENTS/phases/phase-2/etap-4c-k31-k38.md`, pytania K40–K43 w `AGENTS/phases/phase-2/agents-issues-8.md`. Jeśli K43 = A: najpierw policzyć zgodność najbardziej prawdopodobnego tokenu (top-1) z oryginałem dla 4 gotowych modeli (`~/qwen3-checkpoints/phase2-code/mlps/`, ~5 min GPU) i porównać z pass@1 (warstwa 13 −2,7 pkt, warstwa 26 0 pkt).
+- Analiza: `scripts/phase2_code_k31_k38_analysis.py` → `results/phase2/code/k31-k38-summary.json` + wykresy `kod-k31-*`, `kod-k37-*`, `kod-k38-*`, `kod-testy-pass1.png`.
 
 ## Na co czekam (co odblokuje pracę)
 
 | Czekam na | Odblokuje |
 |---|---|
-| K39 (`AGENTS/phases/phase-2/agents-issues-7.md`) | kolejka K31, K37, K38 + HumanEval/MBPP (~3–3,5 h GPU) |
+| K40–K43 (`AGENTS/phases/phase-2/agents-issues-8.md`) | cel treningu, waga mapy, scalanie, miara kodu (K43 A: ~5 min GPU) |
 | opinia o `AGENTS/phases/phase-0/katalog-metod.md` | wybór metod klasycznych |
 
 ## Odłożone pytania
@@ -26,4 +24,4 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Ostatnia sesja
 
-2026-10-30 14:14: decyzje K31–K38 (wszystkie A). Przygotowany kod i kontener (bez GPU), sprawdzenia na CPU i na rozwiązaniach wzorcowych; pytanie K39 o uruchomienie; opis @T013.
+2026-10-30 17:13: kolejka K31–K38 i dodatkowa kolejka (zgoda autora 16:30), raport etap 4c, pytania K40–K43.
