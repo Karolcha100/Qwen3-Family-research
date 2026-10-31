@@ -1,0 +1,165 @@
+{
+  "title": "K43 (zgodność tokenu) i K44 (pass@1–3)",
+  "steps": [
+    {
+      "name": "K43: zgodność najbardziej prawdopodobnego tokenu (9 gotowych wariantów)",
+      "estimate_minutes": 6,
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "python",
+        "scripts/phase2_code_token_agreement.py"
+      ],
+      "log": "results/phase2/code-eval/token-agreement.log"
+    },
+    {
+      "name": "K44: oryginał, 10 odpowiedzi na zadanie: generowanie HumanEval",
+      "estimate_minutes": 15,
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "python",
+        "scripts/phase2_code_generate.py",
+        "--dataset",
+        "humaneval",
+        "--output",
+        "results/phase2/code-eval/original-sampled/humaneval.jsonl",
+        "--samples-per-task",
+        "10",
+        "--batch-size",
+        "30"
+      ],
+      "log": "results/phase2/code-eval/original-sampled-humaneval-generate.log"
+    },
+    {
+      "name": "K44: oryginał, 10 odpowiedzi na zadanie: testy HumanEval (kontener)",
+      "estimate_minutes": 5,
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "python",
+        "scripts/phase2_code_evaluate.py",
+        "--dataset",
+        "humaneval",
+        "--samples",
+        "results/phase2/code-eval/original-sampled/humaneval.jsonl"
+      ],
+      "log": "results/phase2/code-eval/original-sampled-humaneval-evaluate.log"
+    },
+    {
+      "name": "K44: oryginał, 10 odpowiedzi na zadanie: generowanie MBPP",
+      "estimate_minutes": 23,
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "python",
+        "scripts/phase2_code_generate.py",
+        "--dataset",
+        "mbpp",
+        "--output",
+        "results/phase2/code-eval/original-sampled/mbpp.jsonl",
+        "--samples-per-task",
+        "10",
+        "--batch-size",
+        "30"
+      ],
+      "log": "results/phase2/code-eval/original-sampled-mbpp-generate.log"
+    },
+    {
+      "name": "K44: oryginał, 10 odpowiedzi na zadanie: testy MBPP (kontener)",
+      "estimate_minutes": 10,
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "python",
+        "scripts/phase2_code_evaluate.py",
+        "--dataset",
+        "mbpp",
+        "--samples",
+        "results/phase2/code-eval/original-sampled/mbpp.jsonl"
+      ],
+      "log": "results/phase2/code-eval/original-sampled-mbpp-evaluate.log"
+    },
+    {
+      "name": "K44: w. 13 −40%, cel za warstwą, 10 odpowiedzi na zadanie: generowanie HumanEval",
+      "estimate_minutes": 15,
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "python",
+        "scripts/phase2_code_generate.py",
+        "--dataset",
+        "humaneval",
+        "--output",
+        "results/phase2/code-eval/layer13-40-window-sampled/humaneval.jsonl",
+        "--samples-per-task",
+        "10",
+        "--batch-size",
+        "30",
+        "--mlps",
+        "/home/karol/qwen3-checkpoints/phase2-code/mlps/layer-13-perturbation-40-trained.pt"
+      ],
+      "log": "results/phase2/code-eval/layer13-40-window-sampled-humaneval-generate.log"
+    },
+    {
+      "name": "K44: w. 13 −40%, cel za warstwą, 10 odpowiedzi na zadanie: testy HumanEval (kontener)",
+      "estimate_minutes": 5,
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "python",
+        "scripts/phase2_code_evaluate.py",
+        "--dataset",
+        "humaneval",
+        "--samples",
+        "results/phase2/code-eval/layer13-40-window-sampled/humaneval.jsonl"
+      ],
+      "log": "results/phase2/code-eval/layer13-40-window-sampled-humaneval-evaluate.log"
+    },
+    {
+      "name": "K44: w. 13 −40%, cel za warstwą, 10 odpowiedzi na zadanie: generowanie MBPP",
+      "estimate_minutes": 23,
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "python",
+        "scripts/phase2_code_generate.py",
+        "--dataset",
+        "mbpp",
+        "--output",
+        "results/phase2/code-eval/layer13-40-window-sampled/mbpp.jsonl",
+        "--samples-per-task",
+        "10",
+        "--batch-size",
+        "30",
+        "--mlps",
+        "/home/karol/qwen3-checkpoints/phase2-code/mlps/layer-13-perturbation-40-trained.pt"
+      ],
+      "log": "results/phase2/code-eval/layer13-40-window-sampled-mbpp-generate.log"
+    },
+    {
+      "name": "K44: w. 13 −40%, cel za warstwą, 10 odpowiedzi na zadanie: testy MBPP (kontener)",
+      "estimate_minutes": 10,
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "python",
+        "scripts/phase2_code_evaluate.py",
+        "--dataset",
+        "mbpp",
+        "--samples",
+        "results/phase2/code-eval/layer13-40-window-sampled/mbpp.jsonl"
+      ],
+      "log": "results/phase2/code-eval/layer13-40-window-sampled-mbpp-evaluate.log"
+    }
+  ]
+}

@@ -236,3 +236,67 @@ Przygotowane bez GPU (pytanie **K44**). Wyniki będę podawał też jako liczby 
 ---
 ---
 ---
+
+Zastanawiam się czy przewidywany koszt zmniejszenia warstwy bierze pod uwagę odległość neuronu do końca - Oraz jak on w ogóle jest wyliczany
+
+*2026-10-31 23:49 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Nic do decyzji, to odpowiedź na pytanie. Jeśli coś jest niejasne, dopisz pod spodem.
+
+### Jak liczony jest przewidywany koszt warstwy
+
+**1. Ważność jednego neuronu** (mapa z etapu 2, `src/qwen_compression/importance.py`). Dla neuronu $j$ w warstwie $l$:
+
+$$
+F_{l,j} = \frac{1}{2\,S\,T} \sum_{\text{sekwencje}} \sum_{s=1}^{S} \Big( \sum_{t} g^{(s)}_{t,l,j} \, a_{t,l,j} \Big)^2
+$$
+
+Słownie:
+- $a_{t,l,j}$ to aktywacja neuronu przy tokenie $t$, czyli to, co neuron wysyła dalej do `down_proj`;
+- $g^{(s)}_{t,l,j}$ mówi, jak mocno zmieniłoby się **wyjście modelu** (log-prawdopodobieństwo wylosowanego tokenu, minus średnia), gdyby ta aktywacja trochę się zmieniła. Liczy się to wsteczną propagacją od wyjścia modelu przez wszystkie dalsze warstwy;
+- iloczyn $g \cdot a$ przybliża zmianę wyjścia po wyzerowaniu neuronu. Kwadrat z połową to przybliżenie drugiego rzędu przyrostu KL na wyjściu (tzw. informacja Fishera);
+- $S$ to liczba losowań tokenu na sekwencję, a $T$ to łączna liczba tokenów, więc wynik jest średnią na token.
+
+Czyli **$F_{l,j}$ to szacowany przyrost KL na wyjściu modelu po usunięciu samego tego neuronu.**
+
+**2. Mapa 75/25** (`scripts/phase2_code_map.py`). Robimy osobne mapy dla Pythona i dla tekstu C4. W każdej warstwie każdą z nich skalujemy do sumy 1 i łączymy w proporcji 0,75 i 0,25. Potem mnożymy przez sumę mapy kodu w tej warstwie, żeby warstwy dało się ze sobą porównywać.
+
+**3. Koszt warstwy** (`scripts/phase2_code_map_figures.py`). Sortujemy neurony warstwy od najmniej ważnego. Koszt to suma $F$ dla tylu najsłabszych, ile usuwamy: 614 przy 20% albo 1229 przy 40%.
+
+### Czy uwzględnia odległość neuronu od końca modelu
+
+**Tak, pośrednio, i nie trzeba nic dodawać.** $g$ jest liczone na wyjściu modelu, więc obejmuje wszystko, co dzieje się w dalszych warstwach: wzmocnienie, wygaszenie i przejście przez połączenia omijające (residual). Neuron w warstwie 2 jest oceniany po tym, jak jego zmiana przejdzie przez warstwy 3–27, a neuron w warstwie 26 tylko przez warstwę 27. Mapa nie mierzy niczego lokalnie, tylko na samym wyjściu.
+
+Wzór ma jednak trzy uproszczenia:
+
+1. **Liniowość.** Zakłada, że dalsze warstwy reagują na zmianę proporcjonalnie, czyli jak na małą zmianę. Usunięcie 40% neuronów nie jest małą zmianą. Im dalej od końca, tym więcej nieliniowych warstw po drodze, więc przybliżenie może być gorsze.
+2. **Niezależność neuronów.** Koszt warstwy to suma kosztów pojedynczych neuronów. Zakładamy więc, że skutki usuniętych neuronów ani się nie sumują ponad to, ani nie znoszą.
+3. **Brak naprawy.** Mapa przewiduje koszt **samego wycięcia**, przed najmniejszymi kwadratami i treningiem. Nie wie, jak dobrze pozostałe neurony przejmą pracę usuniętych.
+
+Jak to wygląda na zmierzonych warstwach (KL na Pythonie po samym wycięciu podzielona przez koszt z mapy; 1,0 oznacza trafną przewidywaną liczbę):
+
+| Warstwa | −20% | −40% |
+|---|---|---|
+| 2 (blisko początku) | 1,03 | 1,15 |
+| 13 | 0,78 | 0,77 |
+| 14 | 0,74 | 0,72 |
+| 26 (blisko końca) | **1,65** | **1,85** |
+
+Co widać:
+- mapa trafia rząd wielkości wszędzie, a w warstwach 2–14 myli się o najwyżej ~30%;
+- warstwa 2 wypada trochę drożej, niż mapa przewiduje, a środek trochę taniej. To mały efekt w kierunku uproszczenia 1 (dłuższa droga do wyjścia) i na razie widzimy go tylko na jednej wczesnej warstwie;
+- **największy błąd jest blisko końca (warstwa 26), czyli tam, gdzie droga do wyjścia jest najkrótsza.** To nie jest więc problem odległości, tylko uproszczenia 2: usunięte neurony w warstwie 26 działają razem i ich skutki się sumują.
+
+Przy kolejnym zmniejszaniu (np. pytanie K45, które zadam ponownie po K43) będę porównywał przewidywanie mapy ze zmierzoną KL i zgodnością tokenu dla każdej nowej warstwy. Pokaże to, w których warstwach mapie można ufać.
+
+*2026-10-31 23:59 — Claude Opus 5.5*
+
+---
+---
+---

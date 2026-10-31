@@ -16,7 +16,7 @@ Pytania wynikają z raportu `AGENTS/phases/phase-2/etap-4c-k31-k38.md`. Najważn
   - **B** — wszędzie cel na wyjściu (wolno: ~25 min na warstwę w środku modelu przy 6 epokach);
   - **C** — wszędzie stary cel (szybko, ale końcowe warstwy prawie nie korzystają z treningu).
 - **Rekomendacja:** A. Każdy cel działa tam, gdzie drugi zawodzi; dla ostatnich warstw biorę krok $1 \cdot 10^{-5}$, który okazał się stabilny.
-- **Decyzja:**
+- **Decyzja:** C, wszędzie stary cel.
 
 ### K41. 🟡 Waga kodu w mapie
 
@@ -26,7 +26,7 @@ Pytania wynikają z raportu `AGENTS/phases/phase-2/etap-4c-k31-k38.md`. Najważn
   - **B** — przechodzimy na 100% kod (model tylko do kodu, tekst nas nie interesuje);
   - **C** — na razie 75/25, a do pytania wracamy przy większym zmniejszeniu (kilka warstw), gdzie różnice w pass@1 będą mierzalne.
 - **Rekomendacja:** C. Na Pythonie zysk z mapy 100% kod jest mniejszy niż strata na tekście, a w pass@1 nie widać go wcale; przy jednej warstwie nie da się tego rozstrzygnąć.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K42. 🟢 Scalanie neuronów
 
@@ -36,7 +36,7 @@ Pytania wynikają z raportu `AGENTS/phases/phase-2/etap-4c-k31-k38.md`. Najważn
   - **B** — próbujemy innego sposobu scalania (np. z wagami dobranymi najmniejszymi kwadratami zamiast średniej);
   - **C** — odkładamy do „future research”.
 - **Rekomendacja:** A. Wynik jest wyraźny i ma prostą przyczynę; inna wersja scalania nie zmieni tego, że neurony są prawie niezależne.
-- **Decyzja:**
+- **Decyzja:** A
 
 ### K43. 🔴 Jak mierzyć kod w kolejnych etapach
 
@@ -49,6 +49,6 @@ Pytania wynikają z raportu `AGENTS/phases/phase-2/etap-4c-k31-k38.md`. Najważn
   - **C** — A, a dla kamieni milowych dodatkowo pass@1 z losowaniem (np. 10 odpowiedzi na zadanie), co zmniejsza szum (najwyżej ~3×), ale kosztuje ~10× więcej czasu;
   - **D** — tylko KL, jak dotąd.
 - **Rekomendacja:** A. Wynik warstwy 26 pokazuje, że sama KL może prowadzić w złą stronę przy wyborze warstw (np. omijalibyśmy końcowe warstwy, które dla kodu są tanie). Zgodność tokenu jest za darmo, a jej sprawdzenie na gotowych modelach zajmuje kilka minut.
-- **Decyzja:**
+- **Decyzja:** A
 
 *2026-10-30 17:13 — Claude Opus 5.5*

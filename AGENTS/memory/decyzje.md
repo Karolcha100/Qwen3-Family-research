@@ -90,3 +90,9 @@ Wszystkie pytania z `AGENTS/phases/*/agents-issues-*.md` w jednej tabeli: tytuł
 | @phase-2:K37 | 🔴 Co trenować, żeby trening odrobił więcej | A (cel na wyjściu modelu) |
 | @phase-2:K38 | 🟡 Waga kodu w mapie | A (sprawdzić mapę 100% kod na warstwie 13) |
 | @phase-2:K39 | 🔴 Uruchomić kolejkę obliczeń K31–K38? | A, uruchom teraz (start 14:31) |
+| @phase-2:K40 | 🔴 Jakim celem trenować zmniejszone warstwy | C (wszędzie cel za następną warstwą) |
+| @phase-2:K41 | 🟡 Waga kodu w mapie | A (zostajemy przy 75/25) |
+| @phase-2:K42 | 🟢 Scalanie neuronów | A (porzucamy; wynik negatywny do pracy: neurony prawie niezależne, podobieństwo aktywacji ~0,13) |
+| @phase-2:K43 | 🔴 Jak mierzyć kod w kolejnych etapach | A (KL na Pythonie + zgodność tokenu; EvalPlus dla kamieni milowych) |
+| @phase-2:K44 | 🟡 pass@2 i pass@3 | A bez warstwy 26: oryginał + w. 13 (docelowo zmniejszamy środkowe warstwy, nie początkowe/końcowe) |
+| @phase-2:K45 | 🔴 Warstwy najtańsze według mapy | najpierw K43, potem ponownie; 1.11 00:05 autor w czacie: „posprawdzać inne mało istotne warstwy”, GPU do 6:00 |

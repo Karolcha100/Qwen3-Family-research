@@ -8,16 +8,16 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Teraz
 
-- Nic nie liczy się na GPU. Czekam na K40–K45. Autor w dyskusji etapu 4c: jeden cel (za warstwą) + wybór warstw z mapy, mapa 75/25 → poproszony o wpisanie K40 = C, K41 = A w `agents-issues-8.md`.
-- K44 = A (pass@2/3): kolejka z `scripts/phase2_code_generate.py --samples-per-task 10 --batch-size 30` (10 odpowiedzi, T 0,8, top-p 0,95; pamięć KV: ~112 KB/token, 30 sekwencji mieści się w 12 GB) dla `original`, `layer13-40-window`, `layer26-40-output`; wyniki do osobnych katalogów (np. `results/phase2/code-eval/<model>-sampled/`), żeby nie nadpisać odpowiedzi zachłannych. Najpierw oryginał, zmierzyć czas.
-- K45 = A: `scripts/phase2_stage4_one_layer.py --layer L --importances perturbation --removed-fractions 0.4 --epochs 6 --save-mlps …` dla L = 20–25 (każda warstwa: ~3 min zbieranie par, 4 GB na dysku), potem testy kodu dla dwóch najlepszych.
+- **Noc 1.11 (zgoda autora w czacie 00:05: GPU do ~6:00, termin miękki — kolejki puszczone wcześniej wolno dokończyć, nowych po 6:00 nie zaczynać).**
+- Kolejka 1 `results/phase2/code/queue-k43-k44.json` (PID run_queue 282067): K43 zrobione (raport `AGENTS/phases/phase-2/k43-zgodnosc-tokenu.md`), K44 pass@1–3 (10 losowań, oryginał + w. 13 cel za warstwą) → `results/phase2/code-eval/<model>-sampled/`.
+- Kolejka 2 `results/phase2/code/queue-layers.json` startuje po końcu PID 282067: warstwy 24, 25, 20, 23, 21, 22, 17, 18, 15, 10 (−20/−40%, przepis @T017) → `results/phase2/code/layers/`, MLP w `~/qwen3-checkpoints/phase2-code/mlps-layers/`; zgodność → `results/phase2/code-eval/token-agreement-layers.json`; testy kodu w. 24/20/17/10 −40% → `results/phase2/code-eval/layer<L>-40-window/`.
+- Po końcu: raport K44 (liczby zadań: rozwiązane w ≥1 z k prób + pass@k), raport warstw (KL, zgodność, mapa vs pomiar, testy), wykresy, briefing, commit, push.
 
 ## Na co czekam (co odblokuje pracę)
 
 | Czekam na | Odblokuje |
 |---|---|
-| K40–K43 (`AGENTS/phases/phase-2/agents-issues-8.md`) | cel treningu, waga mapy, scalanie, miara kodu (K43 A: ~5 min GPU) |
-| K44, K45 (`AGENTS/phases/phase-2/agents-issues-9.md`) | pass@2/3 (~2–2,5 h GPU), warstwy 20–25 (~1 h GPU) |
+| K46 (`AGENTS/phases/phase-2/agents-issues-10.md`) | zestaw zadań do codziennej zgodności (B: MBPP spoza MBPP+) |
 | opinia o `AGENTS/phases/phase-0/katalog-metod.md` | wybór metod klasycznych |
 
 ## Odłożone pytania
@@ -26,4 +26,4 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Ostatnia sesja
 
-2026-10-30 18:39: porównanie z oryginałem (liczby zadań), mapa warstw, przygotowanie pass@k, pytania K44–K45.
+2026-11-01 00:07: K43 (zgodność tokenu), odpowiedzi T017 i dyskusja 4c, nocne kolejki K44 + warstwy.

@@ -25,7 +25,7 @@ $$
   - **C** — na razie tylko oryginał (~45 min), żeby zobaczyć liczby i czas; resztę później;
   - **D** — pass@k tylko dla „kamieni milowych” (razem z K43), teraz nie liczymy.
 - **Rekomendacja:** A. Pokaże, czy różnica warstwa 13 vs 26 utrzymuje się przy kilku próbach, i to na trzech modelach zamiast pięciu. Wyniki podam jako liczby zadań (np. „rozwiązane w co najmniej 1 z 3 prób”) i jako pass@k.
-- **Decyzja:**
+- **Decyzja:** A, ale bez warstwy 26, uważam ją za zbędną do trenowania (docelowo będziemy zmniejszać środkowe warstwy raczej niż początkowe/końcowe)
 
 ### K45. 🔴 Sprawdzić warstwy, które mapa wskazuje jako najtańsze
 
@@ -36,6 +36,6 @@ $$
   - **C** — tylko warstwy 20 i 24 (najtańsza według mapy przy 20% i najtańsza przy 40%), ~30 min;
   - **D** — nie teraz.
 - **Rekomendacja:** A. Sprawdza Twój pomysł na całym obszarze, który mapa uważa za tani, i pokaże, czy mapa dobrze wybiera warstwy, zanim zaczniemy zmniejszać wiele warstw naraz.
-- **Decyzja:**
+- **Decyzja:** Narazie sprawdźmy czy nasze metryki mają sens, używając @phase-2:K43 - potem zadasz mi to pytanie jeszcze raz
 
 *2026-10-30 18:38 — Claude Opus 5.5*

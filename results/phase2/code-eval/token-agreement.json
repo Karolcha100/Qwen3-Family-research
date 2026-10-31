@@ -1,0 +1,284 @@
+{
+  "sets": {
+    "c4": {
+      "original-bf16": {
+        "kl": 0.0008164977662090678,
+        "top1_agreement": 0.970703125,
+        "tokens": 32768
+      },
+      "layer-13-activation-rms-40-trained": {
+        "kl": 0.008540758833987638,
+        "top1_agreement": 0.945281982421875,
+        "tokens": 32768
+      },
+      "layer-13-code-only-20-trained": {
+        "kl": 0.004579577114782296,
+        "top1_agreement": 0.959014892578125,
+        "tokens": 32768
+      },
+      "layer-13-code-only-40-trained": {
+        "kl": 0.010132151655852795,
+        "top1_agreement": 0.9381103515625,
+        "tokens": 32768
+      },
+      "layer-13-merged-40-trained": {
+        "kl": 0.008398835198022425,
+        "top1_agreement": 0.946044921875,
+        "tokens": 32768
+      },
+      "layer-13-perturbation-20-trained_output": {
+        "kl": 0.004364979962701909,
+        "top1_agreement": 0.9610595703125,
+        "tokens": 32768
+      },
+      "layer-13-perturbation-40-trained": {
+        "kl": 0.007779140665661544,
+        "top1_agreement": 0.948638916015625,
+        "tokens": 32768
+      },
+      "layer-13-perturbation-40-trained_output": {
+        "kl": 0.00868678095866926,
+        "top1_agreement": 0.945526123046875,
+        "tokens": 32768
+      },
+      "layer-13-random-40-trained": {
+        "kl": 0.008398174133617431,
+        "top1_agreement": 0.94525146484375,
+        "tokens": 32768
+      },
+      "layer-26-perturbation-40-trained_output": {
+        "kl": 0.020859425305388868,
+        "top1_agreement": 0.94256591796875,
+        "tokens": 32768
+      }
+    },
+    "code": {
+      "original-bf16": {
+        "kl": 0.0004465382662601769,
+        "top1_agreement": 0.989349365234375,
+        "tokens": 32768
+      },
+      "layer-13-activation-rms-40-trained": {
+        "kl": 0.0034431810345267877,
+        "top1_agreement": 0.981689453125,
+        "tokens": 32768
+      },
+      "layer-13-code-only-20-trained": {
+        "kl": 0.001107089507058845,
+        "top1_agreement": 0.98907470703125,
+        "tokens": 32768
+      },
+      "layer-13-code-only-40-trained": {
+        "kl": 0.0028436518914531916,
+        "top1_agreement": 0.983001708984375,
+        "tokens": 32768
+      },
+      "layer-13-merged-40-trained": {
+        "kl": 0.0033911466962308623,
+        "top1_agreement": 0.981597900390625,
+        "tokens": 32768
+      },
+      "layer-13-perturbation-20-trained_output": {
+        "kl": 0.0016261273522104602,
+        "top1_agreement": 0.987213134765625,
+        "tokens": 32768
+      },
+      "layer-13-perturbation-40-trained": {
+        "kl": 0.003063801457756199,
+        "top1_agreement": 0.982330322265625,
+        "tokens": 32768
+      },
+      "layer-13-perturbation-40-trained_output": {
+        "kl": 0.0037500245598494075,
+        "top1_agreement": 0.980224609375,
+        "tokens": 32768
+      },
+      "layer-13-random-40-trained": {
+        "kl": 0.005025750899221748,
+        "top1_agreement": 0.977508544921875,
+        "tokens": 32768
+      },
+      "layer-26-perturbation-40-trained_output": {
+        "kl": 0.00939643346646335,
+        "top1_agreement": 0.981903076171875,
+        "tokens": 32768
+      }
+    },
+    "humaneval": {
+      "original-bf16": {
+        "kl": 0.00015415762236382062,
+        "top1_agreement": 0.9963265564633605,
+        "tokens": 15789
+      },
+      "layer-13-activation-rms-40-trained": {
+        "kl": 0.004827184417875529,
+        "top1_agreement": 0.9865095952878586,
+        "tokens": 15789
+      },
+      "layer-13-code-only-20-trained": {
+        "kl": 0.0012424127945365121,
+        "top1_agreement": 0.9932864652606245,
+        "tokens": 15789
+      },
+      "layer-13-code-only-40-trained": {
+        "kl": 0.003329261013620657,
+        "top1_agreement": 0.9892963455570334,
+        "tokens": 15789
+      },
+      "layer-13-merged-40-trained": {
+        "kl": 0.004812625269133326,
+        "top1_agreement": 0.986002913420736,
+        "tokens": 15789
+      },
+      "layer-13-perturbation-20-trained_output": {
+        "kl": 0.0025064360881063242,
+        "top1_agreement": 0.9906263854582305,
+        "tokens": 15789
+      },
+      "layer-13-perturbation-40-trained": {
+        "kl": 0.004389964206599228,
+        "top1_agreement": 0.9865095952878586,
+        "tokens": 15789
+      },
+      "layer-13-perturbation-40-trained_output": {
+        "kl": 0.004928897713017917,
+        "top1_agreement": 0.9859395781873456,
+        "tokens": 15789
+      },
+      "layer-13-random-40-trained": {
+        "kl": 0.005450857431498691,
+        "top1_agreement": 0.9847362087529292,
+        "tokens": 15789
+      },
+      "layer-26-perturbation-40-trained_output": {
+        "kl": 0.0017202546236323687,
+        "top1_agreement": 0.9950598517955539,
+        "tokens": 15789
+      }
+    },
+    "mbpp": {
+      "original-bf16": {
+        "kl": 0.00021586257914499142,
+        "top1_agreement": 0.9955938841605785,
+        "tokens": 26554
+      },
+      "layer-13-activation-rms-40-trained": {
+        "kl": 0.014389596217869366,
+        "top1_agreement": 0.9778187843639377,
+        "tokens": 26554
+      },
+      "layer-13-code-only-20-trained": {
+        "kl": 0.0025167948336089294,
+        "top1_agreement": 0.9916773367477593,
+        "tokens": 26554
+      },
+      "layer-13-code-only-40-trained": {
+        "kl": 0.007991067766907561,
+        "top1_agreement": 0.9849740152142803,
+        "tokens": 26554
+      },
+      "layer-13-merged-40-trained": {
+        "kl": 0.009909862434689186,
+        "top1_agreement": 0.98192362732545,
+        "tokens": 26554
+      },
+      "layer-13-perturbation-20-trained_output": {
+        "kl": 0.007269663151946749,
+        "top1_agreement": 0.9857648565187919,
+        "tokens": 26554
+      },
+      "layer-13-perturbation-40-trained": {
+        "kl": 0.009174613064913817,
+        "top1_agreement": 0.9829780823981321,
+        "tokens": 26554
+      },
+      "layer-13-perturbation-40-trained_output": {
+        "kl": 0.011545798909139354,
+        "top1_agreement": 0.9808315131430293,
+        "tokens": 26554
+      },
+      "layer-13-random-40-trained": {
+        "kl": 0.01125700119945953,
+        "top1_agreement": 0.9786849438879265,
+        "tokens": 26554
+      },
+      "layer-26-perturbation-40-trained_output": {
+        "kl": 0.0016290043761837691,
+        "top1_agreement": 0.9940122015515553,
+        "tokens": 26554
+      }
+    }
+  },
+  "evalplus": {
+    "humaneval": {
+      "layer13-40-code-only": {
+        "variant": "layer-13-code-only-40-trained",
+        "tasks": 164,
+        "unchanged_answers": 67,
+        "changed_results": 16,
+        "changed_results_with_unchanged_answer": 0
+      },
+      "layer13-40-output": {
+        "variant": "layer-13-perturbation-40-trained_output",
+        "tasks": 164,
+        "unchanged_answers": 54,
+        "changed_results": 14,
+        "changed_results_with_unchanged_answer": 0
+      },
+      "layer13-40-window": {
+        "variant": "layer-13-perturbation-40-trained",
+        "tasks": 164,
+        "unchanged_answers": 55,
+        "changed_results": 16,
+        "changed_results_with_unchanged_answer": 0
+      },
+      "layer26-40-output": {
+        "variant": "layer-26-perturbation-40-trained_output",
+        "tasks": 164,
+        "unchanged_answers": 111,
+        "changed_results": 6,
+        "changed_results_with_unchanged_answer": 3
+      },
+      "original-bf16": {
+        "variant": "original-bf16",
+        "tasks": 164,
+        "unchanged_answers": 116
+      }
+    },
+    "mbpp": {
+      "layer13-40-code-only": {
+        "variant": "layer-13-code-only-40-trained",
+        "tasks": 378,
+        "unchanged_answers": 185,
+        "changed_results": 25,
+        "changed_results_with_unchanged_answer": 3
+      },
+      "layer13-40-output": {
+        "variant": "layer-13-perturbation-40-trained_output",
+        "tasks": 378,
+        "unchanged_answers": 168,
+        "changed_results": 20,
+        "changed_results_with_unchanged_answer": 2
+      },
+      "layer13-40-window": {
+        "variant": "layer-13-perturbation-40-trained",
+        "tasks": 378,
+        "unchanged_answers": 174,
+        "changed_results": 20,
+        "changed_results_with_unchanged_answer": 5
+      },
+      "layer26-40-output": {
+        "variant": "layer-26-perturbation-40-trained_output",
+        "tasks": 378,
+        "unchanged_answers": 262,
+        "changed_results": 9,
+        "changed_results_with_unchanged_answer": 3
+      },
+      "original-bf16": {
+        "variant": "original-bf16",
+        "tasks": 378,
+        "unchanged_answers": 277
+      }
+    }
+  }
+}
