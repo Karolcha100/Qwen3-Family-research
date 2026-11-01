@@ -96,3 +96,6 @@ Wszystkie pytania z `AGENTS/phases/*/agents-issues-*.md` w jednej tabeli: tytuł
 | @phase-2:K43 | 🔴 Jak mierzyć kod w kolejnych etapach | A (KL na Pythonie + zgodność tokenu; EvalPlus dla kamieni milowych) |
 | @phase-2:K44 | 🟡 pass@2 i pass@3 | A bez warstwy 26: oryginał + w. 13 (docelowo zmniejszamy środkowe warstwy, nie początkowe/końcowe) |
 | @phase-2:K45 | 🔴 Warstwy najtańsze według mapy | najpierw K43, potem ponownie; 1.11 00:05 autor w czacie: „posprawdzać inne mało istotne warstwy”, GPU do 6:00 |
+| @phase-2:K46 | 🟡 Zadania do codziennej zgodności | B (osobny zestaw: 510 zadań pełnego MBPP spoza MBPP+, `results/phase2/code-agreement/`; EvalPlus zostaje czystym testem końcowym) |
+| @phase-2:K47 | 🟡 Kiedy puścić kolejkę warstw | B: autor da znać, kiedy puszczać (chce najpierw przeczytać raporty); kolejka `results/phase2/code/queue-layers.json` czeka |
+| @T017 | Przepis domyślny | przyjęty 2026-11-01 13:45 (mapa 75/25 → najmniejsze kwadraty → 6 epok celem za warstwą, krok $5 \cdot 10^{-5}$) |

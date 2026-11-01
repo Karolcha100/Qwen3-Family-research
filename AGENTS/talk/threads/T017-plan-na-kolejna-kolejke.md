@@ -64,3 +64,23 @@ Przyjąć ten przepis bez zmian (mapa 75/25 → najmniejsze kwadraty → 6 epok 
 ---
 ---
 ---
+
+Zgadzam się na rekomendację
+
+*2026-11-01 13:45 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Nic. Wątek można zamknąć.
+
+Zapisałem przepis jako domyślny w zasadach współpracy i w decyzjach: mapa 75/25 → najmniejsze kwadraty → 6 epok celem za warstwą, krok $5 \cdot 10^{-5}$. Tym przepisem policzy się kolejka warstw, gdy dasz znać (K47 = B). O zmniejszanie wielu warstw po kolei zapytam, kiedy do tego dojdziemy.
+
+*2026-11-01 14:03 — Claude Opus 5.5*
+
+---
+---
+---

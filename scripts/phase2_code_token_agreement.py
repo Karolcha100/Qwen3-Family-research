@@ -13,6 +13,7 @@ MODEL_NAME = "Qwen/Qwen3-0.6B-Base"
 ORIGINAL = "original"
 REDUCED_PRECISION = "original-bf16"
 DATASETS = ("humaneval", "mbpp")
+HELD_OUT = "mbpp-held-out"
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -23,6 +24,7 @@ def parse_arguments() -> argparse.Namespace:
     )
     parser.add_argument("--code-evaluation", type=Path, default=Path("results/phase2/code-eval"))
     parser.add_argument("--problems-directory", type=Path, default=Path("results/phase2/code-eval"))
+    parser.add_argument("--held-out-directory", type=Path, default=Path("results/phase2/code-agreement"))
     parser.add_argument("--output", type=Path, default=Path("results/phase2/code-eval/token-agreement.json"))
     return parser.parse_args()
 
@@ -89,6 +91,17 @@ def compare_sequence(
     return statistics
 
 
+def read_answers(problems_path: Path, solutions_path: Path) -> list[tuple[str, str, str]]:
+    prompts = {
+        problem["task_id"]: problem["prompt"].strip() + "\n"
+        for problem in map(json.loads, problems_path.read_text().splitlines())
+    }
+    return [
+        (row["task_id"], prompts[row["task_id"]], row["solution"])
+        for row in map(json.loads, solutions_path.read_text().splitlines())
+    ]
+
+
 def solved_tasks(summary: dict) -> set[str]:
     return {
         task_id
@@ -104,25 +117,17 @@ def main() -> None:
     reduced_precision_model = load_model(torch.bfloat16)
     variants = load_variants(arguments.mlps)
     evaluation = torch.load(arguments.evaluation_set)
-    problems = {
-        dataset: {
-            problem["task_id"]: problem["prompt"].strip() + "\n"
-            for problem in map(
-                json.loads, (arguments.problems_directory / f"{dataset}-problems.jsonl").read_text().splitlines()
-            )
-        }
+    answers = {
+        dataset: read_answers(
+            arguments.problems_directory / f"{dataset}-problems.jsonl",
+            arguments.code_evaluation / ORIGINAL / f"{dataset}.jsonl",
+        )
         for dataset in DATASETS
     }
-    original_solutions = {
-        dataset: {
-            row["task_id"]: row["solution"]
-            for row in map(
-                json.loads, (arguments.code_evaluation / ORIGINAL / f"{dataset}.jsonl").read_text().splitlines()
-            )
-        }
-        for dataset in DATASETS
-    }
-    total_work = evaluation["token_ids"].shape[0] + sum(len(solutions) for solutions in original_solutions.values())
+    held_out_solutions = arguments.held_out_directory / ORIGINAL / "mbpp.jsonl"
+    if held_out_solutions.exists():
+        answers[HELD_OUT] = read_answers(arguments.held_out_directory / "mbpp-problems.jsonl", held_out_solutions)
+    total_work = evaluation["token_ids"].shape[0] + sum(len(rows) for rows in answers.values())
     finished_work = 0
     totals: dict[str, dict[str, dict[str, float]]] = {}
     for token_ids, source in zip(evaluation["token_ids"], evaluation["sources"], strict=True):
@@ -135,12 +140,10 @@ def main() -> None:
         finished_work += 1
         report_progress(finished_work / total_work)
     unchanged_answers: dict[str, dict[str, list[str]]] = {}
-    for dataset in DATASETS:
-        for task_id, solution in original_solutions[dataset].items():
-            prompt_ids = tokenizer(problems[dataset][task_id], return_tensors="pt").input_ids[0]
-            completion_ids = tokenizer(
-                solution.removeprefix(problems[dataset][task_id]), return_tensors="pt"
-            ).input_ids[0]
+    for dataset, rows in answers.items():
+        for task_id, prompt, solution in rows:
+            prompt_ids = tokenizer(prompt, return_tensors="pt").input_ids[0]
+            completion_ids = tokenizer(solution.removeprefix(prompt), return_tensors="pt").input_ids[0]
             if completion_ids.numel() == 0:
                 finished_work += 1
                 continue
@@ -158,7 +161,7 @@ def main() -> None:
                     unchanged_answers.setdefault(dataset, {}).setdefault(name, []).append(task_id)
             finished_work += 1
             report_progress(finished_work / total_work)
-    summary: dict[str, dict] = {"sets": {}, "evalplus": {}}
+    summary: dict[str, dict] = {"sets": {}, "evalplus": {}, "unchanged_answers": {}}
     for source, by_name in totals.items():
         summary["sets"][source] = {
             name: {
@@ -185,15 +188,20 @@ def main() -> None:
             changed_result = solved_tasks(json.loads(summary_path.read_text())) ^ original_solved
             summary["evalplus"].setdefault(dataset, {})[directory.name] = {
                 "variant": name,
-                "tasks": len(original_solutions[dataset]),
+                "tasks": len(answers[dataset]),
                 "unchanged_answers": len(unchanged),
                 "changed_results": len(changed_result),
                 "changed_results_with_unchanged_answer": len(changed_result & unchanged),
             }
         summary["evalplus"].setdefault(dataset, {})[REDUCED_PRECISION] = {
             "variant": REDUCED_PRECISION,
-            "tasks": len(original_solutions[dataset]),
+            "tasks": len(answers[dataset]),
             "unchanged_answers": len(unchanged_answers.get(dataset, {}).get(REDUCED_PRECISION, [])),
+        }
+    for dataset, rows in answers.items():
+        summary["unchanged_answers"][dataset] = {
+            "tasks": len(rows),
+            **{name: len(task_ids) for name, task_ids in unchanged_answers.get(dataset, {}).items()},
         }
     arguments.output.write_text(json.dumps(summary, indent=2))
     print(json.dumps(summary, indent=2))

@@ -216,6 +216,7 @@ def main() -> None:
                     "original_perplexity": rows[layer_index]["original"]["wikitext2_perplexity"],
                     "agreement_code": pooled_agreement(new_sets, ("code",), variant),
                     "agreement_evalplus": pooled_agreement(new_sets, ("humaneval", "mbpp"), variant),
+                    "agreement_held_out": pooled_agreement(new_sets, ("mbpp-held-out",), variant),
                     "solved_plus": solved_plus(arguments.code_evaluation, f"layer{layer_index}-40-window")
                     if fraction == 0.4 and layer_index in new_rows
                     else None,

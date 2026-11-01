@@ -58,7 +58,7 @@ Reszta treści trafia do plików w `AGENTS/`.
 - Nie lubi szukać, na co ma odpowiedzieć — pytanie zawsze na górze, z opcjami.
 - **Wyniki testów kodu podawaj jako liczby zadań** (oryginał vs nasz model, np. „38 → 34 z 164”, ile zyskane / stracone), procenty najwyżej obok; interesuje go też pass@2 i pass@3, nie tylko pass@1 (@T015).
 - Woli **jedną metodę zamiast wielu**: cel treningu za warstwą i wybór warstw pełnych mało ważnych neuronów według mapy, mapa 75/25 (dyskusja `etap-4c-k31-k38.md`, 2026-10-30 18:28).
-- **Docelowo zmniejszamy środkowe warstwy**, nie początkowe i końcowe (@phase-2:K44, 2026-10-31). Przepis domyślny (@T017): mapa 75/25 → najmniejsze kwadraty → 6 epok celem za warstwą, krok $5 \cdot 10^{-5}$.
+- **Docelowo zmniejszamy środkowe warstwy**, nie początkowe i końcowe (@phase-2:K44, 2026-10-31). Przepis domyślny (@T017, przyjęty przez autora 2026-11-01): mapa 75/25 → najmniejsze kwadraty → 6 epok celem za warstwą, krok $5 \cdot 10^{-5}$.
 
 *Zmiana: 2026-10-29 — reguła: decyzje jako osobne pytania w agents-issues, pytamy dużo (@T001) — Claude Opus 5.5*
 *Zmiana: 2026-10-29 — polecenia dla autora w blokach kodu (uwaga 1) — Claude Opus 5.5*

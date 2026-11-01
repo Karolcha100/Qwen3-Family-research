@@ -1,0 +1,11 @@
+{
+  "full_mbpp": 974,
+  "test_problems": 378,
+  "kept": 510,
+  "excluded": {
+    "same_number": 378,
+    "same_text": 2,
+    "similar_text": 61,
+    "same_function_name": 23
+  }
+}

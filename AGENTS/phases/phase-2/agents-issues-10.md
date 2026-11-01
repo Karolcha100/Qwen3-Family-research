@@ -18,7 +18,7 @@ Pytanie K45 (warstwy najtańsze według mapy) miałem zadać ponownie po K43. Tw
   - **B** — osobny zestaw zadań spoza testów: pełne MBPP ma 974 zadania, a MBPP+ korzysta tylko z części z nich. Zostaje kilkaset zadań, których w testach nie ma (dokładną liczbę i brak nakładania sprawdzę przed użyciem). Oryginał pisze do nich odpowiedzi raz (~4 min GPU), potem zgodność liczy się jak teraz. EvalPlus zostaje wtedy czystym testem końcowym;
   - **C** — tylko zgodność na zwykłym kodzie (jak w pierwotnej wersji K43 A); taniej o ~30 s na wariant, ale gorzej przewiduje testy.
 - **Rekomendacja:** B. Koszt jest mały, a w pracy będzie można napisać, że wybieraliśmy warianty bez patrzenia na zadania testowe. Do czasu przygotowania zestawu B liczę też A (kolejka z nocy już to robi).
-- **Decyzja:**
+- **Decyzja:** B
 
 *2026-11-01 00:04 — Claude Opus 5.5*
 
@@ -36,6 +36,34 @@ Drugie pytanie, po nocy: nocna kolejka warstw nie ruszyła, bo zawiesiły się t
   - **B** — puszczam dziś wieczorem lub w nocy, w godzinach, które podasz w decyzji;
   - **C** — nie puszczam; najpierw chcesz omówić wyniki K43/K44 albo zmienić listę warstw (napisz, jak).
 - **Rekomendacja:** A, jeśli nie potrzebujesz teraz karty graficznej. W przeciwnym razie B.
-- **Decyzja:**
+- **Decyzja:** B, poinformuje gdy będziemy puszczać, chcę jeszcze zapoznać się z raportami bardziej
 
 *2026-11-01 13:08 — Claude Opus 5.5*
+
+---
+
+## Co masz zrobić (dopisane 2026-11-01 14:03)
+
+Nic pilnego. Kiedy zechcesz puścić kolejkę warstw (K47 = B), napisz w czacie np. „puść kolejkę warstw” (~2 h 50 min GPU). Gdybyś chciał zmienić listę warstw, napisz które.
+
+### Wykonanie K46 = B i K47 = B
+
+**K46 B: zestaw zadań spoza testów jest gotowy** (bez GPU, `scripts/phase2_code_agreement_set.py` → `results/phase2/code-agreement/mbpp-problems.jsonl`):
+- pełne MBPP ma 974 zadania. Odrzuciłem 378 zadań, które są w MBPP+, oraz zadania, które mogłyby się z nimi pokrywać:
+  - 2 z identyczną treścią;
+  - 61 z bardzo podobną treścią (podobieństwo napisów ≥ 0,9);
+  - 23 z tą samą nazwą funkcji co zadanie z testów.
+- **zostało 510 zadań.** Zadania tuż pod progiem podobieństwa sprawdziłem ręcznie i są już różne (np. „iloczyn niepowtarzających się elementów” wobec „sumy” w testach);
+- zadania mają ten sam format co w EvalPlus (treść + jeden przykład `assert`).
+
+Brakuje jeszcze odpowiedzi oryginału na te zadania (~5 min GPU). Dopisałem je do kolejki warstw, razem z ponownym policzeniem zgodności dla 9 wcześniejszych wariantów. Dzięki temu sprawdzę, czy zgodność na nowym zestawie też ustawia 4 modele z testami kodu w tej samej kolejności co testy. Skrypt zgodności liczy ten zestaw automatycznie, gdy są odpowiedzi.
+
+**K47 B: kolejka czeka na Twój sygnał.** Bez zmian w treści obliczeń warstw, ale doszły:
+- 2 kroki K46 (~11 min);
+- limit czasu i 4 testy naraz przy testach kodu (żeby nie zawiesiło się jak w nocy).
+
+Szacunek całości to 167 min.
+
+Przepis z @T017 zapisałem jako domyślny (Twoja zgoda 13:45).
+
+*2026-11-01 14:03 — Claude Opus 5.5*

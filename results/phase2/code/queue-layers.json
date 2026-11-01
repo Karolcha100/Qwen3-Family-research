@@ -1,5 +1,5 @@
 {
-  "title": "Kolejne mało ważne warstwy według mapy (do 6:00)",
+  "title": "Kolejne mało ważne warstwy według mapy + zestaw zgodności spoza testów (K46 B)",
   "steps": [
     {
       "name": "Warstwa 24: −20% i −40%, mapa 75/25, najmniejsze kwadraty, 6 epok celem za warstwą",
@@ -382,8 +382,40 @@
       "log": "results/phase2/code/layers/layer-10.log"
     },
     {
+      "name": "K46 B: odpowiedzi oryginału na 510 zadań MBPP spoza testów",
+      "estimate_minutes": 5,
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "python",
+        "scripts/phase2_code_generate.py",
+        "--dataset",
+        "mbpp",
+        "--problems-directory",
+        "results/phase2/code-agreement",
+        "--output",
+        "results/phase2/code-agreement/original/mbpp.jsonl"
+      ],
+      "log": "results/phase2/code-agreement/original-mbpp-generate.log"
+    },
+    {
+      "name": "K46 B: zgodność na zadaniach spoza testów dla 9 wcześniejszych wariantów",
+      "estimate_minutes": 6,
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "python",
+        "scripts/phase2_code_token_agreement.py",
+        "--output",
+        "results/phase2/code-eval/token-agreement-with-held-out.json"
+      ],
+      "log": "results/phase2/code-eval/token-agreement-with-held-out.log"
+    },
+    {
       "name": "Zgodność tokenu z oryginałem dla wszystkich nowych warstw",
-      "estimate_minutes": 10,
+      "estimate_minutes": 14,
       "command": [
         "uv",
         "run",
