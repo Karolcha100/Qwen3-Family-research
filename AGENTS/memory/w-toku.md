@@ -24,4 +24,4 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Ostatnia sesja
 
-2026-11-01 14:28: raporty Phase 2 zamknięte, raport zbiorczy (@T018).
+2026-11-01 14:52: T019 (co policzy kolejka warstw), odpowiedź w dyskusji raportu zbiorczego (dlaczego końcowe warstwy tanie: ważność skupiona w kilku neuronach + efekt kodu; wykres `kod-mapa-skupienie-waznosci.png`).

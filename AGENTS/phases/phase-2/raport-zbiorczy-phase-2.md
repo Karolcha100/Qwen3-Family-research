@@ -195,3 +195,46 @@ Po kolejce napiszę raport z odpowiedziami na trzy pytania:
 - decyzje: `AGENTS/memory/decyzje.md` (@phase-2:K1–K47).
 
 *2026-11-01 14:29 — Claude Opus 5.5*
+
+## Dyskusja
+
+---
+---
+---
+
+Czy liczba ważnych neuronów (w sumie ważności usuwanych neuronów - tj. na wykresie) uwzględnia odległość warstwy do końca modelu? Dziwi mnie to że wydaje się że im bliżej końca modelu tym mniej ważne są warstwy.
+
+*2026-11-01 14:49 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Nic do decyzji, to odpowiedź na pytanie. Jeśli coś jest niejasne, dopisz pod spodem.
+
+### Czy koszt warstwy uwzględnia odległość do końca modelu
+
+**Tak.** Ważność neuronu {l,j}$ (wzór w sekcji 2.1) jest liczona **na wyjściu modelu**: mówi, jak zmieniłoby się to, co model przewiduje, gdyby neuron zniknął. Zmiana w warstwie 2 przechodzi do wyjścia przez warstwy 3–27, a zmiana w warstwie 26 tylko przez warstwę 27, i obie drogi są w liczbie $ już uwzględnione. Niczego nie mierzymy lokalnie.
+
+### Dlaczego końcowe warstwy wychodzą „tanie”
+
+**Końcowe warstwy nie są mniej ważne.** Tanie jest tylko ich najsłabsze 40% neuronów. Złożyły się na to dwa efekty.
+
+![Skupienie ważności](AGENTS/phases/phase-2/figures/kod-mapa-skupienie-waznosci.png)
+
+Co widać:
+- **wykres 1, łączna ważność warstwy** (suma po wszystkich 3072 neuronach, mapa Pythona). Przez środek modelu (8–15) maleje, a pod koniec rośnie. Warstwy 19–23 mają jej więcej niż środek. Warstwa 26 ma jej 3× więcej niż warstwa 13, a ostatnia warstwa 27 aż 16× więcej. Ważność wcale więc nie maleje w stronę końca;
+- **wykres 2, ile ważności niesie najsłabsze 40% neuronów.** W środku modelu (8–14) jest to 16–19% ważności warstwy, a w warstwach 20–26 tylko 5–11%, w ostatniej 1%. Pod koniec modelu ważność skupia się w kilku neuronach. Na przykład w warstwie 26 najważniejsze 5% neuronów niesie 56% ważności, a w warstwie 13 tylko 23%. Zostaje dużo neuronów, które prawie nic nie robią, i właśnie je usuwamy. Pasuje to do etapu 3, w którym neuronów „zbędnych” i „masywnych” jest najwięcej w warstwach 15–27;
+- **wykres 3, koszt usunięcia 40% osobno dla Pythona i dla tekstu.** Na tekście koszt końcowych warstw jest podobny jak w środku, a w warstwach 24–26 rośnie aż do poziomu początku modelu. **Tanie są one tylko na Pythonie:** w warstwach 20–26 koszt to ~0,003, czyli o połowę mniej niż w środku (~0,006). Z etapu 3: w końcowych warstwach od 1/5 do 1/3 neuronów jest wyraźnie „tekstowych” albo „kodowych”. Neurony potrzebne do tekstu przy kodzie prawie nic nie robią. Mapa 75/25 porównuje warstwy w skali Pythona (sekcja 2.1, krok 2), więc te neurony wychodzą tanie.
+
+**Zastrzeżenie:** mapa sumuje skutki pojedynczych neuronów. W warstwie 26 prawdziwe wycięcie kosztowało 1,7–1,9× więcej, niż przewidziała mapa (neurony działają razem). Możliwe, że podobnie jest w warstwach 20–25. **Kolejka warstw to właśnie sprawdzi** (@T019): dla każdej z warstw 15–25 porównam przewidywanie mapy ze zmierzoną KL i z testami kodu. Jeśli końcowe warstwy okażą się droższe, niż mówi mapa, poprawię wybór warstw.
+
+Skrypt wykresu: `scripts/phase2_code_map_concentration.py`, liczby: `results/phase2/code/map-concentration.json`.
+
+*2026-11-01 14:51 — Claude Opus 5.5*
+
+---
+---
+---
