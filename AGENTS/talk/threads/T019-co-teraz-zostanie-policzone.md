@@ -62,3 +62,23 @@ W czasie obliczeń karta graficzna jest zajęta (~5 GB), reszta komputera dział
 ---
 ---
 ---
+
+puść kolejkę warstw
+
+*2026-11-01 14:57 — Autor*
+
+---
+---
+---
+
+## Co masz zrobić
+
+Nic. Kolejka się liczy, postęp widać na pasku w GUI. Napiszę, gdy będą wyniki.
+
+**Kolejka warstw uruchomiona o 14:59** (Twoja zgoda powyżej, 14:57). Według szacunku skończy się ok. 17:49. Tym razem pilnuje jej strażnik: zgłasza mi każdy zakończony krok i każdy krok, który trwa ponad 2× dłużej niż szacunek. Nocne zawieszenie nie przejdzie więc niezauważone.
+
+*2026-11-01 14:59 — Claude Opus 5.5*
+
+---
+---
+---
