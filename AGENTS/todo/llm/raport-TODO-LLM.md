@@ -180,3 +180,10 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 - noc: testy MBPP w kontenerze zawiesiły się (brak pamięci przy 8 testach naraz), kolejka warstw nie ruszyła; testy powtórzone z `--parallel 2`, w kolejce warstw `timeout 1800` i `--parallel 4`, pułapka 25; pytanie K47.
 
 *2026-11-01 13:09 — Claude Opus 5.5*
+
+### [L25] Zamknięcie raportów Phase 2 i raport zbiorczy
+
+- 12 raportów Phase 2 zamkniętych (status „zamknięty … na prośbę autora @T018” + wpis 🔒, jak przycisk w GUI); sprawdzone w `agents_board.model`: 12 zamkniętych, 1 otwarty;
+- `AGENTS/phases/phase-2/raport-zbiorczy-phase-2.md`: chronologia etapów, metoda plan → teraz ze wzorami, najważniejsze wyniki z wykresami, co dalej (kolejka warstw K47 = B, pytania o wiele warstw i koniec Phase 2).
+
+*2026-11-01 14:28 — Claude Opus 5.5*

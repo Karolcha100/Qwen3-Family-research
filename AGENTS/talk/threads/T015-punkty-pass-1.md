@@ -112,3 +112,11 @@ Wcześniejsza różnica 14 zadań przy jednej odpowiedzi bez losowania (200 wobe
 ---
 ---
 ---
+
+🔒 Wątek zamknięty.
+
+*2026-11-01 14:21 — Autor*
+
+---
+---
+---

@@ -44,3 +44,11 @@ Pod Twoją nieobecność liczy się m.in. @phase-2:K23, czyli dłuższy trening 
 ---
 ---
 ---
+
+🔒 Wątek zamknięty.
+
+*2026-11-01 14:21 — Autor*
+
+---
+---
+---

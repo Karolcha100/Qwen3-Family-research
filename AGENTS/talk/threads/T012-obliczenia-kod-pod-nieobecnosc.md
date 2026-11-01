@@ -109,3 +109,11 @@ GPU jest wolne. Nic więcej nie uruchamiam, dopóki nie zdecydujesz.
 ---
 ---
 ---
+
+🔒 Wątek zamknięty.
+
+*2026-11-01 14:21 — Autor*
+
+---
+---
+---

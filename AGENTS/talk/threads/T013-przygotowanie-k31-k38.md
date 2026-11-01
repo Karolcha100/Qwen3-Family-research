@@ -151,3 +151,11 @@ Pamięć i szybkość się nie zmieniają, bo zmiana jest za mała. Jakość kod
 ---
 ---
 ---
+
+🔒 Wątek zamknięty.
+
+*2026-11-01 14:21 — Autor*
+
+---
+---
+---

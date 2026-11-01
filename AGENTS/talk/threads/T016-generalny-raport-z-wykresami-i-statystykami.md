@@ -38,3 +38,11 @@ Dalej proponuję dwa obliczenia: pass@2 i pass@3 (**K44**) oraz warstwy najtańs
 ---
 ---
 ---
+
+🔒 Wątek zamknięty.
+
+*2026-11-01 14:21 — Autor*
+
+---
+---
+---

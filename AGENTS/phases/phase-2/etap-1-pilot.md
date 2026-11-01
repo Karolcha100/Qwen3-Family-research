@@ -2,8 +2,7 @@
 
 *2026-10-30 02:03 — Claude Opus 5.5*
 
-**Status raportu:** do przeczytania
-
+**Status raportu:** zamknięty (2026-11-01 14:28, Claude Opus 5.5 na prośbę autora @T018)
 ## Co masz zrobić
 
 Przeczytaj, a potem odpowiedz na pytania **K16–K18** w `AGENTS/phases/phase-2/agents-issues-3.md`. Dotyczą tego raportu: dalsze pomiary tylko dla $\delta = \pm 1$, odstępstwo od nocnych reguł, liczba tokenów. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”. Uwagi i pytania do raportu możesz pisać w GUI pod tym raportem (Drzewo → Raporty albo „Co czeka na mnie” → Raporty do przeczytania i dyskusji); przyciskiem „🔒 Zakończ dyskusję” zamykasz raport.
@@ -124,3 +123,17 @@ Porównanie z prostszą miarą: średnia wielkość aktywacji $\overline{|a_j|}$
 - kod: `scripts/phase2_stage1_pilot.py`, `scripts/phase2_stage1_analysis.py`, pakiet `src/qwen_compression/`.
 
 *2026-10-30 02:03 — Claude Opus 5.5*
+
+## Dyskusja
+
+---
+---
+---
+
+🔒 Dyskusja zakończona na prośbę autora (@T018). Podsumowanie wszystkich raportów Phase 2: `AGENTS/phases/phase-2/raport-zbiorczy-phase-2.md`.
+
+*2026-11-01 14:28 — Claude Opus 5.5*
+
+---
+---
+---

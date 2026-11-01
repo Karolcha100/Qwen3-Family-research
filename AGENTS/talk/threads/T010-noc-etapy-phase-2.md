@@ -212,3 +212,11 @@ Zrobione: `raport-1-opis-matematyczny.md` i `raport-2-opinia.md` mają linię `*
 ---
 ---
 ---
+
+🔒 Wątek zamknięty.
+
+*2026-11-01 14:21 — Autor*
+
+---
+---
+---

@@ -2,8 +2,7 @@
 
 *2026-10-30 02:31 — Claude Opus 5.5*
 
-**Status raportu:** do przeczytania
-
+**Status raportu:** zamknięty (2026-11-01 14:28, Claude Opus 5.5 na prośbę autora @T018)
 ## Co masz zrobić
 
 Przeczytaj. Decyzje dotyczące tego etapu: **K20** (klasyfikator, czyli odłożona część etapu) i **K24** (czy progi rodzajów są sensowne) w `AGENTS/phases/phase-2/agents-issues-3.md`. Jeśli zgadzasz się z rekomendacjami, wystarczy „rek”. Uwagi i pytania do raportu możesz pisać w GUI pod tym raportem (Drzewo → Raporty albo „Co czeka na mnie” → Raporty do przeczytania i dyskusji); przyciskiem „🔒 Zakończ dyskusję” zamykasz raport.
@@ -85,3 +84,17 @@ Asymetria dotyczy głównie **ważnych** neuronów: ma ją 5,1% neuronów z „t
 Lewy wykres: każdy zmierzony dokładnie neuron; na przekątnej podwojenie szkodzi tyle samo co wyłączenie. Pomarańczowe punkty to asymetryczne, głównie **pod** przekątną (wyłączenie szkodzi bardziej). Prawy wykres: liczba asymetrycznych w warstwach z podziałem na kierunek; najwięcej we wczesnych (0–6) i późnych (17–27) warstwach, prawie wcale w środku.
 
 *2026-10-30 04:30 — Claude Opus 5.5*
+
+## Dyskusja
+
+---
+---
+---
+
+🔒 Dyskusja zakończona na prośbę autora (@T018). Podsumowanie wszystkich raportów Phase 2: `AGENTS/phases/phase-2/raport-zbiorczy-phase-2.md`.
+
+*2026-11-01 14:28 — Claude Opus 5.5*
+
+---
+---
+---

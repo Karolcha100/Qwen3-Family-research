@@ -2,8 +2,7 @@
 
 *2026-10-29 20:47 — Claude Opus 5.5*
 
-**Status raportu:** do przeczytania
-
+**Status raportu:** zamknięty (2026-11-01 14:28, Claude Opus 5.5 na prośbę autora @T018)
 ## Co masz zrobić
 
 Przeczytaj i odpowiedz w @T009, jeśli masz uwagi. Decyzje są w `AGENTS/phases/phase-2/agents-issues-1.md` (K1–K9). Formalny opis pomysłu: `AGENTS/phases/phase-2/raport-1-opis-matematyczny.md`.
@@ -69,3 +68,17 @@ Każdy etap kończy się wynikiem, który sam w sobie jest ciekawy. Po etapie 3 
 5. **porównanie z prostą ważnością z literatury**, żeby wiedzieć, ile wnosi Twoje podejście.
 
 Jak to wpływa na wcześniejsze decyzje: część pytań o ocenę odpowiedzi (@T002, plan metryk) dotyczy dopiero etapu 6. Katalog metod (`AGENTS/phases/phase-0/katalog-metod.md`) staje się materiałem pobocznym: przycinanie strukturalne i SVD-LLM to najbliżsi „konkurenci” Twojego pomysłu, z którymi warto się porównać.
+
+## Dyskusja
+
+---
+---
+---
+
+🔒 Dyskusja zakończona na prośbę autora (@T018). Podsumowanie wszystkich raportów Phase 2: `AGENTS/phases/phase-2/raport-zbiorczy-phase-2.md`.
+
+*2026-11-01 14:28 — Claude Opus 5.5*
+
+---
+---
+---

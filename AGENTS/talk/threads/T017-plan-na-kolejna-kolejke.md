@@ -84,3 +84,11 @@ Zapisałem przepis jako domyślny w zasadach współpracy i w decyzjach: mapa 75
 ---
 ---
 ---
+
+🔒 Wątek zamknięty.
+
+*2026-11-01 14:21 — Autor*
+
+---
+---
+---

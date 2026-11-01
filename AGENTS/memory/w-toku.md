@@ -8,7 +8,7 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Teraz
 
-- K43 i K44 zrobione (raporty `AGENTS/phases/phase-2/k43-zgodnosc-tokenu.md`, `k44-pass-at-k.md`).
+- Raporty Phase 2 zamknięte (@T018); aktualny stan: `AGENTS/phases/phase-2/raport-zbiorczy-phase-2.md`. Po kolejce warstw nowy raport warstw (osobny plik).
 - Kolejka warstw `results/phase2/code/queue-layers.json` **nie ruszyła** w nocy (testy MBPP K44 zawiesiły się 01:23–13:00, pułapka 25). **K47 = B: autor da znać w czacie, kiedy puszczać** (chce najpierw przeczytać raporty). Kolejka zawiera też kroki K46 B (odpowiedzi oryginału na 510 zadań spoza testów + zgodność 9 wcześniejszych wariantów → `results/phase2/code-eval/token-agreement-with-held-out.json`); razem ~167 min. Kroki testów w kolejce mają już `timeout 1800` i `--parallel 4`. Po kolejce: `scripts/phase2_code_layers_analysis.py` (gotowy), raport warstw.
 
 ## Na co czekam (co odblokuje pracę)
@@ -24,4 +24,4 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 
 ## Ostatnia sesja
 
-2026-11-01 14:03: K46 = B (zestaw 510 zadań spoza testów gotowy), K47 = B (czekam na sygnał), przepis T017 przyjęty.
+2026-11-01 14:28: raporty Phase 2 zamknięte, raport zbiorczy (@T018).
