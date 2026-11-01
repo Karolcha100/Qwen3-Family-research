@@ -187,3 +187,11 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 - `AGENTS/phases/phase-2/raport-zbiorczy-phase-2.md`: chronologia etapów, metoda plan → teraz ze wzorami, najważniejsze wyniki z wykresami, co dalej (kolejka warstw K47 = B, pytania o wiele warstw i koniec Phase 2).
 
 *2026-11-01 14:28 — Claude Opus 5.5*
+
+### [L23] [L24] Kolejka warstw, K46 B, K44 (koniec)
+
+- kolejka 14:59–17:51 (zgoda @T019): warstwy 10, 15, 17, 18, 20–25 przy −20/−40% przepisem @T017; testy kodu −40%: w. 24 200 zadań „+” (= oryginał), w. 17 194, w. 20 192, w. 10 189;
+- K46 B: odpowiedzi oryginału na 510 zadań spoza testów; zgodność na nich przewiduje testy tak samo dobrze jak na zadaniach testowych (korelacja rang 0,86 na 8 modelach; KL na Pythonie 0,48); przewidywanie zapisane przed testami (commit 626e771) trafiło poza zamianą w. 17/20 (2 zadania);
+- raport `AGENTS/phases/phase-2/warstwy-10-25.md`, pytania K48–K50 `AGENTS/phases/phase-2/agents-issues-11.md`; wykres zgodności z dwoma panelami (`scripts/phase2_code_layers_analysis.py`).
+
+*2026-11-01 17:55 — Claude Opus 5.5*

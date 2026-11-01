@@ -82,3 +82,15 @@ Nic. Kolejka się liczy, postęp widać na pasku w GUI. Napiszę, gdy będą wyn
 ---
 ---
 ---
+
+## Co masz zrobić
+
+Przeczytaj raport `AGENTS/phases/phase-2/warstwy-10-25.md` i odpowiedz na K48–K50 w `AGENTS/phases/phase-2/agents-issues-11.md`. Ten wątek możesz zamknąć.
+
+**Kolejka policzona** (14:59–17:51, bez awarii). Najważniejsze, w liczbach zadań „+” z 542 (oryginał 200): warstwa 24 zmniejszona o 40% rozwiązuje 200, warstwa 17 194, warstwa 20 192, a warstwa 10 189. Zgodność na zadaniach spoza testów przewidziała tę kolejność przed testami, poza zamianą warstw 17 i 20 (2 zadania różnicy).
+
+*2026-11-01 17:55 — Claude Opus 5.5*
+
+---
+---
+---

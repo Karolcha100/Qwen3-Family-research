@@ -1,0 +1,15 @@
+{
+  "dataset": "mbpp",
+  "mlps": [
+    "/home/karol/qwen3-checkpoints/phase2-code/mlps-layers/layer-17-perturbation-40-trained.pt"
+  ],
+  "parameters": 592274432,
+  "peak_memory_bytes": 3077503488,
+  "generated_tokens": 24308,
+  "seconds": 178.32577128699631,
+  "tokens_per_second": 136.31232224353522,
+  "batch_size": 16,
+  "samples_per_task": 1,
+  "temperature": 0.0,
+  "top_p": 1.0
+}

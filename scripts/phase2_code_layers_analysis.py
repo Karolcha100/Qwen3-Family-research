@@ -10,7 +10,9 @@ VARIANTS = ("sliced", "least_squares", "trained")
 REDUCED_PRECISION = "original-bf16"
 TESTED_LAYERS = (24, 20, 17, 10)
 EARLIER_TESTED = (
-    ("layer13-40-window", "w. 13 (16 epok)", "layer-13-perturbation-40-trained"),
+    ("layer13-40-window", "w. 13", "layer-13-perturbation-40-trained"),
+    ("layer13-40-code-only", "w. 13 (mapa 100% kod)", "layer-13-code-only-40-trained"),
+    ("layer13-40-output", "w. 13 (cel na wyjściu)", "layer-13-perturbation-40-trained_output"),
     ("layer26-40-output", "w. 26 (cel na wyjściu)", "layer-26-perturbation-40-trained_output"),
 )
 
@@ -140,45 +142,49 @@ def map_figure(rows: dict[int, dict[str, dict]], costs: dict, figures: Path) -> 
 
 
 def agreement_figure(
-    agreement_points: list[tuple[str, float, int]], noise_floor: float, original_solved: int, figures: Path
+    panels: list[tuple[str, list[tuple[str, float, int]], float]], original_solved: int, figures: Path
 ) -> None:
-    figure, axes = new_figure(1, width_per_panel=7.0, height=4.4)
-    axis = axes[0]
-    axis.axvline(100 * noise_floor, color=SECONDARY_INK, linewidth=1.0, linestyle="--")
-    axis.text(100 * noise_floor, original_solved + 14, " oryginał w bf16", fontsize=7, color=SECONDARY_INK, va="top")
-    axis.scatter([100.0], [original_solved], s=70, color=PRIMARY_INK, edgecolors="white", linewidths=1.5, zorder=3)
-    axis.annotate(
-        "oryginał",
-        (100.0, original_solved),
-        xytext=(-8, 6),
-        textcoords="offset points",
-        ha="right",
-        fontsize=8,
-        color=SECONDARY_INK,
-    )
-    for position, (label, agreement, solved) in enumerate(agreement_points):
-        axis.scatter(
-            [100 * agreement],
-            [solved],
-            s=70,
-            color=SERIES_COLORS[position % len(SERIES_COLORS)],
-            edgecolors="white",
-            linewidths=1.5,
-            zorder=3,
-            label=label,
+    figure, axes = new_figure(len(panels), width_per_panel=6.2, height=4.6)
+    for axis, (title, agreement_points, noise_floor) in zip(axes, panels, strict=True):
+        axis.axvline(100 * noise_floor, color=SECONDARY_INK, linewidth=1.0, linestyle="--")
+        axis.axhline(original_solved, color=SECONDARY_INK, linewidth=0.8, linestyle=":")
+        rightmost = max(agreement for _, agreement, _ in agreement_points)
+        for position, (label, agreement, solved) in enumerate(agreement_points):
+            axis.scatter(
+                [100 * agreement],
+                [solved],
+                s=60,
+                color=SERIES_COLORS[0] if "nowa" in label else SERIES_COLORS[1],
+                edgecolors="white",
+                linewidths=1.5,
+                zorder=3,
+            )
+            axis.annotate(
+                label.replace(" (nowa)", ""),
+                (100 * agreement, solved),
+                xytext=(-5 if agreement == rightmost else 5, 3 if position % 2 == 0 else -9),
+                textcoords="offset points",
+                ha="right" if agreement == rightmost else "left",
+                fontsize=7,
+                color=SECONDARY_INK,
+            )
+        bottom = axis.get_ylim()[0]
+        axis.text(100 * noise_floor, bottom + 0.5, "oryginał w bf16 ", fontsize=7, color=SECONDARY_INK, ha="right")
+        axis.text(
+            axis.get_xlim()[0], original_solved + 0.5, f" oryginał ({original_solved})", fontsize=7, color=SECONDARY_INK
         )
-        axis.annotate(
-            label,
-            (100 * agreement, solved),
-            xytext=(6, -3),
-            textcoords="offset points",
+        axis.set_xlabel("zgodność tokenu z oryginałem (%)")
+        axis.set_ylabel("rozwiązane zadania HumanEval+ i MBPP+ (z 542)")
+        axis.set_title(title, fontsize=10, loc="left")
+        axis.text(
+            0.02,
+            0.97,
+            "niebieskie: nowe warstwy (−40%)\npomarańczowe: wcześniejsze modele",
+            transform=axis.transAxes,
             fontsize=7,
             color=SECONDARY_INK,
+            va="top",
         )
-    axis.set_xlabel("zgodność tokenu na odpowiedziach oryginału na zadania EvalPlus (%)")
-    axis.set_ylabel("rozwiązane zadania HumanEval+ i MBPP+ (z 542)")
-    axis.set_title("Nowe warstwy (−40%) obok wcześniejszych modeli", fontsize=10, loc="left")
-    axis.legend(frameon=False, fontsize=7, labelcolor=PRIMARY_INK, loc="lower right")
     save_figure(
         figure,
         str(figures / "kod-warstwy-zgodnosc-testy.png"),
@@ -193,7 +199,7 @@ def main() -> None:
     costs = json.loads(arguments.costs.read_text())["costs"]
     agreement_path = arguments.code_evaluation / "token-agreement-layers.json"
     new_sets = json.loads(agreement_path.read_text())["sets"] if agreement_path.exists() else {}
-    earlier_sets = json.loads((arguments.code_evaluation / "token-agreement.json").read_text())["sets"]
+    earlier_sets = json.loads((arguments.code_evaluation / "token-agreement-with-held-out.json").read_text())["sets"]
     table = []
     for layer_index in sorted(rows):
         for fraction in REMOVED_FRACTIONS:
@@ -225,18 +231,33 @@ def main() -> None:
     kl_figure(rows, set(new_rows), arguments.figures)
     map_points = map_figure(rows, costs, arguments.figures)
     original_solved = solved_plus(arguments.code_evaluation, "original")
-    agreement_points = []
-    for name, label, variant in EARLIER_TESTED:
-        solved = solved_plus(arguments.code_evaluation, name)
-        agreement = pooled_agreement(earlier_sets, ("humaneval", "mbpp"), variant)
-        if solved is not None and agreement is not None:
-            agreement_points.append((label, agreement, solved))
-    for row in table:
-        if row["solved_plus"] is not None and row["agreement_evalplus"] is not None:
-            agreement_points.append((f"w. {row['layer']} (nowa)", row["agreement_evalplus"], row["solved_plus"]))
-    noise_floor = pooled_agreement(earlier_sets, ("humaneval", "mbpp"), REDUCED_PRECISION)
-    if original_solved is not None and noise_floor is not None and len(agreement_points) > len(EARLIER_TESTED):
-        agreement_figure(agreement_points, noise_floor, original_solved, arguments.figures)
+    agreement_points: dict[str, list[tuple[str, float, int]]] = {}
+    noise_floors: dict[str, float | None] = {}
+    for key, sources, column in (
+        ("evalplus", ("humaneval", "mbpp"), "agreement_evalplus"),
+        ("held_out", ("mbpp-held-out",), "agreement_held_out"),
+    ):
+        points = []
+        for name, label, variant in EARLIER_TESTED:
+            solved = solved_plus(arguments.code_evaluation, name)
+            agreement = pooled_agreement(earlier_sets, sources, variant)
+            if solved is not None and agreement is not None:
+                points.append((label, agreement, solved))
+        for row in table:
+            if row["solved_plus"] is not None and row[column] is not None:
+                points.append((f"w. {row['layer']} (nowa)", row[column], row["solved_plus"]))
+        agreement_points[key] = points
+        noise_floors[key] = pooled_agreement(earlier_sets, sources, REDUCED_PRECISION)
+    evalplus_floor, held_out_floor = noise_floors["evalplus"], noise_floors["held_out"]
+    if original_solved is not None and evalplus_floor is not None and held_out_floor is not None:
+        agreement_figure(
+            [
+                ("Zgodność na odpowiedziach na zadania testowe", agreement_points["evalplus"], evalplus_floor),
+                ("Zgodność na 510 zadaniach spoza testów (K46 B)", agreement_points["held_out"], held_out_floor),
+            ],
+            original_solved,
+            arguments.figures,
+        )
     arguments.output.write_text(
         json.dumps({"table": table, "map_points": map_points, "agreement_points": agreement_points}, indent=2)
     )

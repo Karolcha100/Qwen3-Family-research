@@ -1,0 +1,656 @@
+{
+  "table": [
+    {
+      "layer": 2,
+      "removed_fraction": 0.2,
+      "map_cost": 0.0054930215521835635,
+      "kl_code_sliced": 0.0056824420898919925,
+      "kl_code_least_squares": 0.004228368034091545,
+      "kl_code_trained": 0.0039003881538519636,
+      "kl_c4_trained": 0.010013576655182987,
+      "wikitext2_perplexity": 12.806823334580287,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": null,
+      "agreement_evalplus": null,
+      "agreement_held_out": null,
+      "solved_plus": null
+    },
+    {
+      "layer": 2,
+      "removed_fraction": 0.4,
+      "map_cost": 0.012943319583655466,
+      "kl_code_sliced": 0.014832855245913379,
+      "kl_code_least_squares": 0.011920060191187076,
+      "kl_code_trained": 0.010653189092408866,
+      "kl_c4_trained": 0.02614901604829356,
+      "wikitext2_perplexity": 12.980657827093976,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": null,
+      "agreement_evalplus": null,
+      "agreement_held_out": null,
+      "solved_plus": null
+    },
+    {
+      "layer": 10,
+      "removed_fraction": 0.2,
+      "map_cost": 0.0033881804517932324,
+      "kl_code_sliced": 0.003674963845696766,
+      "kl_code_least_squares": 0.0022946484095882624,
+      "kl_code_trained": 0.001921644841786474,
+      "kl_c4_trained": 0.004619071274646558,
+      "wikitext2_perplexity": 12.692559573142551,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.986541748046875,
+      "agreement_evalplus": 0.9863023404104575,
+      "agreement_held_out": 0.984100652778077,
+      "solved_plus": null
+    },
+    {
+      "layer": 10,
+      "removed_fraction": 0.4,
+      "map_cost": 0.008422145184567853,
+      "kl_code_sliced": 0.00889468019886408,
+      "kl_code_least_squares": 0.0057078982863458805,
+      "kl_code_trained": 0.00469115224404959,
+      "kl_c4_trained": 0.011009809444658458,
+      "wikitext2_perplexity": 12.782939263263605,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.979705810546875,
+      "agreement_evalplus": 0.9823111258059183,
+      "agreement_held_out": 0.9789516771872374,
+      "solved_plus": 189
+    },
+    {
+      "layer": 13,
+      "removed_fraction": 0.2,
+      "map_cost": 0.003081292090428178,
+      "kl_code_sliced": 0.0024106220007524826,
+      "kl_code_least_squares": 0.0016261274795397185,
+      "kl_code_trained": 0.0013298086250870256,
+      "kl_c4_trained": 0.0033998574217548594,
+      "wikitext2_perplexity": 12.693425462743628,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": null,
+      "agreement_evalplus": null,
+      "agreement_held_out": null,
+      "solved_plus": null
+    },
+    {
+      "layer": 13,
+      "removed_fraction": 0.4,
+      "map_cost": 0.007572908736165118,
+      "kl_code_sliced": 0.005863131576916203,
+      "kl_code_least_squares": 0.004027188093459699,
+      "kl_code_trained": 0.003206854293239303,
+      "kl_c4_trained": 0.008127037232043222,
+      "wikitext2_perplexity": 12.752272965485009,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": null,
+      "agreement_evalplus": null,
+      "agreement_held_out": null,
+      "solved_plus": null
+    },
+    {
+      "layer": 14,
+      "removed_fraction": 0.2,
+      "map_cost": 0.003009403878536432,
+      "kl_code_sliced": 0.00222936253703665,
+      "kl_code_least_squares": 0.0014435209523071535,
+      "kl_code_trained": 0.0011900338540726807,
+      "kl_c4_trained": 0.003737150502274744,
+      "wikitext2_perplexity": 12.697101930563536,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": null,
+      "agreement_evalplus": null,
+      "agreement_held_out": null,
+      "solved_plus": null
+    },
+    {
+      "layer": 14,
+      "removed_fraction": 0.4,
+      "map_cost": 0.007464225869739494,
+      "kl_code_sliced": 0.005366376164602116,
+      "kl_code_least_squares": 0.0036373963448568247,
+      "kl_code_trained": 0.002954644776764326,
+      "kl_c4_trained": 0.008526551246177405,
+      "wikitext2_perplexity": 12.751571958782321,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": null,
+      "agreement_evalplus": null,
+      "agreement_held_out": null,
+      "solved_plus": null
+    },
+    {
+      "layer": 15,
+      "removed_fraction": 0.2,
+      "map_cost": 0.002864127179464049,
+      "kl_code_sliced": 0.0021147935149201658,
+      "kl_code_least_squares": 0.0013402295553532895,
+      "kl_code_trained": 0.001132583049184177,
+      "kl_c4_trained": 0.0035481136001180857,
+      "wikitext2_perplexity": 12.703319703520336,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.9893798828125,
+      "agreement_evalplus": 0.9911673712301915,
+      "agreement_held_out": 0.9883447874701079,
+      "solved_plus": null
+    },
+    {
+      "layer": 15,
+      "removed_fraction": 0.4,
+      "map_cost": 0.007413899609446162,
+      "kl_code_sliced": 0.005305727943778038,
+      "kl_code_least_squares": 0.003653006824606564,
+      "kl_code_trained": 0.0029382471038843505,
+      "kl_c4_trained": 0.008719388191821054,
+      "wikitext2_perplexity": 12.77426773843043,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.9815673828125,
+      "agreement_evalplus": 0.987648489714947,
+      "agreement_held_out": 0.9831311803864963,
+      "solved_plus": null
+    },
+    {
+      "layer": 17,
+      "removed_fraction": 0.2,
+      "map_cost": 0.002305089245581371,
+      "kl_code_sliced": 0.001981059725949308,
+      "kl_code_least_squares": 0.0013093064626445994,
+      "kl_code_trained": 0.001154098499682732,
+      "kl_c4_trained": 0.004182962147751823,
+      "wikitext2_perplexity": 12.702646746703039,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.990692138671875,
+      "agreement_evalplus": 0.990954821340009,
+      "agreement_held_out": 0.9888833832432083,
+      "solved_plus": null
+    },
+    {
+      "layer": 17,
+      "removed_fraction": 0.4,
+      "map_cost": 0.006569726634623407,
+      "kl_code_sliced": 0.005109608653583564,
+      "kl_code_least_squares": 0.0033774816038203426,
+      "kl_code_trained": 0.0029808356193825603,
+      "kl_c4_trained": 0.011305567808449268,
+      "wikitext2_perplexity": 12.826234960136992,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.984039306640625,
+      "agreement_evalplus": 0.9849325744515032,
+      "agreement_held_out": 0.9824202339660039,
+      "solved_plus": 194
+    },
+    {
+      "layer": 18,
+      "removed_fraction": 0.2,
+      "map_cost": 0.00242388720708675,
+      "kl_code_sliced": 0.0021375719043135177,
+      "kl_code_least_squares": 0.0014675637994514545,
+      "kl_code_trained": 0.0012130872473790077,
+      "kl_c4_trained": 0.004860459477640688,
+      "wikitext2_perplexity": 12.709042210021371,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.990447998046875,
+      "agreement_evalplus": 0.991214604539121,
+      "agreement_held_out": 0.9874399465712993,
+      "solved_plus": null
+    },
+    {
+      "layer": 18,
+      "removed_fraction": 0.4,
+      "map_cost": 0.007084350848444387,
+      "kl_code_sliced": 0.006041849745088257,
+      "kl_code_least_squares": 0.0042263469731551595,
+      "kl_code_trained": 0.0032649833847244736,
+      "kl_c4_trained": 0.012799567892216146,
+      "wikitext2_perplexity": 12.819692461173155,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.983978271484375,
+      "agreement_evalplus": 0.9877429563328058,
+      "agreement_held_out": 0.9828511105844842,
+      "solved_plus": null
+    },
+    {
+      "layer": 20,
+      "removed_fraction": 0.2,
+      "map_cost": 0.0016056738841427887,
+      "kl_code_sliced": 0.002673528993909713,
+      "kl_code_least_squares": 0.002050840612355387,
+      "kl_code_trained": 0.0018679751174204284,
+      "kl_c4_trained": 0.005904335514060222,
+      "wikitext2_perplexity": 12.741289019948667,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.990478515625,
+      "agreement_evalplus": 0.9929150036605815,
+      "agreement_held_out": 0.989939030958485,
+      "solved_plus": null
+    },
+    {
+      "layer": 20,
+      "removed_fraction": 0.4,
+      "map_cost": 0.005273062169663945,
+      "kl_code_sliced": 0.005801081271783914,
+      "kl_code_least_squares": 0.004352878208010225,
+      "kl_code_trained": 0.003892941393132787,
+      "kl_c4_trained": 0.015804405033122748,
+      "wikitext2_perplexity": 12.920281101104782,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.985595703125,
+      "agreement_evalplus": 0.9891599556006896,
+      "agreement_held_out": 0.9852424758170498,
+      "solved_plus": 192
+    },
+    {
+      "layer": 21,
+      "removed_fraction": 0.2,
+      "map_cost": 0.0016185816800984298,
+      "kl_code_sliced": 0.0031281009287340567,
+      "kl_code_least_squares": 0.002659858942934079,
+      "kl_code_trained": 0.0025005238203448243,
+      "kl_c4_trained": 0.006291890356806107,
+      "wikitext2_perplexity": 12.765173055595698,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.98907470703125,
+      "agreement_evalplus": 0.9942375363106062,
+      "agreement_held_out": 0.9910377663356098,
+      "solved_plus": null
+    },
+    {
+      "layer": 21,
+      "removed_fraction": 0.4,
+      "map_cost": 0.00546343152452522,
+      "kl_code_sliced": 0.008432866401562933,
+      "kl_code_least_squares": 0.006886422379466239,
+      "kl_code_trained": 0.006256422173464671,
+      "kl_c4_trained": 0.019534575752913952,
+      "wikitext2_perplexity": 12.945988228723833,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.982391357421875,
+      "agreement_evalplus": 0.98956143872659,
+      "agreement_held_out": 0.9851132128315057,
+      "solved_plus": null
+    },
+    {
+      "layer": 22,
+      "removed_fraction": 0.2,
+      "map_cost": 0.0016530869054065533,
+      "kl_code_sliced": 0.0042311766683269525,
+      "kl_code_least_squares": 0.003935730494049494,
+      "kl_code_trained": 0.003768646238313522,
+      "kl_c4_trained": 0.007740909160929732,
+      "wikitext2_perplexity": 12.769285539476002,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.98876953125,
+      "agreement_evalplus": 0.9943792362373947,
+      "agreement_held_out": 0.9915763621087101,
+      "solved_plus": null
+    },
+    {
+      "layer": 22,
+      "removed_fraction": 0.4,
+      "map_cost": 0.0056310505831049795,
+      "kl_code_sliced": 0.008739715347473975,
+      "kl_code_least_squares": 0.007798062746587675,
+      "kl_code_trained": 0.007264767635206226,
+      "kl_c4_trained": 0.0208983218180947,
+      "wikitext2_perplexity": 12.954929624228159,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.982513427734375,
+      "agreement_evalplus": 0.9907186547953617,
+      "agreement_held_out": 0.9861042290540104,
+      "solved_plus": null
+    },
+    {
+      "layer": 23,
+      "removed_fraction": 0.2,
+      "map_cost": 0.0017280435857287557,
+      "kl_code_sliced": 0.003693266460686573,
+      "kl_code_least_squares": 0.003473839955404401,
+      "kl_code_trained": 0.0034367725766060175,
+      "kl_c4_trained": 0.00701162067707628,
+      "wikitext2_perplexity": 12.76558654475944,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.98785400390625,
+      "agreement_evalplus": 0.9948515693266892,
+      "agreement_held_out": 0.9930197987806192,
+      "solved_plus": null
+    },
+    {
+      "layer": 23,
+      "removed_fraction": 0.4,
+      "map_cost": 0.005323643790973165,
+      "kl_code_sliced": 0.009366216378111858,
+      "kl_code_least_squares": 0.008933302924560849,
+      "kl_code_trained": 0.00854382265242748,
+      "kl_c4_trained": 0.020085740834474564,
+      "wikitext2_perplexity": 12.96822567316068,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.9815673828125,
+      "agreement_evalplus": 0.9907422714498264,
+      "agreement_held_out": 0.9878492793588556,
+      "solved_plus": null
+    },
+    {
+      "layer": 24,
+      "removed_fraction": 0.2,
+      "map_cost": 0.001674920681033143,
+      "kl_code_sliced": 0.003228304773074342,
+      "kl_code_least_squares": 0.003049424993150751,
+      "kl_code_trained": 0.0029321956644707825,
+      "kl_c4_trained": 0.007358068658504635,
+      "wikitext2_perplexity": 12.769318246340925,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.989776611328125,
+      "agreement_evalplus": 0.9961268686677845,
+      "agreement_held_out": 0.9935799383846435,
+      "solved_plus": null
+    },
+    {
+      "layer": 24,
+      "removed_fraction": 0.4,
+      "map_cost": 0.004829350187627313,
+      "kl_code_sliced": 0.007829497029888444,
+      "kl_code_least_squares": 0.007339503295952454,
+      "kl_code_trained": 0.006961327460885514,
+      "kl_c4_trained": 0.01913028344279155,
+      "wikitext2_perplexity": 12.987755650377197,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.9844970703125,
+      "agreement_evalplus": 0.992867770351652,
+      "agreement_held_out": 0.989831311803865,
+      "solved_plus": 200
+    },
+    {
+      "layer": 25,
+      "removed_fraction": 0.2,
+      "map_cost": 0.001758292517223481,
+      "kl_code_sliced": 0.002239239694972639,
+      "kl_code_least_squares": 0.002015507568103203,
+      "kl_code_trained": 0.001974271503968339,
+      "kl_c4_trained": 0.006758168470696546,
+      "wikitext2_perplexity": 12.782418275413225,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.991424560546875,
+      "agreement_evalplus": 0.9973785513544151,
+      "agreement_held_out": 0.9967253376995497,
+      "solved_plus": null
+    },
+    {
+      "layer": 25,
+      "removed_fraction": 0.4,
+      "map_cost": 0.004988822016656513,
+      "kl_code_sliced": 0.005393006882513873,
+      "kl_code_least_squares": 0.004871071556408424,
+      "kl_code_trained": 0.004735455198897398,
+      "kl_c4_trained": 0.018803719896823168,
+      "wikitext2_perplexity": 12.999323414392244,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": 0.986907958984375,
+      "agreement_evalplus": 0.9958670854686725,
+      "agreement_held_out": 0.9938384643557318,
+      "solved_plus": null
+    },
+    {
+      "layer": 26,
+      "removed_fraction": 0.2,
+      "map_cost": 0.0022114702536129016,
+      "kl_code_sliced": 0.003647474252829852,
+      "kl_code_least_squares": 0.0034026139064735617,
+      "kl_code_trained": 0.0033714475148372003,
+      "kl_c4_trained": 0.008703820698428899,
+      "wikitext2_perplexity": 12.886878045500108,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": null,
+      "agreement_evalplus": null,
+      "agreement_held_out": null,
+      "solved_plus": null
+    },
+    {
+      "layer": 26,
+      "removed_fraction": 0.4,
+      "map_cost": 0.006622832936798773,
+      "kl_code_sliced": 0.01222680135833798,
+      "kl_code_least_squares": 0.011395515481126495,
+      "kl_code_trained": 0.011292034658254124,
+      "kl_c4_trained": 0.023291703837458044,
+      "wikitext2_perplexity": 13.259586563961816,
+      "original_perplexity": 12.66009202072348,
+      "agreement_code": null,
+      "agreement_evalplus": null,
+      "agreement_held_out": null,
+      "solved_plus": null
+    }
+  ],
+  "map_points": {
+    "0.2": [
+      [
+        0.0054930215521835635,
+        0.0056824420898919925,
+        2
+      ],
+      [
+        0.0033881804517932324,
+        0.003674963845696766,
+        10
+      ],
+      [
+        0.003081292090428178,
+        0.0024106220007524826,
+        13
+      ],
+      [
+        0.003009403878536432,
+        0.00222936253703665,
+        14
+      ],
+      [
+        0.002864127179464049,
+        0.0021147935149201658,
+        15
+      ],
+      [
+        0.002305089245581371,
+        0.001981059725949308,
+        17
+      ],
+      [
+        0.00242388720708675,
+        0.0021375719043135177,
+        18
+      ],
+      [
+        0.0016056738841427887,
+        0.002673528993909713,
+        20
+      ],
+      [
+        0.0016185816800984298,
+        0.0031281009287340567,
+        21
+      ],
+      [
+        0.0016530869054065533,
+        0.0042311766683269525,
+        22
+      ],
+      [
+        0.0017280435857287557,
+        0.003693266460686573,
+        23
+      ],
+      [
+        0.001674920681033143,
+        0.003228304773074342,
+        24
+      ],
+      [
+        0.001758292517223481,
+        0.002239239694972639,
+        25
+      ],
+      [
+        0.0022114702536129016,
+        0.003647474252829852,
+        26
+      ]
+    ],
+    "0.4": [
+      [
+        0.012943319583655466,
+        0.014832855245913379,
+        2
+      ],
+      [
+        0.008422145184567853,
+        0.00889468019886408,
+        10
+      ],
+      [
+        0.007572908736165118,
+        0.005863131576916203,
+        13
+      ],
+      [
+        0.007464225869739494,
+        0.005366376164602116,
+        14
+      ],
+      [
+        0.007413899609446162,
+        0.005305727943778038,
+        15
+      ],
+      [
+        0.006569726634623407,
+        0.005109608653583564,
+        17
+      ],
+      [
+        0.007084350848444387,
+        0.006041849745088257,
+        18
+      ],
+      [
+        0.005273062169663945,
+        0.005801081271783914,
+        20
+      ],
+      [
+        0.00546343152452522,
+        0.008432866401562933,
+        21
+      ],
+      [
+        0.0056310505831049795,
+        0.008739715347473975,
+        22
+      ],
+      [
+        0.005323643790973165,
+        0.009366216378111858,
+        23
+      ],
+      [
+        0.004829350187627313,
+        0.007829497029888444,
+        24
+      ],
+      [
+        0.004988822016656513,
+        0.005393006882513873,
+        25
+      ],
+      [
+        0.006622832936798773,
+        0.01222680135833798,
+        26
+      ]
+    ]
+  },
+  "agreement_points": {
+    "evalplus": [
+      [
+        "w. 13",
+        0.9842949247809555,
+        186
+      ],
+      [
+        "w. 13 (mapa 100% kod)",
+        0.9865857402640342,
+        191
+      ],
+      [
+        "w. 13 (cel na wyj\u015bciu)",
+        0.9827362255862835,
+        184
+      ],
+      [
+        "w. 26 (cel na wyj\u015bciu)",
+        0.9944028528918594,
+        205
+      ],
+      [
+        "w. 10 (nowa)",
+        0.9823111258059183,
+        189
+      ],
+      [
+        "w. 17 (nowa)",
+        0.9849325744515032,
+        194
+      ],
+      [
+        "w. 20 (nowa)",
+        0.9891599556006896,
+        192
+      ],
+      [
+        "w. 24 (nowa)",
+        0.992867770351652,
+        200
+      ]
+    ],
+    "held_out": [
+      [
+        "w. 13",
+        0.9822909709804597,
+        186
+      ],
+      [
+        "w. 13 (mapa 100% kod)",
+        0.9834758816812805,
+        191
+      ],
+      [
+        "w. 13 (cel na wyj\u015bciu)",
+        0.981106060279639,
+        184
+      ],
+      [
+        "w. 26 (cel na wyj\u015bciu)",
+        0.9933860439063275,
+        205
+      ],
+      [
+        "w. 10 (nowa)",
+        0.9789516771872374,
+        189
+      ],
+      [
+        "w. 17 (nowa)",
+        0.9824202339660039,
+        194
+      ],
+      [
+        "w. 20 (nowa)",
+        0.9852424758170498,
+        192
+      ],
+      [
+        "w. 24 (nowa)",
+        0.989831311803865,
+        200
+      ]
+    ]
+  }
+}

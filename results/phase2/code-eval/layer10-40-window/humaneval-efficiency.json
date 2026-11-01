@@ -1,0 +1,15 @@
+{
+  "dataset": "humaneval",
+  "mlps": [
+    "/home/karol/qwen3-checkpoints/phase2-code/mlps-layers/layer-10-perturbation-40-trained.pt"
+  ],
+  "parameters": 592274432,
+  "peak_memory_bytes": 3369034752,
+  "generated_tokens": 21569,
+  "seconds": 129.3286072470073,
+  "tokens_per_second": 166.77671289543025,
+  "batch_size": 16,
+  "samples_per_task": 1,
+  "temperature": 0.0,
+  "top_p": 1.0
+}
