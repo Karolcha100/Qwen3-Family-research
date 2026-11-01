@@ -1,0 +1,86 @@
+{
+  "models": {
+    "original": {
+      "base": {
+        "expected_solved_1": 163.4,
+        "expected_solved_2": 228.48888888888888,
+        "expected_solved_3": 264.60833333333335,
+        "solved_at_least_once": 353,
+        "solved_every_time": 20,
+        "tasks": 542
+      },
+      "plus": {
+        "expected_solved_1": 134.0,
+        "expected_solved_2": 192.04444444444445,
+        "expected_solved_3": 225.53333333333333,
+        "solved_at_least_once": 311,
+        "solved_every_time": 15,
+        "tasks": 542
+      }
+    },
+    "layer13-40-window": {
+      "base": {
+        "expected_solved_1": 161.1,
+        "expected_solved_2": 223.84444444444443,
+        "expected_solved_3": 258.85,
+        "solved_at_least_once": 345,
+        "solved_every_time": 22,
+        "tasks": 542
+      },
+      "plus": {
+        "expected_solved_1": 133.4,
+        "expected_solved_2": 187.2,
+        "expected_solved_3": 217.10833333333335,
+        "solved_at_least_once": 291,
+        "solved_every_time": 17,
+        "tasks": 542
+      }
+    }
+  },
+  "greedy_plus_solved": {
+    "original": 200,
+    "layer13-40-window": 186
+  },
+  "paired": {
+    "layer13-40-window": {
+      "base": {
+        "tasks_better": 154,
+        "tasks_worse": 171,
+        "difference_1": {
+          "value": -2.3,
+          "low": -10.100000000000001,
+          "high": 5.700000000000001
+        },
+        "difference_2": {
+          "value": -4.644444444444444,
+          "low": -15.11111111111111,
+          "high": 5.733333333333334
+        },
+        "difference_3": {
+          "value": -5.758333333333333,
+          "low": -17.433333333333334,
+          "high": 5.8833333333333355
+        }
+      },
+      "plus": {
+        "tasks_better": 132,
+        "tasks_worse": 147,
+        "difference_1": {
+          "value": -0.5999999999999996,
+          "low": -7.6000000000000005,
+          "high": 6.400000000000001
+        },
+        "difference_2": {
+          "value": -4.844444444444443,
+          "low": -14.177777777777775,
+          "high": 4.466666666666668
+        },
+        "difference_3": {
+          "value": -8.424999999999999,
+          "low": -19.174999999999997,
+          "high": 2.4833333333333334
+        }
+      }
+    }
+  }
+}

@@ -172,3 +172,11 @@ Jeden wpis na zadanie: co zrobiono, gdzie są pliki, jak sprawdzono, co zostało
 - pass@k: `--samples-per-task` w `scripts/phase2_code_generate.py`, pass@1–3 w `scripts/phase2_code_evaluate.py`, `src/qwen_compression/code_metrics.py` + test; sprawdzone w kontenerze na dwóch zestawach odpowiedzi; pytania K44, K45 (`agents-issues-9.md`).
 
 *2026-10-30 18:39 — Claude Opus 5.5*
+
+### [L23] K43, K44 (część; kolejka warstw czeka na K47)
+
+- K43: raport `AGENTS/phases/phase-2/k43-zgodnosc-tokenu.md` (zgodność tokenu na odpowiedziach oryginału na zadania EvalPlus odtwarza kolejność testów kodu), pytanie K46;
+- K44: raport `AGENTS/phases/phase-2/k44-pass-at-k.md` (`scripts/phase2_code_pass_at_k_analysis.py`): w. 13 −40% w 1 próbie 133,4 wobec 134,0 zadań „+”, w 3 próbach 217,1 wobec 225,5, różnice w granicach przypadku;
+- noc: testy MBPP w kontenerze zawiesiły się (brak pamięci przy 8 testach naraz), kolejka warstw nie ruszyła; testy powtórzone z `--parallel 2`, w kolejce warstw `timeout 1800` i `--parallel 4`, pułapka 25; pytanie K47.
+
+*2026-11-01 13:09 — Claude Opus 5.5*

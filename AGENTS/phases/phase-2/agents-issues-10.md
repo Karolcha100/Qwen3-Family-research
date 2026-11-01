@@ -21,3 +21,21 @@ Pytanie K45 (warstwy najtańsze według mapy) miałem zadać ponownie po K43. Tw
 - **Decyzja:**
 
 *2026-11-01 00:04 — Claude Opus 5.5*
+
+---
+
+## Co masz zrobić (dopisane 2026-11-01 13:08)
+
+Drugie pytanie, po nocy: nocna kolejka warstw nie ruszyła, bo zawiesiły się testy K44 (raport `AGENTS/phases/phase-2/k44-pass-at-k.md`, sekcja 4). Uruchomienie wymaga Twojej zgody na GPU, bo nocna zgoda była do ~6:00. Jeśli zgadzasz się z rekomendacją, wystarczy „rek”.
+
+### K47. 🟡 Kiedy puścić kolejkę mało ważnych warstw, która w nocy nie ruszyła
+
+- **Problem:** kolejka `results/phase2/code/queue-layers.json` jest gotowa i bez zmian w treści obliczeń: warstwy 24, 25, 20, 23, 21, 22, 17, 18, 15 (najtańsze według mapy) i kontrolnie 10, każda przy −20% i −40%, przepisem z @T017. Potem zgodność tokenu i testy kodu (jedna odpowiedź bez losowania) dla warstw 24, 20, 17 i 10 przy −40%. Mój szacunek to ~2,5 h GPU. W tym czasie karta graficzna jest zajęta (~5 GB pamięci), a reszta komputera działa normalnie. Zgodność w K46 A miała policzyć ta kolejka, więc dla nowych warstw jej jeszcze nie ma.
+- **Opcje:**
+  - **A** — puszczam od razu po Twojej odpowiedzi (wyniki dziś po ~2,5 h);
+  - **B** — puszczam dziś wieczorem lub w nocy, w godzinach, które podasz w decyzji;
+  - **C** — nie puszczam; najpierw chcesz omówić wyniki K43/K44 albo zmienić listę warstw (napisz, jak).
+- **Rekomendacja:** A, jeśli nie potrzebujesz teraz karty graficznej. W przeciwnym razie B.
+- **Decyzja:**
+
+*2026-11-01 13:08 — Claude Opus 5.5*

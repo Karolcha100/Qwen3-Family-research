@@ -92,3 +92,23 @@ W liczbach zadań poda to np. „rozwiązane w co najmniej 1 z 3 prób”.
 ---
 ---
 ---
+
+## Co masz zrobić
+
+Przeczytaj wynik pass@1–3 (raport `AGENTS/phases/phase-2/k44-pass-at-k.md`). Jedno pytanie z nocy, czy puścić kolejkę warstw, to **K47** w `AGENTS/phases/phase-2/agents-issues-10.md`.
+
+### pass@1, pass@2, pass@3 w liczbach zadań (HumanEval+ i MBPP+, z 542)
+
+Każdy model dał 10 losowanych odpowiedzi na każde zadanie:
+- **rozwiązane w 1 próbie:** oryginał 134, w. 13 −40% 133 (różnica −0,6, w granicach przypadku);
+- **rozwiązane w co najmniej 1 z 2 prób:** 192 wobec 187 (−4,8, w granicach przypadku);
+- **rozwiązane w co najmniej 1 z 3 prób:** 226 wobec 217 (−8,4, przedział 95% od −19 do +2,5, nadal w granicach przypadku);
+- rozwiązane choć raz w 10 próbach: 311 wobec 291.
+
+Wcześniejsza różnica 14 zadań przy jednej odpowiedzi bez losowania (200 wobec 186) była więc w dużej części przypadkiem. Przy kilku próbach zmniejszony model może trochę tracić, ale do pewnego wniosku potrzeba więcej danych.
+
+*2026-11-01 13:08 — Claude Opus 5.5*
+
+---
+---
+---
