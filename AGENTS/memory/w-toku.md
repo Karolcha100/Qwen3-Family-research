@@ -25,3 +25,9 @@ Co agent robi **teraz**, w którym kroku jest i co dalej. Aktualizowany w trakci
 ## Ostatnia sesja
 
 2026-11-01 14:52: T019 (co policzy kolejka warstw), odpowiedź w dyskusji raportu zbiorczego (dlaczego końcowe warstwy tanie: ważność skupiona w kilku neuronach + efekt kodu; wykres `kod-mapa-skupienie-waznosci.png`).
+
+## Przewidywanie przed testami kodu kolejki warstw (2026-11-01 17:19)
+
+Zapisane, zanim testy kodu warstw 24, 20, 17, 10 (−40%) się skończyły. Według zgodności na 510 zadaniach spoza testów (`results/phase2/code-eval/token-agreement-layers.json`):
+- kolejność rozwiązanych zadań „+”: **24 (98,98%) > 20 (98,52%) > 17 (98,24%) > 10 (97,90%)**;
+- skala z 4 wcześniejszych modeli (w. 26 99,34% → 205 zadań; w. 13 98,11–98,35% → 184–191): w. 24 ok. 195–200, w. 20 ok. 188–192, w. 17 ok. 184–188, w. 10 poniżej 184.

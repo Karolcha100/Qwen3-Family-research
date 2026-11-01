@@ -1,0 +1,13 @@
+{
+  "dataset": "mbpp",
+  "mlps": [],
+  "parameters": 596049920,
+  "peak_memory_bytes": 5526048768,
+  "generated_tokens": 49301,
+  "seconds": 357.3459448789945,
+  "tokens_per_second": 137.96434717258214,
+  "batch_size": 16,
+  "samples_per_task": 1,
+  "temperature": 0.0,
+  "top_p": 1.0
+}

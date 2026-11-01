@@ -1,0 +1,699 @@
+{
+  "sets": {
+    "c4": {
+      "original-bf16": {
+        "kl": 0.0008164977662090678,
+        "top1_agreement": 0.970703125,
+        "tokens": 32768
+      },
+      "layer-10-perturbation-20-trained": {
+        "kl": 0.004619070619810373,
+        "top1_agreement": 0.959930419921875,
+        "tokens": 32768
+      },
+      "layer-10-perturbation-40-trained": {
+        "kl": 0.01100980830960907,
+        "top1_agreement": 0.9373779296875,
+        "tokens": 32768
+      },
+      "layer-15-perturbation-20-trained": {
+        "kl": 0.0035481128870742396,
+        "top1_agreement": 0.965057373046875,
+        "tokens": 32768
+      },
+      "layer-15-perturbation-40-trained": {
+        "kl": 0.008719387609744444,
+        "top1_agreement": 0.944427490234375,
+        "tokens": 32768
+      },
+      "layer-17-perturbation-20-trained": {
+        "kl": 0.004182961434707977,
+        "top1_agreement": 0.9644775390625,
+        "tokens": 32768
+      },
+      "layer-17-perturbation-40-trained": {
+        "kl": 0.011305566877126694,
+        "top1_agreement": 0.9395751953125,
+        "tokens": 32768
+      },
+      "layer-18-perturbation-20-trained": {
+        "kl": 0.004860458662733436,
+        "top1_agreement": 0.96044921875,
+        "tokens": 32768
+      },
+      "layer-18-perturbation-40-trained": {
+        "kl": 0.012799566960893571,
+        "top1_agreement": 0.93389892578125,
+        "tokens": 32768
+      },
+      "layer-20-perturbation-20-trained": {
+        "kl": 0.005904335179366171,
+        "top1_agreement": 0.96295166015625,
+        "tokens": 32768
+      },
+      "layer-20-perturbation-40-trained": {
+        "kl": 0.015804403636138886,
+        "top1_agreement": 0.935791015625,
+        "tokens": 32768
+      },
+      "layer-21-perturbation-20-trained": {
+        "kl": 0.006291890123975463,
+        "top1_agreement": 0.965301513671875,
+        "tokens": 32768
+      },
+      "layer-21-perturbation-40-trained": {
+        "kl": 0.019534574123099446,
+        "top1_agreement": 0.933837890625,
+        "tokens": 32768
+      },
+      "layer-22-perturbation-20-trained": {
+        "kl": 0.007740908840787597,
+        "top1_agreement": 0.96923828125,
+        "tokens": 32768
+      },
+      "layer-22-perturbation-40-trained": {
+        "kl": 0.02089832042111084,
+        "top1_agreement": 0.93841552734375,
+        "tokens": 32768
+      },
+      "layer-23-perturbation-20-trained": {
+        "kl": 0.007011620313278399,
+        "top1_agreement": 0.967376708984375,
+        "tokens": 32768
+      },
+      "layer-23-perturbation-40-trained": {
+        "kl": 0.02008573932107538,
+        "top1_agreement": 0.941986083984375,
+        "tokens": 32768
+      },
+      "layer-24-perturbation-20-trained": {
+        "kl": 0.007358068396570161,
+        "top1_agreement": 0.969329833984375,
+        "tokens": 32768
+      },
+      "layer-24-perturbation-40-trained": {
+        "kl": 0.019130282511468977,
+        "top1_agreement": 0.947601318359375,
+        "tokens": 32768
+      },
+      "layer-25-perturbation-20-trained": {
+        "kl": 0.0067581684270408005,
+        "top1_agreement": 0.96978759765625,
+        "tokens": 32768
+      },
+      "layer-25-perturbation-40-trained": {
+        "kl": 0.018803719838615507,
+        "top1_agreement": 0.94683837890625,
+        "tokens": 32768
+      }
+    },
+    "code": {
+      "original-bf16": {
+        "kl": 0.0004465382662601769,
+        "top1_agreement": 0.989349365234375,
+        "tokens": 32768
+      },
+      "layer-10-perturbation-20-trained": {
+        "kl": 0.0019216449290979654,
+        "top1_agreement": 0.986541748046875,
+        "tokens": 32768
+      },
+      "layer-10-perturbation-40-trained": {
+        "kl": 0.004691152069426607,
+        "top1_agreement": 0.979705810546875,
+        "tokens": 32768
+      },
+      "layer-15-perturbation-20-trained": {
+        "kl": 0.001132582963691675,
+        "top1_agreement": 0.9893798828125,
+        "tokens": 32768
+      },
+      "layer-15-perturbation-40-trained": {
+        "kl": 0.00293824692198541,
+        "top1_agreement": 0.9815673828125,
+        "tokens": 32768
+      },
+      "layer-17-perturbation-20-trained": {
+        "kl": 0.0011540984287421452,
+        "top1_agreement": 0.990692138671875,
+        "tokens": 32768
+      },
+      "layer-17-perturbation-40-trained": {
+        "kl": 0.0029808352956024464,
+        "top1_agreement": 0.984039306640625,
+        "tokens": 32768
+      },
+      "layer-18-perturbation-20-trained": {
+        "kl": 0.001213087185533368,
+        "top1_agreement": 0.990447998046875,
+        "tokens": 32768
+      },
+      "layer-18-perturbation-40-trained": {
+        "kl": 0.0032649832028255332,
+        "top1_agreement": 0.983978271484375,
+        "tokens": 32768
+      },
+      "layer-20-perturbation-20-trained": {
+        "kl": 0.001867974993729149,
+        "top1_agreement": 0.990478515625,
+        "tokens": 32768
+      },
+      "layer-20-perturbation-40-trained": {
+        "kl": 0.003892941167578101,
+        "top1_agreement": 0.985595703125,
+        "tokens": 32768
+      },
+      "layer-21-perturbation-20-trained": {
+        "kl": 0.002500523638445884,
+        "top1_agreement": 0.98907470703125,
+        "tokens": 32768
+      },
+      "layer-21-perturbation-40-trained": {
+        "kl": 0.006256421816942748,
+        "top1_agreement": 0.982391357421875,
+        "tokens": 32768
+      },
+      "layer-22-perturbation-20-trained": {
+        "kl": 0.003768646070966497,
+        "top1_agreement": 0.98876953125,
+        "tokens": 32768
+      },
+      "layer-22-perturbation-40-trained": {
+        "kl": 0.007264767387823667,
+        "top1_agreement": 0.982513427734375,
+        "tokens": 32768
+      },
+      "layer-23-perturbation-20-trained": {
+        "kl": 0.003436772520217346,
+        "top1_agreement": 0.98785400390625,
+        "tokens": 32768
+      },
+      "layer-23-perturbation-40-trained": {
+        "kl": 0.008543822586943861,
+        "top1_agreement": 0.9815673828125,
+        "tokens": 32768
+      },
+      "layer-24-perturbation-20-trained": {
+        "kl": 0.0029321957008505706,
+        "top1_agreement": 0.989776611328125,
+        "tokens": 32768
+      },
+      "layer-24-perturbation-40-trained": {
+        "kl": 0.006961327337194234,
+        "top1_agreement": 0.9844970703125,
+        "tokens": 32768
+      },
+      "layer-25-perturbation-20-trained": {
+        "kl": 0.0019742714957828866,
+        "top1_agreement": 0.991424560546875,
+        "tokens": 32768
+      },
+      "layer-25-perturbation-40-trained": {
+        "kl": 0.004735455178888515,
+        "top1_agreement": 0.986907958984375,
+        "tokens": 32768
+      }
+    },
+    "humaneval": {
+      "original-bf16": {
+        "kl": 0.00015415762236382062,
+        "top1_agreement": 0.9963265564633605,
+        "tokens": 15789
+      },
+      "layer-10-perturbation-20-trained": {
+        "kl": 0.0028278447164247255,
+        "top1_agreement": 0.988852998923301,
+        "tokens": 15789
+      },
+      "layer-10-perturbation-40-trained": {
+        "kl": 0.005372213001779241,
+        "top1_agreement": 0.9854962315536133,
+        "tokens": 15789
+      },
+      "layer-15-perturbation-20-trained": {
+        "kl": 0.001130882209372508,
+        "top1_agreement": 0.9929697890936728,
+        "tokens": 15789
+      },
+      "layer-15-perturbation-40-trained": {
+        "kl": 0.0027932238198976746,
+        "top1_agreement": 0.9893596807904237,
+        "tokens": 15789
+      },
+      "layer-17-perturbation-20-trained": {
+        "kl": 0.0018203478928888262,
+        "top1_agreement": 0.9920197605928178,
+        "tokens": 15789
+      },
+      "layer-17-perturbation-40-trained": {
+        "kl": 0.004025520666592841,
+        "top1_agreement": 0.9872062828551523,
+        "tokens": 15789
+      },
+      "layer-18-perturbation-20-trained": {
+        "kl": 0.001279271011180556,
+        "top1_agreement": 0.9937298118943568,
+        "tokens": 15789
+      },
+      "layer-18-perturbation-40-trained": {
+        "kl": 0.0024887068143808234,
+        "top1_agreement": 0.9907530559250111,
+        "tokens": 15789
+      },
+      "layer-20-perturbation-20-trained": {
+        "kl": 0.0007458181338023402,
+        "top1_agreement": 0.9946798403952118,
+        "tokens": 15789
+      },
+      "layer-20-perturbation-40-trained": {
+        "kl": 0.002394428659841325,
+        "top1_agreement": 0.9920830958262081,
+        "tokens": 15789
+      },
+      "layer-21-perturbation-20-trained": {
+        "kl": 0.0009802440071661458,
+        "top1_agreement": 0.9964532269301413,
+        "tokens": 15789
+      },
+      "layer-21-perturbation-40-trained": {
+        "kl": 0.0026289737137834735,
+        "top1_agreement": 0.9927797833935018,
+        "tokens": 15789
+      },
+      "layer-22-perturbation-20-trained": {
+        "kl": 0.001117938702195327,
+        "top1_agreement": 0.9964532269301413,
+        "tokens": 15789
+      },
+      "layer-22-perturbation-40-trained": {
+        "kl": 0.0021374467046009677,
+        "top1_agreement": 0.9939831528279182,
+        "tokens": 15789
+      },
+      "layer-23-perturbation-20-trained": {
+        "kl": 0.00044290893776623635,
+        "top1_agreement": 0.997339920197606,
+        "tokens": 15789
+      },
+      "layer-23-perturbation-40-trained": {
+        "kl": 0.0016884848677953571,
+        "top1_agreement": 0.9947431756286021,
+        "tokens": 15789
+      },
+      "layer-24-perturbation-20-trained": {
+        "kl": 0.0006947825606611695,
+        "top1_agreement": 0.9970865792640445,
+        "tokens": 15789
+      },
+      "layer-24-perturbation-40-trained": {
+        "kl": 0.0016993843887275677,
+        "top1_agreement": 0.9950598517955539,
+        "tokens": 15789
+      },
+      "layer-25-perturbation-20-trained": {
+        "kl": 0.0002143984638003268,
+        "top1_agreement": 0.9975299258977769,
+        "tokens": 15789
+      },
+      "layer-25-perturbation-40-trained": {
+        "kl": 0.0006794009749177791,
+        "top1_agreement": 0.9965798973969219,
+        "tokens": 15789
+      }
+    },
+    "mbpp": {
+      "original-bf16": {
+        "kl": 0.00021586257914499142,
+        "top1_agreement": 0.9955938841605785,
+        "tokens": 26554
+      },
+      "layer-10-perturbation-20-trained": {
+        "kl": 0.007941203782957956,
+        "top1_agreement": 0.9847857196655871,
+        "tokens": 26554
+      },
+      "layer-10-perturbation-40-trained": {
+        "kl": 0.013397903728958282,
+        "top1_agreement": 0.9804172629359041,
+        "tokens": 26554
+      },
+      "layer-15-perturbation-20-trained": {
+        "kl": 0.0034404913516396848,
+        "top1_agreement": 0.9900956541387361,
+        "tokens": 26554
+      },
+      "layer-15-perturbation-40-trained": {
+        "kl": 0.00611409572101616,
+        "top1_agreement": 0.9866310160427807,
+        "tokens": 26554
+      },
+      "layer-17-perturbation-20-trained": {
+        "kl": 0.0037257074284225357,
+        "top1_agreement": 0.990321608797168,
+        "tokens": 26554
+      },
+      "layer-17-perturbation-40-trained": {
+        "kl": 0.0077858779604934,
+        "top1_agreement": 0.9835806281539504,
+        "tokens": 26554
+      },
+      "layer-18-perturbation-20-trained": {
+        "kl": 0.005165659053798423,
+        "top1_agreement": 0.9897190630413497,
+        "tokens": 26554
+      },
+      "layer-18-perturbation-40-trained": {
+        "kl": 0.007749221795030573,
+        "top1_agreement": 0.9859531520674851,
+        "tokens": 26554
+      },
+      "layer-20-perturbation-20-trained": {
+        "kl": 0.005571891971872715,
+        "top1_agreement": 0.9918656322964525,
+        "tokens": 26554
+      },
+      "layer-20-perturbation-40-trained": {
+        "kl": 0.009855689646935301,
+        "top1_agreement": 0.9874218573472923,
+        "tokens": 26554
+      },
+      "layer-21-perturbation-20-trained": {
+        "kl": 0.004514654633096176,
+        "top1_agreement": 0.9929200873691346,
+        "tokens": 26554
+      },
+      "layer-21-perturbation-40-trained": {
+        "kl": 0.010237964702935799,
+        "top1_agreement": 0.9876478120057242,
+        "tokens": 26554
+      },
+      "layer-22-perturbation-20-trained": {
+        "kl": 0.003157975214845024,
+        "top1_agreement": 0.9931460420275665,
+        "tokens": 26554
+      },
+      "layer-22-perturbation-40-trained": {
+        "kl": 0.00817784739082622,
+        "top1_agreement": 0.9887775852978835,
+        "tokens": 26554
+      },
+      "layer-23-perturbation-20-trained": {
+        "kl": 0.0024485663420757042,
+        "top1_agreement": 0.9933719966859983,
+        "tokens": 26554
+      },
+      "layer-23-perturbation-40-trained": {
+        "kl": 0.009022024658298091,
+        "top1_agreement": 0.9883633350907585,
+        "tokens": 26554
+      },
+      "layer-24-perturbation-20-trained": {
+        "kl": 0.0013942889775358347,
+        "top1_agreement": 0.9955562250508398,
+        "tokens": 26554
+      },
+      "layer-24-perturbation-40-trained": {
+        "kl": 0.005776722372947318,
+        "top1_agreement": 0.9915643594185434,
+        "tokens": 26554
+      },
+      "layer-25-perturbation-20-trained": {
+        "kl": 0.0002808165250826141,
+        "top1_agreement": 0.9972885440988175,
+        "tokens": 26554
+      },
+      "layer-25-perturbation-40-trained": {
+        "kl": 0.0007915245030624411,
+        "top1_agreement": 0.9954432477216238,
+        "tokens": 26554
+      }
+    },
+    "mbpp-held-out": {
+      "original-bf16": {
+        "kl": 0.00022339611592628672,
+        "top1_agreement": 0.9947433052545404,
+        "tokens": 46417
+      },
+      "layer-10-perturbation-20-trained": {
+        "kl": 0.0071812803349663645,
+        "top1_agreement": 0.984100652778077,
+        "tokens": 46417
+      },
+      "layer-10-perturbation-40-trained": {
+        "kl": 0.011255063257080495,
+        "top1_agreement": 0.9789516771872374,
+        "tokens": 46417
+      },
+      "layer-15-perturbation-20-trained": {
+        "kl": 0.004573128933168573,
+        "top1_agreement": 0.9883447874701079,
+        "tokens": 46417
+      },
+      "layer-15-perturbation-40-trained": {
+        "kl": 0.007729553737962687,
+        "top1_agreement": 0.9831311803864963,
+        "tokens": 46417
+      },
+      "layer-17-perturbation-20-trained": {
+        "kl": 0.003167048219811203,
+        "top1_agreement": 0.9888833832432083,
+        "tokens": 46417
+      },
+      "layer-17-perturbation-40-trained": {
+        "kl": 0.006699753995549559,
+        "top1_agreement": 0.9824202339660039,
+        "tokens": 46417
+      },
+      "layer-18-perturbation-20-trained": {
+        "kl": 0.005087707484001786,
+        "top1_agreement": 0.9874399465712993,
+        "tokens": 46417
+      },
+      "layer-18-perturbation-40-trained": {
+        "kl": 0.009325319975025462,
+        "top1_agreement": 0.9828511105844842,
+        "tokens": 46417
+      },
+      "layer-20-perturbation-20-trained": {
+        "kl": 0.006061539879581133,
+        "top1_agreement": 0.989939030958485,
+        "tokens": 46417
+      },
+      "layer-20-perturbation-40-trained": {
+        "kl": 0.010295208844803852,
+        "top1_agreement": 0.9852424758170498,
+        "tokens": 46417
+      },
+      "layer-21-perturbation-20-trained": {
+        "kl": 0.004281189819325922,
+        "top1_agreement": 0.9910377663356098,
+        "tokens": 46417
+      },
+      "layer-21-perturbation-40-trained": {
+        "kl": 0.010342373204398004,
+        "top1_agreement": 0.9851132128315057,
+        "tokens": 46417
+      },
+      "layer-22-perturbation-20-trained": {
+        "kl": 0.004553829379707037,
+        "top1_agreement": 0.9915763621087101,
+        "tokens": 46417
+      },
+      "layer-22-perturbation-40-trained": {
+        "kl": 0.00903748455833494,
+        "top1_agreement": 0.9861042290540104,
+        "tokens": 46417
+      },
+      "layer-23-perturbation-20-trained": {
+        "kl": 0.0023337416223132533,
+        "top1_agreement": 0.9930197987806192,
+        "tokens": 46417
+      },
+      "layer-23-perturbation-40-trained": {
+        "kl": 0.008325451391862027,
+        "top1_agreement": 0.9878492793588556,
+        "tokens": 46417
+      },
+      "layer-24-perturbation-20-trained": {
+        "kl": 0.002344071171686177,
+        "top1_agreement": 0.9935799383846435,
+        "tokens": 46417
+      },
+      "layer-24-perturbation-40-trained": {
+        "kl": 0.005816966374275414,
+        "top1_agreement": 0.989831311803865,
+        "tokens": 46417
+      },
+      "layer-25-perturbation-20-trained": {
+        "kl": 0.0004524271964919632,
+        "top1_agreement": 0.9967253376995497,
+        "tokens": 46417
+      },
+      "layer-25-perturbation-40-trained": {
+        "kl": 0.0014706848918048772,
+        "top1_agreement": 0.9938384643557318,
+        "tokens": 46417
+      }
+    }
+  },
+  "evalplus": {
+    "humaneval": {
+      "layer13-40-code-only": {
+        "variant": "layer-13-code-only-40-trained",
+        "tasks": 164,
+        "unchanged_answers": 0,
+        "changed_results": 16,
+        "changed_results_with_unchanged_answer": 0
+      },
+      "layer13-40-output": {
+        "variant": "layer-13-perturbation-40-trained_output",
+        "tasks": 164,
+        "unchanged_answers": 0,
+        "changed_results": 14,
+        "changed_results_with_unchanged_answer": 0
+      },
+      "layer13-40-window": {
+        "variant": "layer-13-perturbation-40-trained",
+        "tasks": 164,
+        "unchanged_answers": 0,
+        "changed_results": 16,
+        "changed_results_with_unchanged_answer": 0
+      },
+      "layer13-40-window-sampled": {
+        "variant": "layer-13-perturbation-40-trained",
+        "tasks": 164,
+        "unchanged_answers": 0,
+        "changed_results": 26,
+        "changed_results_with_unchanged_answer": 0
+      },
+      "layer26-40-output": {
+        "variant": "layer-26-perturbation-40-trained_output",
+        "tasks": 164,
+        "unchanged_answers": 0,
+        "changed_results": 6,
+        "changed_results_with_unchanged_answer": 0
+      },
+      "original-bf16": {
+        "variant": "original-bf16",
+        "tasks": 164,
+        "unchanged_answers": 116
+      }
+    },
+    "mbpp": {
+      "layer13-40-code-only": {
+        "variant": "layer-13-code-only-40-trained",
+        "tasks": 378,
+        "unchanged_answers": 0,
+        "changed_results": 25,
+        "changed_results_with_unchanged_answer": 0
+      },
+      "layer13-40-output": {
+        "variant": "layer-13-perturbation-40-trained_output",
+        "tasks": 378,
+        "unchanged_answers": 0,
+        "changed_results": 20,
+        "changed_results_with_unchanged_answer": 0
+      },
+      "layer13-40-window": {
+        "variant": "layer-13-perturbation-40-trained",
+        "tasks": 378,
+        "unchanged_answers": 0,
+        "changed_results": 20,
+        "changed_results_with_unchanged_answer": 0
+      },
+      "layer13-40-window-sampled": {
+        "variant": "layer-13-perturbation-40-trained",
+        "tasks": 378,
+        "unchanged_answers": 0,
+        "changed_results": 96,
+        "changed_results_with_unchanged_answer": 0
+      },
+      "layer26-40-output": {
+        "variant": "layer-26-perturbation-40-trained_output",
+        "tasks": 378,
+        "unchanged_answers": 0,
+        "changed_results": 9,
+        "changed_results_with_unchanged_answer": 0
+      },
+      "original-bf16": {
+        "variant": "original-bf16",
+        "tasks": 378,
+        "unchanged_answers": 277
+      }
+    }
+  },
+  "unchanged_answers": {
+    "humaneval": {
+      "tasks": 164,
+      "original-bf16": 116,
+      "layer-10-perturbation-20-trained": 63,
+      "layer-10-perturbation-40-trained": 52,
+      "layer-15-perturbation-20-trained": 93,
+      "layer-15-perturbation-40-trained": 66,
+      "layer-20-perturbation-20-trained": 103,
+      "layer-20-perturbation-40-trained": 78,
+      "layer-21-perturbation-20-trained": 118,
+      "layer-21-perturbation-40-trained": 82,
+      "layer-23-perturbation-20-trained": 130,
+      "layer-23-perturbation-40-trained": 104,
+      "layer-24-perturbation-20-trained": 124,
+      "layer-24-perturbation-40-trained": 104,
+      "layer-25-perturbation-20-trained": 132,
+      "layer-25-perturbation-40-trained": 120,
+      "layer-18-perturbation-20-trained": 93,
+      "layer-22-perturbation-40-trained": 97,
+      "layer-17-perturbation-20-trained": 73,
+      "layer-17-perturbation-40-trained": 49,
+      "layer-18-perturbation-40-trained": 74,
+      "layer-22-perturbation-20-trained": 116
+    },
+    "mbpp": {
+      "tasks": 378,
+      "layer-10-perturbation-20-trained": 181,
+      "layer-10-perturbation-40-trained": 149,
+      "layer-15-perturbation-20-trained": 226,
+      "layer-17-perturbation-20-trained": 227,
+      "layer-20-perturbation-20-trained": 246,
+      "layer-20-perturbation-40-trained": 202,
+      "layer-21-perturbation-20-trained": 254,
+      "layer-24-perturbation-20-trained": 287,
+      "layer-24-perturbation-40-trained": 244,
+      "original-bf16": 277,
+      "layer-25-perturbation-20-trained": 314,
+      "layer-25-perturbation-40-trained": 284,
+      "layer-22-perturbation-20-trained": 264,
+      "layer-22-perturbation-40-trained": 225,
+      "layer-15-perturbation-40-trained": 191,
+      "layer-18-perturbation-20-trained": 233,
+      "layer-18-perturbation-40-trained": 191,
+      "layer-23-perturbation-20-trained": 258,
+      "layer-17-perturbation-40-trained": 155,
+      "layer-21-perturbation-40-trained": 213,
+      "layer-23-perturbation-40-trained": 207
+    },
+    "mbpp-held-out": {
+      "tasks": 510,
+      "layer-24-perturbation-20-trained": 352,
+      "layer-24-perturbation-40-trained": 295,
+      "layer-25-perturbation-20-trained": 396,
+      "original-bf16": 343,
+      "layer-18-perturbation-40-trained": 226,
+      "layer-10-perturbation-20-trained": 211,
+      "layer-10-perturbation-40-trained": 170,
+      "layer-15-perturbation-20-trained": 270,
+      "layer-15-perturbation-40-trained": 217,
+      "layer-17-perturbation-20-trained": 255,
+      "layer-17-perturbation-40-trained": 169,
+      "layer-18-perturbation-20-trained": 262,
+      "layer-20-perturbation-20-trained": 318,
+      "layer-20-perturbation-40-trained": 261,
+      "layer-21-perturbation-20-trained": 328,
+      "layer-21-perturbation-40-trained": 240,
+      "layer-22-perturbation-20-trained": 324,
+      "layer-22-perturbation-40-trained": 259,
+      "layer-23-perturbation-20-trained": 330,
+      "layer-23-perturbation-40-trained": 263,
+      "layer-25-perturbation-40-trained": 339
+    }
+  }
+}
